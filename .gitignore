@@ -1,0 +1,8 @@
+build
+lib/*
+bin/*
+.DS_Store
+.vscode
+outputs
+graphs
+__pycache__
