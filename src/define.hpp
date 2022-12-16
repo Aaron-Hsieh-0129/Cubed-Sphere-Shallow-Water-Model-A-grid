@@ -12,20 +12,20 @@
 #define DY (2)
 #define NX ((int) 90/DX + 2)
 #define NY ((int) 90/DY + 2)
-#define DT (360.)
+#define DT (180.)
 #define D2T (2. * DT)
 #define TIMEEND (24. * 86400 * 6)
 #define OUTPUTINTERVAL (100)
 
 #define ALPHA0 (M_PI/4.)
-#define Jung
+// #define Jung
 // #define GravityWave
-// #define SteadyGeostrophy
+#define SteadyGeostrophy
 
-// #define DIFFUSION
-// #define TIMEFILTER
-#define KX (1000000.)
-#define KY (1000000.)
+#define DIFFUSION
+#define TIMEFILTER
+#define KX (50000000.)
+#define KY (50000000.)
 #define TIMETS (0.06)
 
 #endif

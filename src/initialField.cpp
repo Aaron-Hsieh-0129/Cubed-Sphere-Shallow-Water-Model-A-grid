@@ -25,10 +25,10 @@ void Init::Init2d(CSSWM & model) {
 
                 #ifdef SteadyGeostrophy
                     model.csswm[p].hp[i][j] = SteadyGeostrophyH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
-                    model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * JungU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
-                                              (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * JungV(model.csswm[p].lon[i][j]);
-                    model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * JungU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
-                                              (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * JungV(model.csswm[p].lon[i][j]);
+                    model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * SteadyGeostrophyU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
+                                              (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * SteadyGeostrophyV(model.csswm[p].lon[i][j]);
+                    model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * SteadyGeostrophyU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
+                                              (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * SteadyGeostrophyV(model.csswm[p].lon[i][j]);
                     
                 #endif
             }
@@ -84,4 +84,16 @@ double Init::SteadyGeostrophyH(double lon, double lat) {
     double h0 = 2.94E4 / GRAVITY;
     double u0 = 2 * M_PI * RADIUS / (12. * 86400);
     return h0 - (RADIUS * OMEGA * u0 + u0 * u0 / 2.) * pow(-cos(lon) * cos(lat) * sin(ALPHA0) + sin(lat) * cos(ALPHA0), 2) / GRAVITY;
+}
+
+double Init::SteadyGeostrophyU(double lon, double lat) {
+    double u0 = 2 * M_PI * RADIUS / (12. * 86400);
+    double u = u0 * (cos(ALPHA0) * cos(lat) + sin(ALPHA0) * cos(lon) * sin(lat));
+    return u;
+}
+
+double Init::SteadyGeostrophyV(double lon) {
+    double u0 = 2 * M_PI * RADIUS / (12. * 86400);
+    double v = - u0 * sin(ALPHA0) * sin(lon);
+    return v;
 }

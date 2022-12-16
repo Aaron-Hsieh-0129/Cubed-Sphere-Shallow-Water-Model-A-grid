@@ -11,6 +11,8 @@ class Init {
         static double JungV(double);
         static double Gravity(double, double);
         static double SteadyGeostrophyH(double, double);
+        static double SteadyGeostrophyU(double, double);
+        static double SteadyGeostrophyV(double);
         static double ConvergenceRateH(double, double);
         static double BarotropicU(double);
         static double BarotropicH(double, double);
