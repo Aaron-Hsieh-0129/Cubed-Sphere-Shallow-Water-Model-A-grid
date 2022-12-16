@@ -15,17 +15,17 @@
 #define DT (360.)
 #define D2T (2. * DT)
 #define TIMEEND (24. * 86400 * 6)
-#define OUTPUTINTERVAL (100)
+#define OUTPUTINTERVAL (50)
 
 #define ALPHA0 (M_PI/4.)
-#define HorizontalAdvection
 // #define Jung
-#define SteadyGeostrophy
+#define GravityWave
+// #define SteadyGeostrophy
 
-// #define DIFFUSION
-// #define TIMEFILTER
-#define KX (100000.)
-#define KY (100000.)
+#define DIFFUSION
+#define TIMEFILTER
+#define KX (1000000.)
+#define KY (1000000.)
 #define TIMETS (0.06)
 
 #endif

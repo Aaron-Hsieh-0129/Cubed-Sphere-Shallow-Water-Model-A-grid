@@ -31,12 +31,19 @@ void Iteration::ph_pt(CSSWM &model) {
 void Iteration::pu_pt(CSSWM &model) {
     double dx_for_u = 0, dy_for_u = 0;
     double pgH_px = 0, pU2_px = 0, pUV_px = 0, pV2_px = 0, rotationU = 0;
+    double f;
 
     for (int p = 0; p < 6; p++) {
         for (int i = 1; i < NX-1; i++) {
             for (int j = 1; j < NY-1; j++) {
                 dx_for_u = model.csswm[p].x[i+1][j] - model.csswm[p].x[i-1][j];
                 dy_for_u = model.csswm[p].y[i][j+1] - model.csswm[p].y[i][j-1];
+
+                #ifdef SteadyGeostrophy
+                    f = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j] * cos(model.csswm[p].lat[i][j] * sin(ALPHA0) + sin(model.csswm[p].lat[i][j] * cos(ALPHA0)))));
+                #else
+                    f = 0;
+                #endif
 
                 pgH_px = GRAVITY / dx_for_u * (model.csswm[p].h[i+1][j] - model.csswm[p].h[i-1][j]);
 
@@ -53,7 +60,7 @@ void Iteration::pu_pt(CSSWM &model) {
                          model.gUpper[i-1][j][3] * pow(model.csswm[p].v[i-1][j], 2));
 
                 rotationU = (((model.csswm[p].v[i+1][j] - model.csswm[p].v[i-1][j]) / dx_for_u) - 
-                             ((model.csswm[p].u[i][j+1] - model.csswm[p].u[i][j-1]) / dy_for_u) + model.sqrtG[i][j] * CF) * 
+                             ((model.csswm[p].u[i][j+1] - model.csswm[p].u[i][j-1]) / dy_for_u) + model.sqrtG[i][j] * f) * 
                             (model.gUpper[i][j][2] * model.csswm[p].u[i][j] + model.gUpper[i][j][3] * model.csswm[p].v[i][j]);
             
                 model.csswm[p].up[i][j] = model.csswm[p].um[i][j] + D2T * (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);
@@ -71,12 +78,19 @@ void Iteration::pu_pt(CSSWM &model) {
 void Iteration::pv_pt(CSSWM &model) {
     double dx_for_v = 0, dy_for_v = 0;
     double pgH_py = 0, pU2_py = 0, pUV_py = 0, pV2_py = 0, rotationV = 0;
+    double f;
 
     for (int p = 0; p < 6; p++) {
-        for (int i = 2; i < NX-2; i++) {
-            for (int j = 2; j < NY-2; j++) {
+        for (int i = 1; i < NX-1; i++) {
+            for (int j = 1; j < NY-1; j++) {
                 dx_for_v = model.csswm[p].x[i+1][j] - model.csswm[p].x[i-1][j];
                 dy_for_v = model.csswm[p].y[i][j+1] - model.csswm[p].y[i][j-1];
+
+                #ifdef SteadyGeostrophy
+                    f = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j] * cos(model.csswm[p].lat[i][j] * sin(ALPHA0) + sin(model.csswm[p].lat[i][j] * cos(ALPHA0)))));
+                #else
+                    f = 0;
+                #endif
 
                 pgH_py = GRAVITY / dy_for_v * (model.csswm[p].h[i][j+1] - model.csswm[p].h[i][j-1]);
 
@@ -93,7 +107,7 @@ void Iteration::pv_pt(CSSWM &model) {
                          model.gUpper[i][j-1][3] * pow(model.csswm[p].v[i][j-1], 2));
 
                 rotationV = (((model.csswm[p].v[i+1][j] - model.csswm[p].v[i-1][j]) / dx_for_v) - 
-                             ((model.csswm[p].u[i][j+1] - model.csswm[p].u[i][j-1]) / dy_for_v) + model.sqrtG[i][j] * CF) * 
+                             ((model.csswm[p].u[i][j+1] - model.csswm[p].u[i][j-1]) / dy_for_v) + model.sqrtG[i][j] * f) * 
                             (model.gUpper[i][j][0] * model.csswm[p].u[i][j] + model.gUpper[i][j][1] * model.csswm[p].v[i][j]);
 
                 model.csswm[p].vp[i][j] = model.csswm[p].vm[i][j] + D2T * (-pgH_py - pU2_py - pUV_py - pV2_py - rotationV);
@@ -129,10 +143,12 @@ void Iteration::leap_frog(CSSWM &model) {
 
         // calculate
         ph_pt(model);
-        // pu_pt(model);
-        // pv_pt(model);
+        pu_pt(model);
+        pv_pt(model);
 
         model.BP_h(model);
+        model.BP_wind_convert(model);
+        // model.BP_wind_interpolation(model);
 
         // Time filter
         #ifdef TIMEFILTER

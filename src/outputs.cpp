@@ -17,6 +17,7 @@ void Outputs::create_directory(string directory_name) {
 
 void Outputs::output_parameter(CSSWM &model) {
     create_directory("../outputs/grids");
+    create_directory("../graphs/grids");
 
     fstream fout[4];
     string dir = "../outputs/grids/";
@@ -41,6 +42,8 @@ void Outputs::output_parameter(CSSWM &model) {
 
 void Outputs::output_h(int n, CSSWM &model) {
     create_directory("../outputs/h");
+    create_directory("../graphs/h/curvilinear");
+    create_directory("../graphs/h/sphere");
 
     fstream fouth;
     string hname = "../outputs/h/h_" + std::to_string(n) + ".txt";

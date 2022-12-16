@@ -153,5 +153,61 @@ double CSSWM::Cube2Cube_BU2AV(CSSWM &model, int p1, int p2, int i1, int j1, int 
 		}
 	}
 
+    // test
+    // model.csswm[p2].up[i2][j2] = -10.;
+    // model.csswm[p2].vp[i2][j2] = 0.;
+    // std::cout << "u: " << mult[0][0] * model.csswm[p2].up[i2][j2] + mult[0][1] * model.csswm[p2].vp[i2][j2] << std::endl;
+    // std::cout << "v: " << mult[1][0] * model.csswm[p2].up[i2][j2] + mult[1][1] * model.csswm[p2].vp[i2][j2] << std::endl;
+
     return mult[1][0] * model.csswm[p2].up[i2][j2] + mult[1][1] * model.csswm[p2].vp[i2][j2];
+}
+
+double CSSWM::Cube2Cube_U_2(double gLower[4], double IA[4], double A[4], double gUpper[4], double u, double v) {
+    double mult[2][2], tmp1[2][2], tmp2[2][2];
+
+    // init
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            mult[i][j] = tmp1[i][j] = tmp2[i][j] = 0.;
+        }
+    }
+
+    matrixMul(gLower, IA, tmp1);
+
+    matrixMul(A, gUpper, tmp2);
+
+    for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2; j++) {
+			for (int k = 0; k < 2; k++) {
+				mult[i][j] += tmp1[i][k] * tmp2[k][j];
+			}
+		}
+	}
+
+    return mult[0][0] * u + mult[0][1] * v;
+}
+
+double CSSWM::Cube2Cube_V_2(double gLower[4], double IA[4], double A[4], double gUpper[4], double u, double v) {
+    double mult[2][2], tmp1[2][2], tmp2[2][2];
+
+    // init
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            mult[i][j] = tmp1[i][j] = tmp2[i][j] = 0.;
+        }
+    }
+
+    matrixMul(gLower, IA, tmp1);
+
+    matrixMul(A, gUpper, tmp2);
+
+    for (int i = 0; i < 2; i++) {
+		for (int j = 0; j < 2; j++) {
+			for (int k = 0; k < 2; k++) {
+				mult[i][j] += tmp1[i][k] * tmp2[k][j];
+			}
+		}
+	}
+
+    return mult[1][0] * u + mult[1][1] * v;
 }

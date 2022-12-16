@@ -14,7 +14,7 @@ CSSWM::patch::patch() {
     }
 }
 
-void CSSWM::Construct_gamma_sqrtG_GUpper(double **alpha2D, double **beta2D, double gamma[NX][NY], double sqrtG[NX][NY], double gUpper[NX][NY][4], double gLower[NX][NY][4]) {
+void CSSWM::Construct_gamma_sqrtG_GUpper(double alpha2D[NX][NY], double beta2D[NX][NY], double gamma[NX][NY], double sqrtG[NX][NY], double gUpper[NX][NY][4], double gLower[NX][NY][4]) {
     for (int i = 0; i < NX; i++) {
         for (int j = 0; j < NY; j++) {
             gamma[i][j] = sqrt(1 + pow(tan(alpha2D[i][j]), 2) + pow(tan(beta2D[i][j]), 2));
@@ -34,7 +34,7 @@ void CSSWM::Construct_gamma_sqrtG_GUpper(double **alpha2D, double **beta2D, doub
     return;
 }
 
-void CSSWM::Construct_p0123_lonlat_xy_AIA(int p, double **alpha2D, double **beta2D, double gamma[NX][NY], double lon[NX][NY], double lat[NX][NY], double x[NX][NY], double y[NX][NY], double A[NX][NY][4], double IA[NX][NY][4]) {
+void CSSWM::Construct_p0123_lonlat_xy_AIA(int p, double alpha2D[NX][NY], double beta2D[NX][NY], double gamma[NX][NY], double lon[NX][NY], double lat[NX][NY], double x[NX][NY], double y[NX][NY], double A[NX][NY][4], double IA[NX][NY][4]) {
     for (int i = 0; i < NX; i++) {
         for (int j = 0; j < NY; j++) {
             // lon/lat
@@ -61,7 +61,7 @@ void CSSWM::Construct_p0123_lonlat_xy_AIA(int p, double **alpha2D, double **beta
     }
 }
 
-void CSSWM::Construct_p4_lonlat_xy_AIA(int p, double **alpha2D, double **beta2D, double gamma[NX][NY], double lon[NX][NY], double lat[NX][NY], double x[NX][NY], double y[NX][NY], double A[NX][NY][4], double IA[NX][NY][4]) {
+void CSSWM::Construct_p4_lonlat_xy_AIA(int p, double alpha2D[NX][NY], double beta2D[NX][NY], double gamma[NX][NY], double lon[NX][NY], double lat[NX][NY], double x[NX][NY], double y[NX][NY], double A[NX][NY][4], double IA[NX][NY][4]) {
     for (int i = 0; i < NX; i++) {
         for (int j = 0; j < NY; j++) {
             // lon/lat
@@ -88,7 +88,7 @@ void CSSWM::Construct_p4_lonlat_xy_AIA(int p, double **alpha2D, double **beta2D,
     }
 }
 
-void CSSWM::Construct_p5_lonlat_xy_AIA(int p, double **alpha2D, double **beta2D, double gamma[NX][NY], double lon[NX][NY], double lat[NX][NY], double x[NX][NY], double y[NX][NY], double A[NX][NY][4], double IA[NX][NY][4]) {
+void CSSWM::Construct_p5_lonlat_xy_AIA(int p, double alpha2D[NX][NY], double beta2D[NX][NY], double gamma[NX][NY], double lon[NX][NY], double lat[NX][NY], double x[NX][NY], double y[NX][NY], double A[NX][NY][4], double IA[NX][NY][4]) {
     for (int i = 0; i < NX; i++) {
         for (int j = 0; j < NY; j++) {
             // lon/lat
@@ -120,19 +120,13 @@ CSSWM::CSSWM() {
     double *alpha = new double[NX], *beta = new double[NY];
 
     for (int i = 0; i < NX; i++) {
-        alpha[i] = -M_PI/4. + (M_PI/2.) / (NX-4) * (i-1.5);
+        alpha[i] = -M_PI/4. + (M_PI/2.) / (NX-2) * (i-0.5);
     }
     for (int j = 0; j < NY; j++) {
-        beta[j] = -M_PI/4. + (M_PI/2.) / (NX-4) * (j-1.5);
+        beta[j] = -M_PI/4. + (M_PI/2.) / (NX-2) * (j-0.5);
     }
 
-    // Init new 2D array
-    double **alpha2D = new double *[NX], **beta2D = new double *[NY];
-    for (int i = 0; i < NX; i++) {
-        alpha2D[i] = new double[NY];
-        beta2D[i] = new double [NY];
-    }
-    
+
     for (int i = 0; i < NX; i++) {
         for (int j = 0; j < NY; j++) {
             alpha2D[i][j] = alpha[i];
@@ -154,10 +148,90 @@ CSSWM::CSSWM() {
         Construct_p0123_lonlat_xy_AIA(p, alpha2D, beta2D, gamma, csswm[p].lon, csswm[p].lat, csswm[p].x, csswm[p].y, csswm[p].A, csswm[p].IA);
     }
 
-    // delete dynamic array
-    delete[] alpha, delete[] beta;
-    for (int i = 0; i < NX; i++) {
-        delete[] alpha2D[i], delete[] beta2D[i];
+    delete[] alpha;
+    delete[] beta;
+}
+
+void CSSWM::get_gUpper(double ans[4], double alpha, double beta) {
+    double gamma = sqrt(1 + pow(tan(alpha), 2) + pow(tan(beta), 2));
+
+    ans[0] = pow((gamma * cos(alpha) * cos(beta)), 2) * (1 + pow(tan(beta), 2));
+    ans[1] = pow((gamma * cos(alpha) * cos(beta)), 2) * (tan(alpha) * tan(beta));
+    ans[2] = ans[1];
+    ans[3] = pow((gamma* cos(alpha) * cos(beta)), 2) * (1 + pow(tan(alpha), 2));
+}
+
+void CSSWM::get_gLower(double ans[4], double alpha, double beta) {
+    double gamma = sqrt(1 + pow(tan(alpha), 2) + pow(tan(beta), 2));
+    
+    ans[0] = 1. / (pow(gamma, 4) * pow(cos(alpha) * cos(beta), 2)) * (1 + pow(tan(alpha), 2));
+    ans[1] = 1. / (pow(gamma, 4) * pow(cos(alpha) * cos(beta), 2)) * (-tan(alpha) * tan(beta));
+    ans[2] = ans[1];
+    ans[3] = 1. / (pow(gamma, 4) * pow(cos(alpha) * cos(beta), 2)) * (1 + pow(tan(beta), 2));
+}
+
+void CSSWM::get_A(double ans[4], int p, double alpha, double beta) {
+    if (p == 0 || p == 1 || p == 2 || p == 3) {
+        double gamma = sqrt(1 + pow(tan(alpha), 2) + pow(tan(beta), 2));
+        double lon = alpha + p * M_PI/2.;
+
+        ans[0] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (gamma * cos(beta) / cos(alpha) * cos(lon));
+        ans[1] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (-gamma * cos(alpha) / cos(beta) * sin(lon));
+        ans[2] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (cos(beta) / cos(alpha) * sin(lon));
+        ans[3] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (cos(alpha) / cos(beta) * cos(lon));
+        return;
     }
-    delete[] alpha2D, delete[] beta2D;
+    else if (p == 4) {
+        double gamma = sqrt(1 + pow(tan(alpha), 2) + pow(tan(beta), 2));
+        double lon = atan2(tan(alpha), -tan(beta));
+
+        ans[0] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (gamma * cos(beta) / cos(alpha) * cos(lon));
+        ans[1] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (gamma * cos(alpha) / cos(beta) * sin(lon));
+        ans[2] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (-cos(beta) / cos(alpha) * sin(lon));
+        ans[3] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (cos(alpha) / cos(beta) * cos(lon));
+        return;
+    }
+    else {
+        double gamma = sqrt(1 + pow(tan(alpha), 2) + pow(tan(beta), 2));
+        double lon = atan2(tan(alpha), tan(beta));
+
+        ans[0] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (gamma * cos(beta) / cos(alpha) * cos(lon));
+        ans[1] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (-gamma * cos(alpha) / cos(beta) * sin(lon));
+        ans[2] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (cos(beta) / cos(alpha) * sin(lon));
+        ans[3] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (cos(alpha) / cos(beta) * cos(lon));
+        return;
+    }
+}
+
+
+void CSSWM::get_IA(double ans[4], int p, double alpha, double beta) {
+    if (p == 0 || p == 1 || p == 2 || p == 3) {
+        double gamma = sqrt(1 + pow(tan(alpha), 2) + pow(tan(beta), 2));
+
+        ans[0] = gamma * cos(alpha) * cos(beta) / cos(beta);
+        ans[1] = 0;
+        ans[2] = gamma * cos(alpha) * cos(beta) * (tan(alpha) * sin(beta));
+        ans[3] = gamma * cos(alpha) * cos(beta) * (gamma * cos(beta));
+        return;
+    }
+    else if (p == 4) {
+        double gamma = sqrt(1 + pow(tan(alpha), 2) + pow(tan(beta), 2));
+        double lon = atan2(tan(alpha), -tan(beta));
+
+        ans[0] = gamma * cos(alpha) * cos(beta) * (cos(alpha) / cos(beta) * cos(lon));
+        ans[1] = gamma * cos(alpha) * cos(beta) * (-gamma * cos(alpha) / cos(beta) * sin(lon));
+        ans[2] = gamma * cos(alpha) * cos(beta) * (cos(beta) / cos(alpha) * sin(lon));
+        ans[3] = gamma * cos(alpha) * cos(beta) * (gamma * cos(beta) / cos(alpha) * cos(lon));
+        return;
+    }
+    else {
+        double gamma = sqrt(1 + pow(tan(alpha), 2) + pow(tan(beta), 2));
+        double lon = atan2(tan(alpha), tan(beta));
+
+        ans[0] = gamma * cos(alpha) * cos(beta) * (cos(alpha) / cos(beta) * cos(lon));
+        ans[1] = gamma * cos(alpha) * cos(beta) * (gamma * cos(alpha) / cos(beta) * sin(lon));
+        ans[2] = gamma * cos(alpha) * cos(beta) * (-cos(beta) / cos(alpha) * sin(lon));
+        ans[3] = gamma * cos(alpha) * cos(beta) * (gamma * cos(beta) / cos(alpha) * cos(lon));
+        return;
+    }   
 }

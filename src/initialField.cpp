@@ -18,13 +18,13 @@ void Init::Init2d(CSSWM & model) {
                 #endif
 
                 #ifdef GravityWave
-                    model.csswm[p].hp[i][j] = JungH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) / 100.;
+                    model.csswm[p].hp[i][j] = Gravity(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
                     model.csswm[p].up[i][j] = 0.;
                     model.csswm[p].vp[i][j] = 0.;
                 #endif
 
                 #ifdef SteadyGeostrophy
-                    model.csswm[p].hp[i][j] = JungH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
+                    model.csswm[p].hp[i][j] = SteadyGeostrophyH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
                     model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * JungU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * JungV(model.csswm[p].lon[i][j]);
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * JungU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
@@ -69,6 +69,15 @@ double Init::JungV(double lon) {
     double u0 = 2 * M_PI * RADIUS / (12. * 86400);
     double v = u0 * sin(ALPHA0) * cos(lon);
     return v;
+}
+
+double Init::Gravity(double lon, double lat) {
+    double h0 = 1000;
+    double lonC = 0., latC = 0.;
+    double rd = RADIUS * acos(sin(latC) * sin(lat) + cos(latC) * cos(lat) * cos(lon-lonC));
+    double r0 = RADIUS / 3.;
+    if (rd < r0) return h0 + h0 / 2. * (1 + cos(M_PI * rd / r0));
+    else return h0;
 }
 
 double Init::SteadyGeostrophyH(double lon, double lat) {
