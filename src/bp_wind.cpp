@@ -142,8 +142,8 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
                 V1 = model.csswm[p2].up[I2_1][J2_1], V2 = model.csswm[p2].up[I2_2][J2_2];
                 V3 = model.csswm[p2].vp[I2_1][J2_1], V4 = model.csswm[p2].vp[I2_2][J2_2];
 
-                alpha = model.interpolate(A1, A2, model.alpha2D[I2_1][J2_1], model.alpha2D[I2_2][J2_2], B);
-                beta = model.interpolate(A1, A2, model.beta2D[I2_1][J2_1], model.beta2D[I2_2][J2_2], B);
+                alpha = model.alpha2D[I1][J1];
+                beta = model.beta2D[I1][J1];
 
                 uIP = model.interpolate(A1, A2, V1, V2, B);
                 vIP = model.interpolate(A1, A2, V3, V4, B);
@@ -152,8 +152,8 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
                 model.get_IA(IA, p1, alpha, beta);
                 model.get_A(A, p2, alpha, beta);
                 model.get_gUpper(gUpper, alpha, beta);
-                model.csswm[p1].up[i1][j1] = model.Cube2Cube_U_2(gLower, IA, A, gUpper, uIP, vIP);
-                model.csswm[p1].vp[i1][j1] = model.Cube2Cube_V_2(gLower, IA, A, gUpper, uIP, vIP);
+                model.csswm[p1].up[I1][J1] = model.Cube2Cube_U_2(gLower, IA, A, gUpper, uIP, vIP);
+                model.csswm[p1].vp[I1][J1] = model.Cube2Cube_V_2(gLower, IA, A, gUpper, uIP, vIP);
                 
             }
             else {
@@ -168,8 +168,8 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
 
                 if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
                 
-                alpha = model.interpolate(A1, A2, model.alpha2D[I2_1][J2_1], model.alpha2D[I2_2][J2_2], B);
-                beta = model.interpolate(A1, A2, model.beta2D[I2_1][J2_1], model.beta2D[I2_2][J2_2], B);
+                alpha = model.alpha2D[I1][J1];
+                beta = model.beta2D[I1][J1];
 
                 uIP = model.interpolate(A1, A2, V1, V2, B);
                 vIP = model.interpolate(A1, A2, V3, V4, B);
@@ -178,8 +178,8 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
                 model.get_IA(IA, p1, alpha, beta);
                 model.get_A(A, p2, alpha, beta);
                 model.get_gUpper(gUpper, alpha, beta);
-                model.csswm[p1].up[i1][j1] = model.Cube2Cube_V_2(gLower, IA, A, gUpper, uIP, vIP);
-                model.csswm[p1].vp[i1][j1] = model.Cube2Cube_V_2(gLower, IA, A, gUpper, uIP, vIP);
+                model.csswm[p1].up[I1][J1] = model.Cube2Cube_U_2(gLower, IA, A, gUpper, uIP, vIP);
+                model.csswm[p1].vp[I1][J1] = model.Cube2Cube_V_2(gLower, IA, A, gUpper, uIP, vIP);
             }
         }
     }
