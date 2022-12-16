@@ -8,9 +8,10 @@ DT = 360
 LEAP = 10
 cmap = cm.viridis
 
-def plotOnCubeWindMul(t):
-    left, right, split = 0, 2000, 21
+left, right, split = -1200, 1200, 13
 
+
+def plotOnCubeWindMul(t):
     x, y = np.loadtxt("../outputs/grids/x.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/y.txt").reshape(6, NX, NY)
     val = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY)
     u = np.loadtxt(f"../outputs/u/u_{t*LEAP}.txt").reshape(6, NX, NY)
@@ -66,7 +67,6 @@ def plotOnSphereWindMul(t):
     u = np.loadtxt(f"../outputs/u_lon_lat/u_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY)
     v = np.loadtxt(f"../outputs/v_lon_lat/v_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY)
 
-    left, right, split = 0, 2000, 21
     plt.figure(figsize=(18,8))
     plt.xlabel("LON")
     plt.ylabel("LAT")
@@ -98,15 +98,25 @@ def plotOnSphereWindMul(t):
     return
 
 def plotOnSphereMul(t):
-    x, y = np.loadtxt("../outputs/grids/x.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/y.txt").reshape(6, NX, NY)
+    NX = NY = 45
+    x, y = np.loadtxt("../outputs/grids/lon.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/lat.txt").reshape(6, NX, NY)
     val = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY)
+    x = x * 180 / np.pi
+    y = y * 180 / np.pi
 
-    left, right, split = -1200, 1200, 13
+    x[0, :, :NX//2] = x[0, :, :NX//2] - 360
+    x[4, :, :NX//2] = x[4, :, :NX//2] - 360
+    x[5, :, :NX//2] = x[5, :, :NX//2] - 360
+
+    u = np.loadtxt(f"../outputs/u_lon_lat/u_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY)
+    v = np.loadtxt(f"../outputs/v_lon_lat/v_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY)
+
     plt.figure(figsize=(18,8))
     plt.xlabel("LON")
     plt.ylabel("LAT")
     plt.title(f"t = {t * 10 * DT / 60} min", fontsize=14)
 
+    # cmap = cm.twilight_shifted
     plt.contourf(x[0], y[0], val[0], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
     plt.contourf(x[1], y[1], val[1], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
     plt.contourf(x[2, :, 0:NX//2], y[2, :, 0:NX//2], val[2, :, 0:NX//2], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
@@ -116,7 +126,7 @@ def plotOnSphereMul(t):
     plt.contourf(x[5], y[5], val[5], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
     cbar = plt.colorbar(pad=0.05)
     cbar.set_ticks(np.linspace(left, right, split))
-
+      
     plt.savefig(f"../graphs/h/sphere/{int(t/10)}.png", dpi=100)
     plt.close()
     return
@@ -124,6 +134,8 @@ def plotOnSphereMul(t):
 def plotOnCubeMul(t):
     x, y = np.loadtxt("../outputs/grids/x.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/y.txt").reshape(6, NX, NY)
     val = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY)
+    u = np.loadtxt(f"../outputs/u/u_{t*LEAP}.txt").reshape(6, NX, NY)
+    v = np.loadtxt(f"../outputs/v/v_{t*LEAP}.txt").reshape(6, NX, NY)
 
     fig = plt.figure(figsize=(18,10))
     ax5 = fig.add_subplot(3,4,2)
@@ -134,7 +146,6 @@ def plotOnCubeMul(t):
     ax6 = fig.add_subplot(3,4,10)
     ax5.set_title(f"t = {t * 10 * DT / 60} min", fontsize=14)
 
-    left, right, split = 0, 2000, 13
     cs1 = ax1.contourf(x[0], y[0], val[0], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
     ax2.contourf(x[1], y[1], val[1], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
     ax3.contourf(x[2], y[2], val[2], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
