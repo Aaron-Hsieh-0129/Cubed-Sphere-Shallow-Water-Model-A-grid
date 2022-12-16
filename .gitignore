@@ -6,3 +6,4 @@ bin/*
 outputs
 graphs
 __pycache__
+doc/*.mov
