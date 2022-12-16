@@ -60,7 +60,8 @@ void Outputs::output_h(int n, CSSWM &model) {
 
 void Outputs::output_u(int n, CSSWM &model) {
     create_directory("../outputs/u");
-
+    create_directory("../outputs/u_lon_lat");
+    
     fstream foutu;
     string uname = "../outputs/u/u_" + std::to_string(n) + ".txt";
     foutu.open(uname, std::ios::out);
@@ -81,6 +82,7 @@ void Outputs::output_u(int n, CSSWM &model) {
 
 void Outputs::output_v(int n, CSSWM &model) {
     create_directory("../outputs/v");
+    create_directory("../outputs/v_lon_lat");
 
     fstream foutv;
     string vname = "../outputs/v/v_" + std::to_string(n) + ".txt";

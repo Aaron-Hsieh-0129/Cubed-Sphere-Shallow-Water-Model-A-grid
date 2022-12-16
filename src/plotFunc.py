@@ -48,18 +48,23 @@ def plotOnCubeWindMul(t):
     ax5.quiverkey(Q, 0.7, 0.9, 10, r'$10 \frac{m}{s}$', labelpos='E', coordinates='figure')  
     ax6.quiverkey(Q, 0.7, 0.9, 10, r'$10 \frac{m}{s}$', labelpos='E', coordinates='figure')   
     
-    plt.savefig(f"../graphs/h/curvilinear/{int(t/10)}.png", dpi=150)
+    plt.savefig(f"../graphs/h/curvilinear/{int(t/10)}.png", dpi=100)
     plt.close()
     return
 
 def plotOnSphereWindMul(t):
+    NX = NY = 45
     x, y = np.loadtxt("../outputs/grids/lon.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/lat.txt").reshape(6, NX, NY)
     val = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY)
     x = x * 180 / np.pi
     y = y * 180 / np.pi
 
-    u = np.loadtxt(f"../outputs/u/u_{t*LEAP}.txt").reshape(6, NX, NY)
-    v = np.loadtxt(f"../outputs/v/v_{t*LEAP}.txt").reshape(6, NX, NY)
+    x[0, :, :NX//2] = x[0, :, :NX//2] - 360
+    x[4, :, :NX//2] = x[4, :, :NX//2] - 360
+    x[5, :, :NX//2] = x[5, :, :NX//2] - 360
+
+    u = np.loadtxt(f"../outputs/u_lon_lat/u_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY)
+    v = np.loadtxt(f"../outputs/v_lon_lat/v_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY)
 
     left, right, split = 0, 2000, 21
     plt.figure(figsize=(18,8))
@@ -78,16 +83,17 @@ def plotOnSphereWindMul(t):
     cbar = plt.colorbar(pad=0.05)
     cbar.set_ticks(np.linspace(left, right, split))
     
-    # plt.quiver(x[0][::2, ::2], y[0][::2, ::2], u[0][::2, ::2], v[0][::2, ::2], angles='xy', units="width", scale=100)
-    # plt.quiver(x[1][::2, ::2], y[1][::2, ::2], u[1][::2, ::2], v[1][::2, ::2], angles='xy', units="width", scale=100)
-    # plt.quiver(x[2, :, 0:NX//2][::2, ::2], y[2, :, 0:NX//2][::2, ::2], u[2, :, 0:NX//2][::2, ::2], v[2, :, 0:NX//2][::2, ::2], angles='xy', units="width", scale=100)
-    # plt.quiver(x[2, :, NX//2:][::2, ::2]-360, y[2, :, NX//2:][::2, ::2], u[2, :, NX//2:][::2, ::2], v[2, :, NX//2:][::2, ::2], angles='xy', units="width", scale=100)
-    # plt.quiver(x[3][::2, ::2]-360, y[3][::2, ::2], u[3][::2, ::2], v[3][::2, ::2], angles='xy', units="width", scale=100)
-    # plt.quiver(x[4][::2, ::2], y[4][::2, ::2], u[4][::2, ::2], v[4][::2, ::2], angles='xy', units="width", scale=100)
-    # Q = plt.quiver(x[5][::2, ::2], y[5][::2, ::2], u[5][::2, ::2], v[5][::2, ::2], angles='xy', units="width", scale=100)
-    # qk = plt.quiverkey(Q, 0.7, 0.9, 0.5, r'$5 \frac{m}{s}$', labelpos='E', coordinates='figure')
+    scale = 500
+    plt.quiver(x[0][::2, ::2], y[0][::2, ::2], u[0][::2, ::2], v[0][::2, ::2], angles='xy', units="width", scale=scale)
+    plt.quiver(x[1][::2, ::2], y[1][::2, ::2], u[1][::2, ::2], v[1][::2, ::2], angles='xy', units="width", scale=scale)
+    plt.quiver(x[2, :, 0:NX//2][::2, ::2], y[2, :, 0:NX//2][::2, ::2], u[2, :, 0:NX//2][::2, ::2], v[2, :, 0:NX//2][::2, ::2], angles='xy', units="width", scale=scale)
+    plt.quiver(x[2, :, NX//2:][::2, ::2]-360, y[2, :, NX//2:][::2, ::2], u[2, :, NX//2:][::2, ::2], v[2, :, NX//2:][::2, ::2], angles='xy', units="width", scale=scale)
+    plt.quiver(x[3][::2, ::2]-360, y[3][::2, ::2], u[3][::2, ::2], v[3][::2, ::2], angles='xy', units="width", scale=scale)
+    plt.quiver(x[4][::2, ::2], y[4][::2, ::2], u[4][::2, ::2], v[4][::2, ::2], angles='xy', units="width", scale=scale)
+    Q = plt.quiver(x[5][::2, ::2], y[5][::2, ::2], u[5][::2, ::2], v[5][::2, ::2], angles='xy', units="width", scale=scale)
+    qk = plt.quiverkey(Q, 0.7, 0.9, 0.5, r'$5 \frac{m}{s}$', labelpos='E', coordinates='figure')
         
-    plt.savefig(f"../graphs/h/sphere/{int(t/10)}.png", dpi=150)
+    plt.savefig(f"../graphs/h/sphere/{int(t/10)}.png", dpi=100)
     plt.close()
     return
 
@@ -111,7 +117,7 @@ def plotOnSphereMul(t):
     cbar = plt.colorbar(pad=0.05)
     cbar.set_ticks(np.linspace(left, right, split))
 
-    plt.savefig(f"../graphs/h/sphere/{int(t/10)}.png", dpi=150)
+    plt.savefig(f"../graphs/h/sphere/{int(t/10)}.png", dpi=100)
     plt.close()
     return
 
@@ -138,6 +144,6 @@ def plotOnCubeMul(t):
     cb_ax1 = fig.add_axes([0.9235, 0.1, 0.015, 0.78])
     fig.colorbar(cs1, cax=cb_ax1, ticks=np.linspace(left, right, split))
 
-    plt.savefig(f"../graphs/h/curvilinear/{int(t/10)}.png", dpi=150)
+    plt.savefig(f"../graphs/h/curvilinear/{int(t/10)}.png", dpi=100)
     plt.close()
     return
