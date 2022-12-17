@@ -17,15 +17,15 @@
 #define TIMEEND (24. * 86400 * 6)
 #define OUTPUTINTERVAL (100)
 
-#define ALPHA0 (M_PI/4.)
+#define ALPHA0 (0.)
 // #define Jung
 // #define GravityWave
 #define SteadyGeostrophy
 
 #define DIFFUSION
 #define TIMEFILTER
-#define KX (50000000.)
-#define KY (50000000.)
+#define KX (4000000.)
+#define KY (4000000.)
 #define TIMETS (0.06)
 
 #endif
