@@ -175,10 +175,10 @@ void CSSWM::get_A(double ans[4], int p, double alpha, double beta) {
         double gamma = sqrt(1 + pow(tan(alpha), 2) + pow(tan(beta), 2));
         double lon = alpha + p * M_PI/2.;
 
-        ans[0] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (gamma * cos(beta) / cos(alpha) * cos(lon));
-        ans[1] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (-gamma * cos(alpha) / cos(beta) * sin(lon));
-        ans[2] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (cos(beta) / cos(alpha) * sin(lon));
-        ans[3] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (cos(alpha) / cos(beta) * cos(lon));
+        ans[0] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * gamma * cos(beta);
+        ans[1] = 0;
+        ans[2] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (-tan(alpha) * sin(beta));
+        ans[3] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) / cos(beta);
         return;
     }
     else if (p == 4) {

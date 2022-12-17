@@ -114,7 +114,7 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
     }
 
     // Construct a array for dealing with interpolation between all patch
-    // (p1, p2, i1, j1, i2, j2, reversed, LonLat: 1/0, u2v/v2u: 0:false/1:true) 
+    // (p1, p2, i1, j1, i2, j2, reversed, LonLat: 1/0) 
     // Left, Right, Up, Down
     int match[24][8] = {
         {0, 3, 0, -1, NX-2, -1, 0, 0},  {0, 1, NX-1, -1, 1, -1, 0, 0},    {0, 4, -1, NY-1, -1, 1, 0, 1},     {0, 5, -1, 0, -1, NY-2, 0, 1},
