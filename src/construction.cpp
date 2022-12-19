@@ -46,13 +46,13 @@ void CSSWM::Construct_p0123_lonlat_xy_AIA(int p, double alpha2D[NX][NY], double 
             y[i][j] = RADIUS * atan(tan(lat[i][j]) / cos(lon[i][j] - p * M_PI/2.));
 
             // A/IA
-            A[i][j][0] = 1 / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * gamma[i][j] * cos(beta2D[i][j]);
-            A[i][j][1] = 0;
-            A[i][j][2] = 1 / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (-tan(alpha2D[i][j]) * sin(beta2D[i][j]));
-            A[i][j][3] = 1 / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) / cos(beta2D[i][j]);
+            A[i][j][0] = 1. / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * gamma[i][j] * cos(beta2D[i][j]);
+            A[i][j][1] = 0.;
+            A[i][j][2] = 1. / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (-tan(alpha2D[i][j]) * sin(beta2D[i][j]));
+            A[i][j][3] = 1. / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) / cos(beta2D[i][j]);
 
             IA[i][j][0] = gamma[i][j] * cos(alpha2D[i][j]) * cos(beta2D[i][j]) / cos(beta2D[i][j]);
-            IA[i][j][1] = 0;
+            IA[i][j][1] = 0.;
             IA[i][j][2] = gamma[i][j] * cos(alpha2D[i][j]) * cos(beta2D[i][j]) * (tan(alpha2D[i][j]) * sin(beta2D[i][j]));
             IA[i][j][3] = gamma[i][j] * cos(alpha2D[i][j]) * cos(beta2D[i][j]) * (gamma[i][j] * cos(beta2D[i][j]));
 
@@ -73,10 +73,10 @@ void CSSWM::Construct_p4_lonlat_xy_AIA(int p, double alpha2D[NX][NY], double bet
             y[i][j] = RADIUS * atan(-cos(lon[i][j]) / tan(lat[i][j]));
 
             // A/AInverse
-            A[i][j][0] = 1 / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (gamma[i][j] * cos(beta2D[i][j]) / cos(alpha2D[i][j]) * cos(lon[i][j]));
-            A[i][j][1] = 1 / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (gamma[i][j] * cos(alpha2D[i][j]) / cos(beta2D[i][j]) * sin(lon[i][j]));
-            A[i][j][2] = 1 / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (-cos(beta2D[i][j]) / cos(alpha2D[i][j]) * sin(lon[i][j]));
-            A[i][j][3] = 1 / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (cos(alpha2D[i][j]) / cos(beta2D[i][j]) * cos(lon[i][j]));
+            A[i][j][0] = 1. / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (gamma[i][j] * cos(beta2D[i][j]) / cos(alpha2D[i][j]) * cos(lon[i][j]));
+            A[i][j][1] = 1. / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (gamma[i][j] * cos(alpha2D[i][j]) / cos(beta2D[i][j]) * sin(lon[i][j]));
+            A[i][j][2] = 1. / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (-cos(beta2D[i][j]) / cos(alpha2D[i][j]) * sin(lon[i][j]));
+            A[i][j][3] = 1. / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (cos(alpha2D[i][j]) / cos(beta2D[i][j]) * cos(lon[i][j]));
 
             IA[i][j][0] = gamma[i][j] * cos(alpha2D[i][j]) * cos(beta2D[i][j]) * (cos(alpha2D[i][j]) / cos(beta2D[i][j]) * cos(lon[i][j]));
             IA[i][j][1] = gamma[i][j] * cos(alpha2D[i][j]) * cos(beta2D[i][j]) * (-gamma[i][j] * cos(alpha2D[i][j]) / cos(beta2D[i][j]) * sin(lon[i][j]));
@@ -100,10 +100,10 @@ void CSSWM::Construct_p5_lonlat_xy_AIA(int p, double alpha2D[NX][NY], double bet
             y[i][j] = RADIUS * atan(-cos(lon[i][j]) / tan(lat[i][j]));
 
             // A/AInverse
-            A[i][j][0] = 1 / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (gamma[i][j] * cos(beta2D[i][j]) / cos(alpha2D[i][j]) * cos(lon[i][j]));
-            A[i][j][1] = 1 / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (-gamma[i][j] * cos(alpha2D[i][j]) / cos(beta2D[i][j]) * sin(lon[i][j]));
-            A[i][j][2] = 1 / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (cos(beta2D[i][j]) / cos(alpha2D[i][j]) * sin(lon[i][j]));
-            A[i][j][3] = 1 / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (cos(alpha2D[i][j]) / cos(beta2D[i][j]) * cos(lon[i][j]));
+            A[i][j][0] = 1. / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (gamma[i][j] * cos(beta2D[i][j]) / cos(alpha2D[i][j]) * cos(lon[i][j]));
+            A[i][j][1] = 1. / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (-gamma[i][j] * cos(alpha2D[i][j]) / cos(beta2D[i][j]) * sin(lon[i][j]));
+            A[i][j][2] = 1. / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (cos(beta2D[i][j]) / cos(alpha2D[i][j]) * sin(lon[i][j]));
+            A[i][j][3] = 1. / (pow(gamma[i][j], 2) * cos(alpha2D[i][j]) * cos(beta2D[i][j])) * (cos(alpha2D[i][j]) / cos(beta2D[i][j]) * cos(lon[i][j]));
 
             IA[i][j][0] = gamma[i][j] * cos(alpha2D[i][j]) * cos(beta2D[i][j]) * (cos(alpha2D[i][j]) / cos(beta2D[i][j]) * cos(lon[i][j]));
             IA[i][j][1] = gamma[i][j] * cos(alpha2D[i][j]) * cos(beta2D[i][j]) * (gamma[i][j] * cos(alpha2D[i][j]) / cos(beta2D[i][j]) * sin(lon[i][j]));
@@ -173,32 +173,31 @@ void CSSWM::get_gLower(double ans[4], double alpha, double beta) {
 void CSSWM::get_A(double ans[4], int p, double alpha, double beta) {
     if (p == 0 || p == 1 || p == 2 || p == 3) {
         double gamma = sqrt(1 + pow(tan(alpha), 2) + pow(tan(beta), 2));
-        double lon = alpha + p * M_PI/2.;
 
-        ans[0] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * gamma * cos(beta);
-        ans[1] = 0;
-        ans[2] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (-tan(alpha) * sin(beta));
-        ans[3] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) / cos(beta);
+        ans[0] = 1. / (pow(gamma, 2) * cos(alpha) * cos(beta)) * gamma * cos(beta);
+        ans[1] = 0.;
+        ans[2] = 1. / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (-tan(alpha) * sin(beta));
+        ans[3] = 1. / (pow(gamma, 2) * cos(alpha) * cos(beta)) / cos(beta);
         return;
     }
     else if (p == 4) {
         double gamma = sqrt(1 + pow(tan(alpha), 2) + pow(tan(beta), 2));
         double lon = atan2(tan(alpha), -tan(beta));
 
-        ans[0] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (gamma * cos(beta) / cos(alpha) * cos(lon));
-        ans[1] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (gamma * cos(alpha) / cos(beta) * sin(lon));
-        ans[2] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (-cos(beta) / cos(alpha) * sin(lon));
-        ans[3] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (cos(alpha) / cos(beta) * cos(lon));
+        ans[0] = 1. / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (gamma * cos(beta) / cos(alpha) * cos(lon));
+        ans[1] = 1. / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (gamma * cos(alpha) / cos(beta) * sin(lon));
+        ans[2] = 1. / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (-cos(beta) / cos(alpha) * sin(lon));
+        ans[3] = 1. / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (cos(alpha) / cos(beta) * cos(lon));
         return;
     }
     else {
         double gamma = sqrt(1 + pow(tan(alpha), 2) + pow(tan(beta), 2));
         double lon = atan2(tan(alpha), tan(beta));
 
-        ans[0] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (gamma * cos(beta) / cos(alpha) * cos(lon));
-        ans[1] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (-gamma * cos(alpha) / cos(beta) * sin(lon));
-        ans[2] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (cos(beta) / cos(alpha) * sin(lon));
-        ans[3] = 1 / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (cos(alpha) / cos(beta) * cos(lon));
+        ans[0] = 1. / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (gamma * cos(beta) / cos(alpha) * cos(lon));
+        ans[1] = 1. / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (-gamma * cos(alpha) / cos(beta) * sin(lon));
+        ans[2] = 1. / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (cos(beta) / cos(alpha) * sin(lon));
+        ans[3] = 1. / (pow(gamma, 2) * cos(alpha) * cos(beta)) * (cos(alpha) / cos(beta) * cos(lon));
         return;
     }
 }
