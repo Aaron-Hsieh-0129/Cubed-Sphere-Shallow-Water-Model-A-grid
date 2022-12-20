@@ -171,6 +171,7 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
                 V3 = model.csswm[p2].vp[I2_1][J2_1], V4 = model.csswm[p2].vp[I2_2][J2_2];
 
                 if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
+                if (A1 > B && B < A2) B += 2 * M_PI;
                 
                 alpha = model.alpha2D[I1][J1];
                 beta = model.beta2D[I1][J1];
@@ -191,13 +192,5 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
                 model.csswm[p1].vp[I1][J1] = model.Cube2Cube_V_2(gLower, IA, A, gUpper, uIP, vIP);
             }
         }
-
-        // alpha = model.alpha2D[1][NY-1];
-        // beta = model.beta2D[1][NY-1];
-
-        // model.get_gLower(gLower, alpha, beta);
-        // model.get_IA(IA, 1, alpha, beta);
-        // model.get_A(A, 4, alpha, beta);
-        // model.get_gUpper(gUpper, alpha, beta);
     }
 }

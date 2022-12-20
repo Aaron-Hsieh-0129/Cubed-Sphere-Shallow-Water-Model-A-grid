@@ -67,6 +67,8 @@ void CSSWM::BP_h(CSSWM &model) {
                 V1 = model.csswm[p2].hp[I2_1][J2_1], V2 = model.csswm[p2].hp[I2_2][J2_2];
 
                 if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
+                if (A1 > B && B < A2) B += 2 * M_PI;
+                // std::cout << p1 << " " << p2 << " " << I1 << " " << J1 << " " << A1 << " " << A2 << std::endl;
                 
                 model.csswm[p1].hp[I1][J1] = interpolate(A1, A2, V1, V2, B);
             }
