@@ -115,6 +115,26 @@ void CSSWM::Construct_p5_lonlat_xy_AIA(int p, double alpha2D[NX][NY], double bet
     }
 }
 
+void initMatch(int match[24][8]) {
+    // Construct a array for dealing with interpolation between all patch
+    // (p1, p2, i1, j1, i2, j2, reversed, LonLat: 1/0) 
+    // Left, Right, Up, Down
+    int tmp[24][8] = {
+        {0, 3, 0, -1, NX-2, -1, 0, 0},  {0, 1, NX-1, -1, 1, -1, 0, 0},    {0, 4, -1, NY-1, -1, 1, 0, 1},     {0, 5, -1, 0, -1, NY-2, 0, 1},
+        {1, 0, 0, -1, NX-2, -1, 0, 0},  {1, 2, NX-1, -1, 1, -1, 0, 0},    {1, 4, -1, NY-1, NX-2, -1, 0, 1},  {1, 5, -1, 0, NX-2, -1, 1, 1},
+        {2, 1, 0, -1, NX-2, -1, 0, 0},  {2, 3, NX-1, -1, 1, -1, 0, 0},    {2, 4, -1, NY-1, -1, NY-2, 1, 1},  {2, 5, -1, 0, -1, 1, 1, 1},
+        {3, 2, 0, -1, NX-2, -1, 0, 0},  {3, 0, NX-1, -1, 1, -1, 0, 0},    {3, 4, -1, NY-1, 1, -1, 1, 1},     {3, 5, -1, 0, 1, -1, 0, 1},
+        {4, 3, 0, -1, -1, NY-2, 1, 1},  {4, 1, NX-1, -1, -1, NY-2, 0, 1}, {4, 2, -1, NY-1, -1, NY-2, 1, 1},  {4, 0, -1, 0, -1, NY-2, 0, 1},
+        {5, 3, 0, -1, -1, 1, 0, 1},     {5, 1, NX-1, -1, -1, 1, 1, 1},    {5, 0, -1, NY-1, -1, 1, 0, 1},     {5, 2, -1, 0, -1, 1, 1, 1}
+    };
+    for (int i = 0; i < 24; i++) {
+        for (int j = 0; j < 8; j++) {
+            match[i][j] = tmp[i][j];
+        }
+    }
+
+}
+
 CSSWM::CSSWM() {
     // Init new 1D array
     double *alpha = new double[NX], *beta = new double[NY];
@@ -147,6 +167,44 @@ CSSWM::CSSWM() {
         }
         Construct_p0123_lonlat_xy_AIA(p, alpha2D, beta2D, gamma, csswm[p].lon, csswm[p].lat, csswm[p].x, csswm[p].y, csswm[p].A, csswm[p].IA);
     }
+
+
+    // Interpolation matrix construction
+    int idx = 0, ipIdx = 0;
+    double A1, A2, B;
+
+    // Construct Interpolation 2D array filled with index (Note that all interpolation relation between every boundary is same)
+    while (idx < NX && ipIdx < NX - 1) {
+        B = csswm[0].lat[NX-1][idx];
+        A1 = csswm[1].lat[1][ipIdx], A2 = csswm[1].lat[1][ipIdx+1];
+
+        if (A1 < B && B < A2) {
+            checkIP[idx][0] = ipIdx;
+            checkIP[idx][1] = ipIdx + 1;
+            idx++;
+        }
+        else if (A1 == B) {
+            checkIP[idx][0] = ipIdx;
+            checkIP[idx][1] = ipIdx;
+            idx++;
+        }
+        else if (A2 == B) {
+            checkIP[idx][0] = ipIdx + 1;
+            checkIP[idx][1] = ipIdx + 1;
+            idx++;
+        }
+        else {
+            ipIdx++;
+        }
+    } 
+
+    // Construct a array for dealing with interpolation between all patch
+    // (p1, p2, i1, j1, i2, j2, reversed, LonLat: 1/0) 
+    // Left, Right, Up, Down
+    initMatch(match);
+
+    // Construct patch to patch transformation matrix
+    Cube2Cube_matrix();
 
     delete[] alpha;
     delete[] beta;

@@ -18,12 +18,16 @@ public:
         double x[NX][NY], y[NX][NY];
 
         double A[NX][NY][4], IA[NX][NY][4];
+
+        double IP1_L[NX][4], IP1_R[NX][4], IP1_U[NX][4], IP1_D[NX][4]; 
     };
 
     CSSWM();
     patch csswm[6];
     double sqrtG[NX][NY], gamma[NX][NY], gLower[NX][NY][4], gUpper[NX][NY][4];
     double alpha2D[NX][NY], beta2D[NX][NY];
+    int checkIP[NX][2];
+    int match[24][8];
 
     // ***********************************************************************************
     // In construction.cpp
@@ -46,6 +50,7 @@ public:
     double Cube2Cube_U_2(double gLower[4], double IA[4], double A[4], double gUpper[4], double u, double v);
     double Cube2Cube_V_2(double gLower[4], double IA[4], double A[4], double gUpper[4], double u, double v);
     void matrixMul(double firstMatrix[4], double secondMatrix[4], double mult[2][2]);
+    void Cube2Cube_matrix();
     // ***********************************************************************************
 
     // ***********************************************************************************
@@ -58,6 +63,7 @@ public:
     // In bp_wind.cpp
     void BP_wind_convert(CSSWM &);
     void BP_wind_interpolation(CSSWM &);
+    void BP_wind_interpolation2(CSSWM &);
     // ***********************************************************************************
 
 

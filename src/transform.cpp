@@ -211,3 +211,167 @@ double CSSWM::Cube2Cube_V_2(double gLower[4], double IA[4], double A[4], double 
 
     return mult[1][0] * u + mult[1][1] * v;
 }
+
+
+void CSSWM::Cube2Cube_matrix() {
+    // Construct the patch to patch transformation matrix 
+    int p1, p2, i1, j1, i2, j2, reversed, lonlat;
+    double alpha_tmp, beta_tmp, alpha_B_tmp, beta_B_tmp;
+    double tmp1[2][2], tmp2[2][2], mult[2][2];
+    int count = 0;
+    double A1, A2, B;
+    double gLower_tmp[4], gUpper_tmp[4], A_tmp[4], IA_tmp[4];
+    for (int pp = 0; pp < 24; pp++) {
+        p1 = match[pp][0], p2 = match[pp][1], i1 = match[pp][2], j1 = match[pp][3], i2 = match[pp][4], j2 = match[pp][5], reversed = match[pp][6], lonlat = match[pp][7];
+        for (int idx = 0; idx < NX; idx++) {
+            if (lonlat == 0) {
+                int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
+                int I2_1 = i2 == -1 ? reversed ? checkIP[NX-1-idx][0] : checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP[NY-1-idx][0] : checkIP[idx][0] : j2;
+                int I2_2 = i2 == -1 ? reversed ? checkIP[NX-1-idx][1] : checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP[NY-1-idx][1] : checkIP[idx][1] : j2;
+
+                B = csswm[p1].lat[I1][J1];
+                A1 = csswm[p2].lat[I2_1][J2_1], A2 = csswm[p2].lat[I2_2][J2_2];
+
+                alpha_tmp = alpha2D[I1][J1];
+                beta_tmp = beta2D[I1][J1];
+
+                alpha_B_tmp = interpolate(A1, A2, alpha2D[I2_1][J2_1], alpha2D[I2_2][J2_2], B);
+                beta_B_tmp = interpolate(A1, A2, beta2D[I2_1][J2_1], beta2D[I2_2][J2_2], B);
+
+                get_gLower(gLower_tmp, alpha_tmp, beta_tmp);
+                get_IA(IA_tmp, p1, alpha_tmp, beta_tmp);
+                get_A(A_tmp, p2, alpha_B_tmp, beta_B_tmp);
+                get_gUpper(gUpper_tmp, alpha_B_tmp, beta_B_tmp);
+
+                matrixMul(gLower_tmp, IA_tmp, tmp1);
+                matrixMul(A_tmp, gUpper_tmp, tmp2);
+                double tmp1_4[4], tmp2_4[4];
+                count = 0;
+                for (int i = 0; i < 2; i++) {
+                    for (int j = 0; j < 2; j++) {
+                        tmp1_4[count] = tmp1[i][j];
+                        tmp2_4[count] = tmp2[i][j];
+                        count++;
+                    }
+                }
+                matrixMul(tmp1_4, tmp2_4, mult);
+                
+                if (i1 == -1) {
+                    if (j1 == 0) {
+                        count = 0;
+                        for (int i = 0; i < 2; i++) {
+                            for (int j = 0; j < 2; j++) {
+                                csswm[p1].IP1_D[I1][count] = mult[i][j];
+                                count++;
+                            }
+                        }
+                    }
+                    else if (j1 == NY-1) {
+                        count = 0;
+                        for (int i = 0; i < 2; i++) {
+                            for (int j = 0; j < 2; j++) {
+                                csswm[p1].IP1_U[I1][count] = mult[i][j];
+                                count++;
+                            }
+                        }
+                    }
+                }
+                else if (j1 == -1) {
+                    if (i1 == 0) {
+                        count = 0;
+                        for (int i = 0; i < 2; i++) {
+                            for (int j = 0; j < 2; j++) {
+                                csswm[p1].IP1_L[J1][count] = mult[i][j];
+                                count++;
+                            }
+                        }
+                    }
+                    else if (i1 == NY-1) {
+                        count = 0;
+                        for (int i = 0; i < 2; i++) {
+                            for (int j = 0; j < 2; j++) {
+                                csswm[p1].IP1_R[J1][count] = mult[i][j];
+                                count++;
+                            }
+                        }
+                    }
+                }
+            }
+            else {
+                int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
+                int I2_1 = i2 == -1 ? reversed ? checkIP[NX-1-idx][0] : checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP[NY-1-idx][0] : checkIP[idx][0] : j2;
+                int I2_2 = i2 == -1 ? reversed ? checkIP[NX-1-idx][1] : checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP[NY-1-idx][1] : checkIP[idx][1] : j2;
+
+                B = csswm[p1].lon[I1][J1];
+                A1 = csswm[p2].lon[I2_1][J2_1], A2 = csswm[p2].lon[I2_2][J2_2];
+
+                if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
+                if (A1 > B && B < A2) B += 2 * M_PI;
+                
+                alpha_tmp = alpha2D[I1][J1];
+                beta_tmp = beta2D[I1][J1];
+
+                alpha_B_tmp = interpolate(A1, A2, alpha2D[I2_1][J2_1], alpha2D[I2_2][J2_2], B);
+                beta_B_tmp = interpolate(A1, A2, beta2D[I2_1][J2_1], beta2D[I2_2][J2_2], B);
+
+                get_gLower(gLower_tmp, alpha_tmp, beta_tmp);
+                get_IA(IA_tmp, p1, alpha_tmp, beta_tmp);
+                get_A(A_tmp, p2, alpha_B_tmp, beta_B_tmp);
+                get_gUpper(gUpper_tmp, alpha_B_tmp, beta_B_tmp);
+
+                matrixMul(gLower_tmp, IA_tmp, tmp1);
+                matrixMul(A_tmp, gUpper_tmp, tmp2);
+                double tmp1_4[4], tmp2_4[4];
+                count = 0;
+                for (int i = 0; i < 2; i++) {
+                    for (int j = 0; j < 2; j++) {
+                        tmp1_4[count] = tmp1[i][j];
+                        tmp2_4[count] = tmp2[i][j];
+                        count++;
+                    }
+                }
+                matrixMul(tmp1_4, tmp2_4, mult);
+                if (i1 == -1) {
+                    if (j1 == 0) {
+                        count = 0;
+                        for (int i = 0; i < 2; i++) {
+                            for (int j = 0; j < 2; j++) {
+                                csswm[p1].IP1_D[I1][count] = mult[i][j];
+                                count++;
+                            }
+                        }
+                    }
+                    else if (j1 == NY-1) {
+                        count = 0;
+                        for (int i = 0; i < 2; i++) {
+                            for (int j = 0; j < 2; j++) {
+                                csswm[p1].IP1_U[I1][count] = mult[i][j];
+                                count++;
+                            }
+                        }
+                    }
+                }
+                else if (j1 == -1) {
+                    if (i1 == 0) {
+                        count = 0;
+                        for (int i = 0; i < 2; i++) {
+                            for (int j = 0; j < 2; j++) {
+                                csswm[p1].IP1_L[J1][count] = mult[i][j];
+                                count++;
+                            }
+                        }
+                    }
+                    else if (i1 == NY-1) {
+                        count = 0;
+                        for (int i = 0; i < 2; i++) {
+                            for (int j = 0; j < 2; j++) {
+                                csswm[p1].IP1_R[J1][count] = mult[i][j];
+                                count++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
