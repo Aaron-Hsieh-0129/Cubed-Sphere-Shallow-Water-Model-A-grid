@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     try:
         with Pool(nProc) as p:
-            results = [p.apply_async(pf.plotOnSphereWindMul, (t, )) for t in range(0, 1000, )]
+            results = [p.apply_async(pf.plotOnSphereWindMul, (t, )) for t in range(0, 1000, 10)]
             final = [result.get() for result in results]
     except:
         print("finish2")

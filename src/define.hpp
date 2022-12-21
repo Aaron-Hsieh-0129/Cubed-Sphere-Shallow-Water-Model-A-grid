@@ -19,14 +19,14 @@
 
 #define ALPHA0 (0.)
 // #define Jung
-#define GravityWave
-// #define SteadyGeostrophy
+// #define GravityWave
+#define SteadyGeostrophy
 // #define Barotropic
 
 #define DIFFUSION
 #define TIMEFILTER
-#define KX (100000.)
-#define KY (100000.)
+#define KX (3500000.)
+#define KY (3500000.)
 #define TIMETS (0.06)
 
 #endif

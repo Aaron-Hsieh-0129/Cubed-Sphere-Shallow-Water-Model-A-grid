@@ -8,9 +8,9 @@ DT = 180
 LEAP = 10
 cmap = cm.viridis
 
-left, right, split = 0, 2000, 21
+left, right, split = 1000, 3000, 21
 wind = 20
-
+skip = 2
 
 def plotOnCubeWindMul(t):
     x, y = np.loadtxt("../outputs/grids/x.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/y.txt").reshape(6, NX, NY)
@@ -37,12 +37,13 @@ def plotOnCubeWindMul(t):
     fig.colorbar(cs1, cax=cb_ax1, ticks=np.linspace(left, right, split))
 
     scale = 300
-    Q = ax1.quiver(x[0, ::2, ::2], y[0, ::2, ::2], u[0, ::2, ::2], v[0, ::2, ::2], angles='xy', units="width", scale=scale)
-    ax2.quiver(x[1, ::2, ::2], y[1, ::2, ::2], u[1, ::2, ::2], v[1, ::2, ::2], angles='xy', units="width", scale=scale)
-    ax3.quiver(x[2, ::2, ::2], y[2, ::2, ::2], u[2, ::2, ::2], v[2, ::2, ::2], angles='xy', units="width", scale=scale)
-    ax4.quiver(x[3, ::2, ::2], y[3, ::2, ::2], u[3, ::2, ::2], v[3, ::2, ::2], angles='xy', units="width", scale=scale)
-    ax5.quiver(x[4, ::2, ::2], y[4, ::2, ::2], u[4, ::2, ::2], v[4, ::2, ::2], angles='xy', units="width", scale=scale)
-    ax6.quiver(x[5, ::2, ::2], y[5, ::2, ::2], u[5, ::2, ::2], v[5, ::2, ::2], angles='xy', units="width", scale=scale)
+    
+    Q = ax1.quiver(x[0, ::skip, ::skip], y[0, ::skip, ::skip], u[0, ::skip, ::skip], v[0, ::skip, ::skip], angles='xy', units="width", scale=scale)
+    ax2.quiver(x[1, ::skip, ::skip], y[1, ::skip, ::skip], u[1, ::skip, ::skip], v[1, ::skip, ::skip], angles='xy', units="width", scale=scale)
+    ax3.quiver(x[2, ::skip, ::skip], y[2, ::skip, ::skip], u[2, ::skip, ::skip], v[2, ::skip, ::skip], angles='xy', units="width", scale=scale)
+    ax4.quiver(x[3, ::skip, ::skip], y[3, ::skip, ::skip], u[3, ::skip, ::skip], v[3, ::skip, ::skip], angles='xy', units="width", scale=scale)
+    ax5.quiver(x[4, ::skip, ::skip], y[4, ::skip, ::skip], u[4, ::skip, ::skip], v[4, ::skip, ::skip], angles='xy', units="width", scale=scale)
+    ax6.quiver(x[5, ::skip, ::skip], y[5, ::skip, ::skip], u[5, ::skip, ::skip], v[5, ::skip, ::skip], angles='xy', units="width", scale=scale)
 
     ax1.quiverkey(Q, 0.7, 0.9, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')  
     ax2.quiverkey(Q, 0.7, 0.9, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')  
@@ -85,13 +86,13 @@ def plotOnSphereWindMul(t):
     cbar.set_ticks(np.linspace(left, right, split))
     
     scale = 2000
-    plt.quiver(x[0][::2, ::2], y[0][::2, ::2], u[0][::2, ::2], v[0][::2, ::2], angles='xy', units="width", scale=scale)
-    plt.quiver(x[1][::2, ::2], y[1][::2, ::2], u[1][::2, ::2], v[1][::2, ::2], angles='xy', units="width", scale=scale)
-    plt.quiver(x[2, :, 0:NX//2][::2, ::2], y[2, :, 0:NX//2][::2, ::2], u[2, :, 0:NX//2][::2, ::2], v[2, :, 0:NX//2][::2, ::2], angles='xy', units="width", scale=scale)
-    plt.quiver(x[2, :, NX//2:][::2, ::2]-360, y[2, :, NX//2:][::2, ::2], u[2, :, NX//2:][::2, ::2], v[2, :, NX//2:][::2, ::2], angles='xy', units="width", scale=scale)
-    plt.quiver(x[3][::2, ::2]-360, y[3][::2, ::2], u[3][::2, ::2], v[3][::2, ::2], angles='xy', units="width", scale=scale)
-    plt.quiver(x[4][::2, ::2], y[4][::2, ::2], u[4][::2, ::2], v[4][::2, ::2], angles='xy', units="width", scale=scale)
-    Q = plt.quiver(x[5][::2, ::2], y[5][::2, ::2], u[5][::2, ::2], v[5][::2, ::2], angles='xy', units="width", scale=scale)
+    plt.quiver(x[0][::skip, ::skip], y[0][::skip, ::skip], u[0][::skip, ::skip], v[0][::skip, ::skip], angles='xy', units="width", scale=scale)
+    plt.quiver(x[1][::skip, ::skip], y[1][::skip, ::skip], u[1][::skip, ::skip], v[1][::skip, ::skip], angles='xy', units="width", scale=scale)
+    plt.quiver(x[2, :, 0:NX//2][::skip, ::skip], y[2, :, 0:NX//2][::skip, ::skip], u[2, :, 0:NX//2][::skip, ::skip], v[2, :, 0:NX//2][::skip, ::skip], angles='xy', units="width", scale=scale)
+    plt.quiver(x[2, :, NX//2:][::skip, ::skip]-360, y[2, :, NX//2:][::skip, ::skip], u[2, :, NX//2:][::skip, ::skip], v[2, :, NX//2:][::skip, ::skip], angles='xy', units="width", scale=scale)
+    plt.quiver(x[3][::skip, ::skip]-360, y[3][::skip, ::skip], u[3][::skip, ::skip], v[3][::skip, ::skip], angles='xy', units="width", scale=scale)
+    plt.quiver(x[4][::skip, ::skip], y[4][::skip, ::skip], u[4][::skip, ::skip], v[4][::skip, ::skip], angles='xy', units="width", scale=scale)
+    Q = plt.quiver(x[5][::skip, ::skip], y[5][::skip, ::skip], u[5][::skip, ::skip], v[5][::skip, ::skip], angles='xy', units="width", scale=scale)
     qk = plt.quiverkey(Q, 0.7, 0.9, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')
         
     plt.savefig(f"../graphs/h/sphere/{int(t/10)}.png", dpi=100)
