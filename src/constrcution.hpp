@@ -14,6 +14,7 @@ public:
         double vp[NX][NY], v[NX][NY], vm[NX][NY];
 
         double lon[NX][NY], lat[NX][NY];
+        double lon_original[NX][NY];
 
         double x[NX][NY], y[NX][NY];
 

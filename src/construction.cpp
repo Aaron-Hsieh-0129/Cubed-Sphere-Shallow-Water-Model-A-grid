@@ -41,6 +41,8 @@ void CSSWM::Construct_p0123_lonlat_xy_AIA(int p, double alpha2D[NX][NY], double 
             lon[i][j] = alpha2D[i][j] + p * M_PI/2.;
             lat[i][j] = atan(tan(beta2D[i][j]) * cos(alpha2D[i][j]));
 
+            csswm[p].lon_original[i][j] = lon[i][j];
+
             // x/y
             x[i][j] = RADIUS * (lon[i][j] - p * M_PI/2.);
             y[i][j] = RADIUS * atan(tan(lat[i][j]) / cos(lon[i][j] - p * M_PI/2.));
@@ -68,6 +70,8 @@ void CSSWM::Construct_p4_lonlat_xy_AIA(int p, double alpha2D[NX][NY], double bet
             lon[i][j] = atan2(tan(alpha2D[i][j]), -tan(beta2D[i][j]));
             lat[i][j] = atan(1 / sqrt(pow(tan(alpha2D[i][j]), 2)+pow(tan(beta2D[i][j]), 2)));
 
+            csswm[p].lon_original[i][j] = lon[i][j];
+
             // x/y
             x[i][j] = RADIUS * atan(sin(lon[i][j]) / tan(lat[i][j]));
             y[i][j] = RADIUS * atan(-cos(lon[i][j]) / tan(lat[i][j]));
@@ -94,6 +98,8 @@ void CSSWM::Construct_p5_lonlat_xy_AIA(int p, double alpha2D[NX][NY], double bet
             // lon/lat
             lon[i][j] = atan2(tan(alpha2D[i][j]), tan(beta2D[i][j]));
             lat[i][j] = -atan(1 / sqrt(pow(tan(alpha2D[i][j]), 2)+pow(tan(beta2D[i][j]), 2)));
+
+            csswm[p].lon_original[i][j] = lon[i][j];
 
             // x/y
             x[i][j] = RADIUS * atan(-sin(lon[i][j]) / tan(lat[i][j]));

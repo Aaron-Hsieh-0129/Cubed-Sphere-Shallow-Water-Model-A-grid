@@ -20,7 +20,8 @@
 #define ALPHA0 (0.)
 // #define Jung
 // #define GravityWave
-#define SteadyGeostrophy
+// #define SteadyGeostrophy
+#define Barotropic
 
 #define DIFFUSION
 #define TIMEFILTER

@@ -8,7 +8,7 @@ DT = 180
 LEAP = 10
 cmap = cm.viridis
 
-left, right, split = 1000, 3000, 21
+left, right, split = 9000, 11000, 21
 wind = 20
 
 
