@@ -8,7 +8,7 @@ DT = 180
 LEAP = 10
 cmap = cm.viridis
 
-left, right, split = -1200, 1200, 13
+left, right, split = 0, 2000, 21
 wind = 20
 
 
@@ -56,7 +56,6 @@ def plotOnCubeWindMul(t):
     return
 
 def plotOnSphereWindMul(t):
-    NX = NY = 45
     x, y = np.loadtxt("../outputs/grids/lon.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/lat.txt").reshape(6, NX, NY)
     val = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY)
     x = x * 180 / np.pi
@@ -100,7 +99,6 @@ def plotOnSphereWindMul(t):
     return
 
 def plotOnSphereMul(t):
-    NX = NY = 45
     x, y = np.loadtxt("../outputs/grids/lon.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/lat.txt").reshape(6, NX, NY)
     val = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY)
     x = x * 180 / np.pi

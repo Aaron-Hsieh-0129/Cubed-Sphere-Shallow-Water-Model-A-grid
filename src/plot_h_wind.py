@@ -12,11 +12,17 @@ NX = NY = int(90 / DX + 2- 2)
 DT = 360
 
 if __name__ == '__main__':
-    nProc = multiprocessing.cpu_count() - 4
-    with Pool(nProc) as p:
-        results = [p.apply_async(pf.plotOnCubeWindMul, (t, )) for t in range(0, 1000, 10)]
-        final = [result.get() for result in results]
+    try:
+        nProc = multiprocessing.cpu_count() - 4
+        with Pool(nProc) as p:
+            results = [p.apply_async(pf.plotOnCubeWindMul, (t, )) for t in range(0, 1000, 10)]
+            final = [result.get() for result in results]
+    except:
+        print("finish1")
 
-    with Pool(nProc) as p:
-        results = [p.apply_async(pf.plotOnSphereWindMul, (t, )) for t in range(0, 1000, )]
-        final = [result.get() for result in results]
+    try:
+        with Pool(nProc) as p:
+            results = [p.apply_async(pf.plotOnSphereWindMul, (t, )) for t in range(0, 1000, )]
+            final = [result.get() for result in results]
+    except:
+        print("finish2")
