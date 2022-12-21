@@ -14,19 +14,19 @@
 #define NY ((int) (90/DY + 2))
 #define DT (180.)
 #define D2T (2. * DT)
-#define TIMEEND (24. * 86400 * 6)
+#define TIMEEND (86400 * 24)
 #define OUTPUTINTERVAL (100)
 
 #define ALPHA0 (0.)
-// #define Jung
+#define Jung
 // #define GravityWave
 // #define SteadyGeostrophy
-#define Barotropic
+// #define Barotropic
 
 #define DIFFUSION
 #define TIMEFILTER
-#define KX (4000000.)
-#define KY (4000000.)
+#define KX (1000000.)
+#define KY (1000000.)
 #define TIMETS (0.06)
 
 #endif

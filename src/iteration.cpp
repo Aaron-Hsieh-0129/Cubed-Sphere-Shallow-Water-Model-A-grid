@@ -143,13 +143,13 @@ void Iteration::leap_frog(CSSWM &model) {
 
         // calculate
         ph_pt(model);
-        pu_pt(model);
-        pv_pt(model);
+        // pu_pt(model);
+        // pv_pt(model);
 
         model.BP_h(model);
         // model.BP_wind_convert(model);
         // model.BP_wind_interpolation(model);
-        model.BP_wind_interpolation2(model);
+        // model.BP_wind_interpolation2(model);
 
         // Time filter
         #ifdef TIMEFILTER
