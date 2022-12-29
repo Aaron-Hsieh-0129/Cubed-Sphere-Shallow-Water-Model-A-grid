@@ -16,11 +16,11 @@ void Outputs::create_directory(string directory_name) {
 }
 
 void Outputs::output_parameter(CSSWM &model) {
-    create_directory("../outputs/grids");
+    create_directory(OUTPUTPATH + (string) "grids");
     create_directory("../graphs/grids");
 
     fstream fout[4];
-    string dir = "../outputs/grids/";
+    string dir = OUTPUTPATH + (string) "grids/";
     string grid[4] = {"lon.txt", "lat.txt", "x.txt", "y.txt"};
 
     for (int i = 0; i < 4; i++) {
@@ -41,12 +41,12 @@ void Outputs::output_parameter(CSSWM &model) {
 }
 
 void Outputs::output_h(int n, CSSWM &model) {
-    create_directory("../outputs/h");
+    create_directory(OUTPUTPATH + (string) "h");
     create_directory("../graphs/h/curvilinear");
     create_directory("../graphs/h/sphere");
 
     fstream fouth;
-    string hname = "../outputs/h/h_" + std::to_string(n) + ".txt";
+    string hname = OUTPUTPATH + (string) "h/h_" + std::to_string(n) + ".txt";
     fouth.open(hname, std::ios::out);
     for (int p = 0; p < 6; p++) {
         for (int j = 1; j < NY-1; j++) {
@@ -59,11 +59,11 @@ void Outputs::output_h(int n, CSSWM &model) {
 }
 
 void Outputs::output_u(int n, CSSWM &model) {
-    create_directory("../outputs/u");
-    create_directory("../outputs/u_lon_lat");
+    create_directory(OUTPUTPATH + (string) "u");
+    create_directory(OUTPUTPATH + (string) "u_lon_lat");
     
     fstream foutu;
-    string uname = "../outputs/u/u_" + std::to_string(n) + ".txt";
+    string uname = OUTPUTPATH + (string) "u/u_" + std::to_string(n) + ".txt";
     foutu.open(uname, std::ios::out);
 
     fstream foutu_lon_lat;
@@ -81,11 +81,11 @@ void Outputs::output_u(int n, CSSWM &model) {
 }
 
 void Outputs::output_v(int n, CSSWM &model) {
-    create_directory("../outputs/v");
-    create_directory("../outputs/v_lon_lat");
+    create_directory(OUTPUTPATH + (string) "v");
+    create_directory(OUTPUTPATH + (string) "v_lon_lat");
 
     fstream foutv;
-    string vname = "../outputs/v/v_" + std::to_string(n) + ".txt";
+    string vname = OUTPUTPATH + (string) "v/v_" + std::to_string(n) + ".txt";
     foutv.open(vname, std::ios::out);
 
     fstream foutv_lon_lat;

@@ -12,7 +12,7 @@ void Init::Init2d(CSSWM & model) {
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * SteadyGeostrophyV(model.csswm[p].lon_original[i][j]);
                 #endif
 
-                #ifdef Jung
+                #if defined(Jung) || defined(ADVECTION)
                     model.csswm[p].hp[i][j] = JungH(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]);
                     double mult[2][2];
                     model.matrixMul(model.gLower[i][j], model.csswm[p].IA[i][j], mult);
@@ -116,7 +116,7 @@ double Init::Gravity(double lon, double lat) {
 }
 
 double Init::SteadyGeostrophyH(double lon, double lat) {
-    double h0 = 2.94E4 / GRAVITY;
+    double h0 = 2.94E5 / GRAVITY;
     double u0 = 2 * M_PI * RADIUS / (12. * 86400);
     return h0 - (RADIUS * OMEGA * u0 + u0 * u0 / 2.) * pow(-cos(lon) * cos(lat) * sin(ALPHA0) + sin(lat) * cos(ALPHA0), 2) / GRAVITY;
 }

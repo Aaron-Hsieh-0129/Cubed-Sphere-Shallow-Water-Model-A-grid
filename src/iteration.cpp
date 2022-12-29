@@ -141,15 +141,20 @@ void Iteration::leap_frog(CSSWM &model) {
         n++;
         timenow = n * DT;
 
-        // calculate
+        // Integrate
         ph_pt(model);
-        pu_pt(model);
-        pv_pt(model);
+        #ifndef ADVECTION
+            pu_pt(model);
+            pv_pt(model);
+        #endif
 
+        // Boundary exchange and interpolation
         model.BP_h(model);
-        // model.BP_wind_convert(model);
-        // model.BP_wind_interpolation(model);
-        model.BP_wind_interpolation2(model);
+        #ifndef ADVECTION
+            // model.BP_wind_convert(model);
+            // model.BP_wind_interpolation(model);
+            model.BP_wind_interpolation2(model);
+        #endif
 
         // Time filter
         #ifdef TIMEFILTER
@@ -182,7 +187,4 @@ void Iteration::leap_frog(CSSWM &model) {
     }
     
     return;
-
-
-
 }
