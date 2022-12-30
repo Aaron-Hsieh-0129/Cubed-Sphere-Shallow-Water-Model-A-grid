@@ -167,9 +167,9 @@ def plotOnCubeMul(t):
     return
 
 def plotSphereCartopy(t):
-    lon = np.loadtxt("/Users/Aaron/Cubed-Sphere-Shallow-Water-Model-A-grid/outputs/grids/lon.txt").reshape(6, NX, NY).flatten() * 180 / np.pi
-    lat = np.loadtxt("/Users/Aaron/Cubed-Sphere-Shallow-Water-Model-A-grid/outputs/grids/lat.txt").reshape(6, NX, NY).flatten() * 180 / np.pi
-    h = np.loadtxt(f"/Users/Aaron/Cubed-Sphere-Shallow-Water-Model-A-grid/outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY).flatten()
+    lon = np.loadtxt("../outputs/grids/lon.txt").reshape(6, NX, NY).flatten() * 180 / np.pi
+    lat = np.loadtxt("../outputs/grids/lat.txt").reshape(6, NX, NY).flatten() * 180 / np.pi
+    h = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY).flatten()
 
     map_proj = ccrs.PlateCarree(central_longitude=0.)
     data_crs = ccrs.PlateCarree()
@@ -198,11 +198,11 @@ def plotSphereCartopy(t):
     plt.close()
 
 def plotSphereWindCartopy(t):
-    lon = np.loadtxt("/Users/Aaron/Cubed-Sphere-Shallow-Water-Model-A-grid/outputs/grids/lon.txt").reshape(6, NX, NY).flatten() * 180 / np.pi
-    lat = np.loadtxt("/Users/Aaron/Cubed-Sphere-Shallow-Water-Model-A-grid/outputs/grids/lat.txt").reshape(6, NX, NY).flatten() * 180 / np.pi
-    h = np.loadtxt(f"/Users/Aaron/Cubed-Sphere-Shallow-Water-Model-A-grid/outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY).flatten()
-    u = np.loadtxt(f"/Users/Aaron/Cubed-Sphere-Shallow-Water-Model-A-grid/outputs/u_lon_lat/u_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY).flatten()
-    v = np.loadtxt(f"/Users/Aaron/Cubed-Sphere-Shallow-Water-Model-A-grid/outputs/v_lon_lat/v_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY).flatten()
+    lon = np.loadtxt("../outputs/grids/lon.txt").reshape(6, NX, NY).flatten() * 180 / np.pi
+    lat = np.loadtxt("../outputs/grids/lat.txt").reshape(6, NX, NY).flatten() * 180 / np.pi
+    h = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY).flatten()
+    u = np.loadtxt(f"../outputs/u_lon_lat/u_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY).flatten()
+    v = np.loadtxt(f"../outputs/v_lon_lat/v_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY).flatten()
 
     map_proj = ccrs.PlateCarree(central_longitude=0.)
     data_crs = ccrs.PlateCarree()
