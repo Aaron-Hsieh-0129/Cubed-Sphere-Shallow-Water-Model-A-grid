@@ -63,6 +63,7 @@ void Outputs::output_u(int n, CSSWM &model) {
     create_directory(OUTPUTPATH + (string) "u");
     create_directory(OUTPUTPATH + (string) "u_lon_lat");
     create_directory("../graphs/wind");
+    create_directory("../graphs/zeta");
     
     fstream foutu;
     string uname = OUTPUTPATH + (string) "u/u_" + std::to_string(n) + ".txt";

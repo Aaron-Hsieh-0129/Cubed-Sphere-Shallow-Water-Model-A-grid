@@ -15,6 +15,8 @@ skip = 4
 scale = 1000
 skip_sph = 4
 scale_sph = 3000
+
+left_zeta, right_zeta, split_zeta = -16 * 10 ** (-5), 16 * 10 ** (-5), 17
 ######## Should Be Tuned ###########
 
 DX = DY = 2
@@ -307,4 +309,42 @@ def plotWind():
     ax.quiverkey(Q, 0.85, 0.85, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')
 
     plt.savefig("../graphs/wind/spherical_cartopy.png", dpi=DPI)
+    plt.close()
+
+
+
+def plotSphereCartopyZeta(t):
+    u = np.loadtxt(f"../outputs/u/u_{t*LEAP}.txt").reshape(6, NX, NY)
+    v = np.loadtxt(f"../outputs/v/v_{t*LEAP}.txt").reshape(6, NX, NY)
+    x, y = np.loadtxt("../outputs/grids/x.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/y.txt").reshape(6, NX, NY)
+
+    zeta = ((v[:, :, 2:] - v[:, :, :-2]) / ((x[:, :, 2:] - x[:, :, :-2]) / 2))[:, 1:-1, :] + ((u[:, 2:, :] - u[:, :-2, :]) / ((y[:, 2:, :] - y[:, :-2, :]) / 2))[:, :, 1:-1]
+
+    lon = np.loadtxt("../outputs/grids/lon.txt").reshape(6, NX, NY)[:, 1:-1, 1:-1].flatten() * 180 / np.pi
+    lat = np.loadtxt("../outputs/grids/lat.txt").reshape(6, NX, NY)[:, 1:-1, 1:-1].flatten() * 180 / np.pi
+
+    map_proj = ccrs.PlateCarree(central_longitude=0.)
+    data_crs = ccrs.PlateCarree()
+    fig, ax = plt.subplots(nrows=1,ncols=1,figsize=(12,8),subplot_kw={'projection': map_proj},dpi=DPI)
+
+    pos = ax.get_position()
+    pset = [0.07, 0.05, 0.8, 0.9]
+    ax.set_position(pset)
+
+    x, y, _ = map_proj.transform_points(data_crs, lon, lat).T
+    mask = np.invert(np.logical_or(np.isinf(x), np.isinf(y)))
+    x = np.compress(mask, x)
+    y = np.compress(mask, y)
+
+    cs = ax.tricontourf(x, y, zeta[mask], extend="both", cmap=cmap, levels=np.linspace(left_zeta, right_zeta, split_zeta))
+    ax.set_global()
+    cb_ax1 = fig.add_axes([0.92, 0.16, 0.012, 0.67])
+    fig.colorbar(cs, cax=cb_ax1, ticks=np.linspace(left_zeta, right_zeta, split_zeta))
+
+    ax.coastlines(resolution='110m',color='k', lw=0.2, zorder=13)
+    gl = ax.gridlines(draw_labels=True)
+
+    ax.set_title(f"t = {t * LEAP * DT / 60} min", fontsize=fs)
+    
+    plt.savefig(f"../graphs/zeta/{int(t/LEAP/2)}.png", dpi=DPI)
     plt.close()
