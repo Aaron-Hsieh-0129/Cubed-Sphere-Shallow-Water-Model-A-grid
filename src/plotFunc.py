@@ -7,7 +7,7 @@ from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 
 
 ######## Should Be Tuned ########### 
-left, right, split = 26000, 32000, 21
+left, right, split = 8000, 12000, 21
 wind = 20
 skip_car = 12
 scale_car = 4000
