@@ -44,6 +44,7 @@ void Outputs::output_h(int n, CSSWM &model) {
     create_directory(OUTPUTPATH + (string) "h");
     create_directory("../graphs/h/curvilinear");
     create_directory("../graphs/h/sphere");
+    create_directory("../graphs/h/sphere_cartopy");
 
     fstream fouth;
     string hname = OUTPUTPATH + (string) "h/h_" + std::to_string(n) + ".txt";

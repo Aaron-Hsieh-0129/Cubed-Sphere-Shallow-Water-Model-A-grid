@@ -7,3 +7,4 @@ outputs
 graphs
 __pycache__
 *.mov
+doc
