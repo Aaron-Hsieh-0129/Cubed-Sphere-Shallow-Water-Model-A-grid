@@ -9,11 +9,11 @@ from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 ######## Should Be Tuned ########### 
 left, right, split = 8000, 12000, 21
 wind = 20
-skip_car = 12
+skip_car = 20
 scale_car = 4000
-skip = 4
+skip = 10
 scale = 1000
-skip_sph = 4
+skip_sph = 10
 scale_sph = 3000
 
 left_zeta, right_zeta, split_zeta = -16 * 10 ** (-5), 16 * 10 ** (-5), 17

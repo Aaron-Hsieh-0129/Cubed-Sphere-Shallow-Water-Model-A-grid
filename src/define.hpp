@@ -7,8 +7,8 @@
 #define GRAVITY (9.80616)
 #define OMEGA (7.292E-5)
 
-#define DX (2)
-#define DY (2)
+#define DX (0.5)
+#define DY (0.5)
 #define NX ((int) (90/DX + 2))
 #define NY ((int) (90/DY + 2))
 #define DT (180.)
