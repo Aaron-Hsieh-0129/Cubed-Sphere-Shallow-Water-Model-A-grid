@@ -6,7 +6,7 @@ make
 cd bin && ./csswm
 cd ../src && python plot_h_wind.py
 cd ../graphs/h/curvilinear
-pwd
+
 ffmpeg -r 3 -i %d.png -pix_fmt yuv420p h.mov
 cd ../sphere
 ffmpeg -r 3 -i %d.png -pix_fmt yuv420p h.mov

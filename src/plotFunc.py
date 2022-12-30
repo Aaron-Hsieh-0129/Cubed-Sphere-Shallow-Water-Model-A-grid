@@ -9,8 +9,10 @@ from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 ######## Should Be Tuned ########### 
 left, right, split = 26000, 32000, 21
 wind = 20
-skip = 12
-scale = 4000
+skip_car = 12
+scale_car = 4000
+skip = 6
+scale = 2000
 ######## Should Be Tuned ###########
 
 DX = DY = 2
@@ -222,7 +224,7 @@ def plotSphereWindCartopy(t):
     cb_ax1 = fig.add_axes([0.92, 0.16, 0.012, 0.67])
     fig.colorbar(cs, cax=cb_ax1, ticks=np.linspace(left, right, split))
 
-    Q = ax.quiver(x[::skip], y[::skip], u[mask][::skip], v[mask][::skip], angles='xy', units="width", scale=scale, color=wind_color)
+    Q = ax.quiver(x[::skip_car], y[::skip_car], u[mask][::skip_car], v[mask][::skip_car], angles='xy', units="width", scale=scale_car, color=wind_color)
     ax.quiverkey(Q, 0.85, 0.85, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')
 
     ax.coastlines(resolution='110m',color='k', lw=0.2, zorder=13)
@@ -299,7 +301,7 @@ def plotWind():
     x = np.compress(mask, x)
     y = np.compress(mask, y)
 
-    Q = ax.quiver(x[::skip], y[::skip], u[mask][::skip], v[mask][::skip], angles='xy', units="width", scale=scale)
+    Q = ax.quiver(x[::skip_car], y[::skip_car], u[mask][::skip_car], v[mask][::skip_car], angles='xy', units="width", scale=scale_car)
     ax.quiverkey(Q, 0.85, 0.85, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')
 
     plt.savefig("../graphs/wind/spherical_cartopy.png", dpi=DPI)
