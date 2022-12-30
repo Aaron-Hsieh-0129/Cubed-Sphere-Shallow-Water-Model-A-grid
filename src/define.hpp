@@ -14,7 +14,7 @@
 #define DT (180.)
 #define D2T (2. * DT)
 #define TIMEEND (86400 * 12)
-#define OUTPUTINTERVAL (100)
+#define OUTPUTINTERVAL (50)
 #define OUTPUTPATH "../outputs/"
 
 #define ALPHA0 (M_PI/4.)

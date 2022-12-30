@@ -20,7 +20,7 @@ scale_sph = 3000
 DX = DY = 2
 NX = NY = int(90 / DX)
 DT = 180
-LEAP = 10
+LEAP = 5
 
 cmap = cm.viridis
 wind_color = "#5c5959"
