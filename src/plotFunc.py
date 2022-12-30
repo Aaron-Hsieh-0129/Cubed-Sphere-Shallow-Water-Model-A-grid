@@ -318,7 +318,7 @@ def plotSphereCartopyZeta(t):
     v = np.loadtxt(f"../outputs/v/v_{t*LEAP}.txt").reshape(6, NX, NY)
     x, y = np.loadtxt("../outputs/grids/x.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/y.txt").reshape(6, NX, NY)
 
-    zeta = ((v[:, :, 2:] - v[:, :, :-2]) / ((x[:, :, 2:] - x[:, :, :-2]) / 2))[:, 1:-1, :] + ((u[:, 2:, :] - u[:, :-2, :]) / ((y[:, 2:, :] - y[:, :-2, :]) / 2))[:, :, 1:-1]
+    zeta = (((v[:, :, 2:] - v[:, :, :-2]) / ((x[:, :, 2:] - x[:, :, :-2]) / 2))[:, 1:-1, :] - ((u[:, 2:, :] - u[:, :-2, :]) / ((y[:, 2:, :] - y[:, :-2, :]) / 2))[:, :, 1:-1]).flatten()
 
     lon = np.loadtxt("../outputs/grids/lon.txt").reshape(6, NX, NY)[:, 1:-1, 1:-1].flatten() * 180 / np.pi
     lat = np.loadtxt("../outputs/grids/lat.txt").reshape(6, NX, NY)[:, 1:-1, 1:-1].flatten() * 180 / np.pi
@@ -348,3 +348,33 @@ def plotSphereCartopyZeta(t):
     
     plt.savefig(f"../graphs/zeta/{int(t/LEAP/2)}.png", dpi=DPI)
     plt.close()
+
+def plotOnCubeZeta(t):
+    u = np.loadtxt(f"../outputs/u/u_{t*LEAP}.txt").reshape(6, NX, NY)
+    v = np.loadtxt(f"../outputs/v/v_{t*LEAP}.txt").reshape(6, NX, NY)
+    x, y = np.loadtxt("../outputs/grids/x.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/y.txt").reshape(6, NX, NY)
+
+    val = (((v[:, :, 2:] - v[:, :, :-2]) / ((x[:, :, 2:] - x[:, :, :-2]) / 2))[:, 1:-1, :] - ((u[:, 2:, :] - u[:, :-2, :]) / ((y[:, 2:, :] - y[:, :-2, :]) / 2))[:, :, 1:-1])
+
+
+    fig = plt.figure(figsize=(18,10))
+    ax5 = fig.add_subplot(3,4,2)
+    ax4 = fig.add_subplot(3,4,5)
+    ax1 = fig.add_subplot(3,4,6)
+    ax2 = fig.add_subplot(3,4,7)
+    ax3 = fig.add_subplot(3,4,8)
+    ax6 = fig.add_subplot(3,4,10)
+    ax5.set_title(f"t = {t * LEAP * DT / 60} min", fontsize=fs)
+
+    cs1 = ax1.contourf(x[0, 1:-1, 1:-1], y[0, 1:-1, 1:-1], val[0], levels=np.linspace(left_zeta, right_zeta, split_zeta), extend='both', cmap=cmap)
+    ax2.contourf(x[1, 1:-1, 1:-1], y[1, 1:-1, 1:-1], val[1], levels=np.linspace(left_zeta, right_zeta, split_zeta), extend='both', cmap=cmap)
+    ax3.contourf(x[2, 1:-1, 1:-1], y[2, 1:-1, 1:-1], val[2], levels=np.linspace(left_zeta, right_zeta, split_zeta), extend='both', cmap=cmap)
+    ax4.contourf(x[3, 1:-1, 1:-1], y[3, 1:-1, 1:-1], val[3], levels=np.linspace(left_zeta, right_zeta, split_zeta), extend='both', cmap=cmap)
+    ax5.contourf(x[4, 1:-1, 1:-1], y[4, 1:-1, 1:-1], val[4], levels=np.linspace(left_zeta, right_zeta, split_zeta), extend='both', cmap=cmap)
+    ax6.contourf(x[5, 1:-1, 1:-1], y[5, 1:-1, 1:-1], val[5], levels=np.linspace(left_zeta, right_zeta, split_zeta), extend='both', cmap=cmap)
+    cb_ax1 = fig.add_axes([0.9235, 0.1, 0.015, 0.78])
+    fig.colorbar(cs1, cax=cb_ax1, ticks=np.linspace(left_zeta, right_zeta, split_zeta))
+
+    plt.savefig(f"../graphs/zeta/{int(t/LEAP/2)}.png", dpi=DPI)
+    plt.close()
+    return
