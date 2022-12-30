@@ -4,7 +4,6 @@ mkdir bin outputs graphs
 make clean
 make
 cd bin && ./csswm
-cd bin
 cd ../src && python plot_h_wind.py
 cd ../graphs/h/curvilinear
 pwd
