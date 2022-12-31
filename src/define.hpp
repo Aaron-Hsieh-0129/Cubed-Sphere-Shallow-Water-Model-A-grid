@@ -11,7 +11,7 @@
 #define DY (0.5)
 #define NX ((int) (90/DX + 2))
 #define NY ((int) (90/DY + 2))
-#define DT (180.)
+#define DT (45.)
 #define D2T (2. * DT)
 #define TIMEEND (86400 * 12 * 2)
 #define OUTPUTINTERVAL (50)
