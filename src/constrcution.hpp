@@ -14,6 +14,10 @@ public:
         double up[NX][NY], u[NX][NY], um[NX][NY];
         double vp[NX][NY], v[NX][NY], vm[NX][NY];
 
+        #ifdef Mountain
+            double hs[NX][NY];
+        #endif
+
         double lon[NX][NY], lat[NX][NY];
         double lon_original[NX][NY];
 

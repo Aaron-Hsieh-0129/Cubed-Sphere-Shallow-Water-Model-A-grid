@@ -214,6 +214,23 @@ CSSWM::CSSWM() {
 
     delete[] alpha;
     delete[] beta;
+
+
+    // define mountain
+    #ifdef Mountain
+        for (int p = 0; p < 6; p++) {
+            for (int i = 0; i < NX; i++) {
+                for (int j = 0; j < NY; j++) {
+                    double r0 = M_PI / 9.;
+                    double lonC = 3. * M_PI / 2., latC = M_PI / 6.;
+                    double where = sqrt(pow(csswm[p].lon_original[i][j] - lonC, 2) + pow(csswm[p].lat[i][j] - latC, 2));
+                    double r = r0 >  where ? where : r0;
+                    double hs0 = 2000.;
+                    csswm[p].hs[i][j] = hs0 * (1 - r / r0);
+                }
+            }
+        }
+    #endif
 }
 
 void CSSWM::get_gUpper(double ans[4], double alpha, double beta) {

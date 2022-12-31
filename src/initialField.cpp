@@ -136,7 +136,6 @@ void Init::Init2d(CSSWM & model) {
                                               (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * SteadyGeostrophyV(model.csswm[p].lon_original[i][j]);
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * SteadyGeostrophyU(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * SteadyGeostrophyV(model.csswm[p].lon_original[i][j]);
-                    
                 #endif
 
                 #ifdef Barotropic
@@ -146,6 +145,14 @@ void Init::Init2d(CSSWM & model) {
                                               (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * 0;
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * BarotropicU(model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * 0;
+                #endif
+
+                #ifdef Mountain
+                    model.csswm[p].hp[i][j] = MountainH(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]);
+                    model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * MountainU(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]) + 
+                                              (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * MountainV(model.csswm[p].lon_original[i][j]);
+                    model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * MountainU(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]) + 
+                                              (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * MountainV(model.csswm[p].lon_original[i][j]); 
                 #endif
             }
         }
@@ -227,6 +234,24 @@ double Init::SteadyGeostrophyU(double lon, double lat) {
 double Init::SteadyGeostrophyV(double lon) {
     double u0 = 2 * M_PI * RADIUS / (12. * 86400);
     double v = - u0 * sin(ALPHA0) * sin(lon);
+    return v;
+}
+
+double Init::MountainH(double lon, double lat) {
+    double h0 = 5960;
+    double u0 = 2 * M_PI * RADIUS / (12. * 86400);
+    return h0 - (RADIUS * OMEGA * u0 + u0 * u0 / 2.) * pow(-cos(lon) * cos(lat) * sin(ALPHA0) + sin(lat) * cos(ALPHA0), 2) / GRAVITY;
+}
+
+double Init::MountainU(double lon, double lat) {
+    double u0 = 20;
+    double u = u0 * (cos(0) * cos(lat) + sin(0) * cos(lon) * sin(lat));
+    return u;
+}
+
+double Init::MountainV(double lon) {
+    double u0 = 20;
+    double v = - u0 * sin(0) * sin(lon);
     return v;
 }
 

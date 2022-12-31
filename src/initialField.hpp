@@ -19,6 +19,10 @@ private:
     static double BarotropicH(double);
     static double BarotropicHPrime(double, double);
 
+    static double MountainH(double, double);
+    static double MountainU(double, double);
+    static double MountainV(double);
+
     static double simpson(double, double);
     static double func(double);
 };

@@ -17,11 +17,14 @@ skip_sph = 10
 scale_sph = 3000
 
 left_zeta, right_zeta, split_zeta = -16 * 10 ** (-5), 16 * 10 ** (-5), 17
+
+DT = 180
+DX = DY = 2
+
+divide = 8
 ######## Should Be Tuned ###########
 
-DX = DY = 2
 NX = NY = int(90 / DX)
-DT = 180
 LEAP = 5
 
 cmap = cm.viridis
@@ -67,7 +70,7 @@ def plotOnCubeWindMul(t):
     ax5.quiverkey(Q, 0.7, 0.9, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')  
     ax6.quiverkey(Q, 0.7, 0.9, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')   
     
-    plt.savefig(f"../graphs/h/curvilinear/{int(t/LEAP/2)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/h/curvilinear/{int(t/LEAP/divide)}.png", dpi=DPI)
     plt.close()
     return
 
@@ -108,7 +111,7 @@ def plotOnSphereWindMul(t):
     Q = plt.quiver(x[5][::skip_sph, ::skip_sph], y[5][::skip_sph, ::skip_sph], u[5][::skip_sph, ::skip_sph], v[5][::skip_sph, ::skip_sph], angles='xy', units="width", scale=scale_sph, color=wind_color)
     qk = plt.quiverkey(Q, 0.7, 0.9, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')
         
-    plt.savefig(f"../graphs/h/sphere/{int(t/LEAP/2)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/h/sphere/{int(t/LEAP/divide)}.png", dpi=DPI)
     plt.close()
     return
 
@@ -140,7 +143,7 @@ def plotOnSphereMul(t):
     cbar = plt.colorbar(pad=0.05)
     cbar.set_ticks(np.linspace(left, right, split))
       
-    plt.savefig(f"../graphs/h/sphere/{int(t/LEAP/2)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/h/sphere/{int(t/LEAP/divide)}.png", dpi=DPI)
     plt.close()
     return
 
@@ -168,7 +171,7 @@ def plotOnCubeMul(t):
     cb_ax1 = fig.add_axes([0.9235, 0.1, 0.015, 0.78])
     fig.colorbar(cs1, cax=cb_ax1, ticks=np.linspace(left, right, split))
 
-    plt.savefig(f"../graphs/h/curvilinear/{int(t/LEAP/2)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/h/curvilinear/{int(t/LEAP/divide)}.png", dpi=DPI)
     plt.close()
     return
 
@@ -200,7 +203,7 @@ def plotSphereCartopy(t):
 
     ax.set_title(f"t = {t * LEAP * DT / 60} min", fontsize=fs)
     
-    plt.savefig(f"../graphs/h/sphere_cartopy/{int(t/LEAP/2)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/h/sphere_cartopy/{int(t/LEAP/divide)}.png", dpi=DPI)
     plt.close()
 
 def plotSphereWindCartopy(t):
@@ -236,7 +239,7 @@ def plotSphereWindCartopy(t):
 
     ax.set_title(f"t = {t * LEAP * DT / 60} min", fontsize=fs)
     
-    plt.savefig(f"../graphs/h/sphere_cartopy/{int(t/LEAP/2)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/h/sphere_cartopy/{int(t/LEAP/divide)}.png", dpi=DPI)
     plt.close()
 
 def plotWind():
@@ -346,7 +349,7 @@ def plotSphereCartopyZeta(t):
 
     ax.set_title(f"t = {t * LEAP * DT / 60} min", fontsize=fs)
     
-    plt.savefig(f"../graphs/zeta/{int(t/LEAP/2)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/zeta/{int(t/LEAP/divide)}.png", dpi=DPI)
     plt.close()
 
 def plotOnCubeZeta(t):
@@ -375,6 +378,6 @@ def plotOnCubeZeta(t):
     cb_ax1 = fig.add_axes([0.9235, 0.1, 0.015, 0.78])
     fig.colorbar(cs1, cax=cb_ax1, ticks=np.linspace(left_zeta, right_zeta, split_zeta))
 
-    plt.savefig(f"../graphs/zeta/{int(t/LEAP/2)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/zeta/{int(t/LEAP/divide)}.png", dpi=DPI)
     plt.close()
     return
