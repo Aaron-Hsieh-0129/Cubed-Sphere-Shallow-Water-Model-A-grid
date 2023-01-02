@@ -7,7 +7,7 @@ from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 
 
 ######## Should Be Tuned ########### 
-left, right, split = 8000, 12000, 21
+left, right, split = 6000, 12000, 21
 wind = 20
 skip_car = 20
 scale_car = 4000
@@ -21,11 +21,10 @@ left_zeta, right_zeta, split_zeta = -16 * 10 ** (-5), 16 * 10 ** (-5), 17
 DT = 180
 DX = DY = 2
 
-divide = 8
+LEAP = 100
 ######## Should Be Tuned ###########
 
 NX = NY = int(90 / DX)
-LEAP = 5
 
 cmap = cm.viridis
 wind_color = "#5c5959"
@@ -34,9 +33,9 @@ fs = 15
 
 def plotOnCubeWindMul(t):
     x, y = np.loadtxt("../outputs/grids/x.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/y.txt").reshape(6, NX, NY)
-    val = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY)
-    u = np.loadtxt(f"../outputs/u/u_{t*LEAP}.txt").reshape(6, NX, NY)
-    v = np.loadtxt(f"../outputs/v/v_{t*LEAP}.txt").reshape(6, NX, NY)
+    val = np.loadtxt(f"../outputs/h/h_{t}.txt").reshape(6, NX, NY)
+    u = np.loadtxt(f"../outputs/u/u_{t}.txt").reshape(6, NX, NY)
+    v = np.loadtxt(f"../outputs/v/v_{t}.txt").reshape(6, NX, NY)
 
     fig = plt.figure(figsize=(18,10))
     ax5 = fig.add_subplot(3,4,2)
@@ -45,7 +44,7 @@ def plotOnCubeWindMul(t):
     ax2 = fig.add_subplot(3,4,7)
     ax3 = fig.add_subplot(3,4,8)
     ax6 = fig.add_subplot(3,4,10)
-    ax5.set_title(f"t = {t * LEAP * DT / 60} min", fontsize=fs)
+    ax5.set_title(f"t = {t * DT / 60} min", fontsize=fs)
 
     cs1 = ax1.contourf(x[0], y[0], val[0], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
     ax2.contourf(x[1], y[1], val[1], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
@@ -70,13 +69,13 @@ def plotOnCubeWindMul(t):
     ax5.quiverkey(Q, 0.7, 0.9, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')  
     ax6.quiverkey(Q, 0.7, 0.9, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')   
     
-    plt.savefig(f"../graphs/h/curvilinear/{int(t/LEAP/divide)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/h/curvilinear/{int(t/LEAP)}.png", dpi=DPI)
     plt.close()
     return
 
 def plotOnSphereWindMul(t):
     x, y = np.loadtxt("../outputs/grids/lon.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/lat.txt").reshape(6, NX, NY)
-    val = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY)
+    val = np.loadtxt(f"../outputs/h/h_{t}.txt").reshape(6, NX, NY)
     x = x * 180 / np.pi
     y = y * 180 / np.pi
 
@@ -84,13 +83,13 @@ def plotOnSphereWindMul(t):
     x[4, :, :NX//2] = x[4, :, :NX//2] - 360
     x[5, :, :NX//2] = x[5, :, :NX//2] - 360
 
-    u = np.loadtxt(f"../outputs/u_lon_lat/u_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY)
-    v = np.loadtxt(f"../outputs/v_lon_lat/v_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY)
+    u = np.loadtxt(f"../outputs/u_lon_lat/u_lon_lat_{t}.txt").reshape(6, NX, NY)
+    v = np.loadtxt(f"../outputs/v_lon_lat/v_lon_lat_{t}.txt").reshape(6, NX, NY)
 
     plt.figure(figsize=(18,8))
     plt.xlabel("LON")
     plt.ylabel("LAT")
-    plt.title(f"t = {t * LEAP * DT / 60} min", fontsize=fs)
+    plt.title(f"t = {t * DT / 60} min", fontsize=fs)
 
     plt.contourf(x[0], y[0], val[0], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
     plt.contourf(x[1], y[1], val[1], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
@@ -111,13 +110,13 @@ def plotOnSphereWindMul(t):
     Q = plt.quiver(x[5][::skip_sph, ::skip_sph], y[5][::skip_sph, ::skip_sph], u[5][::skip_sph, ::skip_sph], v[5][::skip_sph, ::skip_sph], angles='xy', units="width", scale=scale_sph, color=wind_color)
     qk = plt.quiverkey(Q, 0.7, 0.9, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')
         
-    plt.savefig(f"../graphs/h/sphere/{int(t/LEAP/divide)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/h/sphere/{int(t/LEAP)}.png", dpi=DPI)
     plt.close()
     return
 
 def plotOnSphereMul(t):
     x, y = np.loadtxt("../outputs/grids/lon.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/lat.txt").reshape(6, NX, NY)
-    val = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY)
+    val = np.loadtxt(f"../outputs/h/h_{t}.txt").reshape(6, NX, NY)
     x = x * 180 / np.pi
     y = y * 180 / np.pi
 
@@ -125,13 +124,13 @@ def plotOnSphereMul(t):
     x[4, :, :NX//2] = x[4, :, :NX//2] - 360
     x[5, :, :NX//2] = x[5, :, :NX//2] - 360
 
-    u = np.loadtxt(f"../outputs/u_lon_lat/u_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY)
-    v = np.loadtxt(f"../outputs/v_lon_lat/v_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY)
+    u = np.loadtxt(f"../outputs/u_lon_lat/u_lon_lat_{t}.txt").reshape(6, NX, NY)
+    v = np.loadtxt(f"../outputs/v_lon_lat/v_lon_lat_{t}.txt").reshape(6, NX, NY)
 
     plt.figure(figsize=(18,8))
     plt.xlabel("LON")
     plt.ylabel("LAT")
-    plt.title(f"t = {t * LEAP * DT / 60} min", fontsize=fs)
+    plt.title(f"t = {t * DT / 60} min", fontsize=fs)
 
     plt.contourf(x[0], y[0], val[0], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
     plt.contourf(x[1], y[1], val[1], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
@@ -143,15 +142,15 @@ def plotOnSphereMul(t):
     cbar = plt.colorbar(pad=0.05)
     cbar.set_ticks(np.linspace(left, right, split))
       
-    plt.savefig(f"../graphs/h/sphere/{int(t/LEAP/divide)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/h/sphere/{int(t/LEAP)}.png", dpi=DPI)
     plt.close()
     return
 
 def plotOnCubeMul(t):
     x, y = np.loadtxt("../outputs/grids/x.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/y.txt").reshape(6, NX, NY)
-    val = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY)
-    u = np.loadtxt(f"../outputs/u/u_{t*LEAP}.txt").reshape(6, NX, NY)
-    v = np.loadtxt(f"../outputs/v/v_{t*LEAP}.txt").reshape(6, NX, NY)
+    val = np.loadtxt(f"../outputs/h/h_{t}.txt").reshape(6, NX, NY)
+    u = np.loadtxt(f"../outputs/u/u_{t}.txt").reshape(6, NX, NY)
+    v = np.loadtxt(f"../outputs/v/v_{t}.txt").reshape(6, NX, NY)
 
     fig = plt.figure(figsize=(18,10))
     ax5 = fig.add_subplot(3,4,2)
@@ -160,7 +159,7 @@ def plotOnCubeMul(t):
     ax2 = fig.add_subplot(3,4,7)
     ax3 = fig.add_subplot(3,4,8)
     ax6 = fig.add_subplot(3,4,10)
-    ax5.set_title(f"t = {t * LEAP * DT / 60} min", fontsize=fs)
+    ax5.set_title(f"t = {t * DT / 60} min", fontsize=fs)
 
     cs1 = ax1.contourf(x[0], y[0], val[0], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
     ax2.contourf(x[1], y[1], val[1], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
@@ -171,14 +170,14 @@ def plotOnCubeMul(t):
     cb_ax1 = fig.add_axes([0.9235, 0.1, 0.015, 0.78])
     fig.colorbar(cs1, cax=cb_ax1, ticks=np.linspace(left, right, split))
 
-    plt.savefig(f"../graphs/h/curvilinear/{int(t/LEAP/divide)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/h/curvilinear/{int(t/LEAP)}.png", dpi=DPI)
     plt.close()
     return
 
 def plotSphereCartopy(t):
     lon = np.loadtxt("../outputs/grids/lon.txt").reshape(6, NX, NY).flatten() * 180 / np.pi
     lat = np.loadtxt("../outputs/grids/lat.txt").reshape(6, NX, NY).flatten() * 180 / np.pi
-    h = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY).flatten()
+    h = np.loadtxt(f"../outputs/h/h_{t}.txt").reshape(6, NX, NY).flatten()
 
     map_proj = ccrs.PlateCarree(central_longitude=0.)
     data_crs = ccrs.PlateCarree()
@@ -201,17 +200,17 @@ def plotSphereCartopy(t):
     ax.coastlines(resolution='110m',color='k', lw=0.2, zorder=13)
     gl = ax.gridlines(draw_labels=True)
 
-    ax.set_title(f"t = {t * LEAP * DT / 60} min", fontsize=fs)
+    ax.set_title(f"t = {t * DT / 60} min", fontsize=fs)
     
-    plt.savefig(f"../graphs/h/sphere_cartopy/{int(t/LEAP/divide)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/h/sphere_cartopy/{int(t/LEAP)}.png", dpi=DPI)
     plt.close()
 
 def plotSphereWindCartopy(t):
     lon = np.loadtxt("../outputs/grids/lon.txt").reshape(6, NX, NY).flatten() * 180 / np.pi
     lat = np.loadtxt("../outputs/grids/lat.txt").reshape(6, NX, NY).flatten() * 180 / np.pi
-    h = np.loadtxt(f"../outputs/h/h_{t*LEAP}.txt").reshape(6, NX, NY).flatten()
-    u = np.loadtxt(f"../outputs/u_lon_lat/u_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY).flatten()
-    v = np.loadtxt(f"../outputs/v_lon_lat/v_lon_lat_{t*LEAP}.txt").reshape(6, NX, NY).flatten()
+    h = np.loadtxt(f"../outputs/h/h_{t}.txt").reshape(6, NX, NY).flatten()
+    u = np.loadtxt(f"../outputs/u_lon_lat/u_lon_lat_{t}.txt").reshape(6, NX, NY).flatten()
+    v = np.loadtxt(f"../outputs/v_lon_lat/v_lon_lat_{t}.txt").reshape(6, NX, NY).flatten()
 
     map_proj = ccrs.PlateCarree(central_longitude=0.)
     data_crs = ccrs.PlateCarree()
@@ -237,9 +236,9 @@ def plotSphereWindCartopy(t):
     ax.coastlines(resolution='110m',color='k', lw=0.2, zorder=13)
     gl = ax.gridlines(draw_labels=True)
 
-    ax.set_title(f"t = {t * LEAP * DT / 60} min", fontsize=fs)
+    ax.set_title(f"t = {t * DT / 60} min", fontsize=fs)
     
-    plt.savefig(f"../graphs/h/sphere_cartopy/{int(t/LEAP/divide)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/h/sphere_cartopy/{int(t/LEAP)}.png", dpi=DPI)
     plt.close()
 
 def plotWind():
@@ -317,8 +316,8 @@ def plotWind():
 
 
 def plotSphereCartopyZeta(t):
-    u = np.loadtxt(f"../outputs/u/u_{t*LEAP}.txt").reshape(6, NX, NY)
-    v = np.loadtxt(f"../outputs/v/v_{t*LEAP}.txt").reshape(6, NX, NY)
+    u = np.loadtxt(f"../outputs/u/u_{t}.txt").reshape(6, NX, NY)
+    v = np.loadtxt(f"../outputs/v/v_{t}.txt").reshape(6, NX, NY)
     x, y = np.loadtxt("../outputs/grids/x.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/y.txt").reshape(6, NX, NY)
 
     zeta = (((v[:, :, 2:] - v[:, :, :-2]) / ((x[:, :, 2:] - x[:, :, :-2]) / 2))[:, 1:-1, :] - ((u[:, 2:, :] - u[:, :-2, :]) / ((y[:, 2:, :] - y[:, :-2, :]) / 2))[:, :, 1:-1]).flatten()
@@ -347,14 +346,14 @@ def plotSphereCartopyZeta(t):
     ax.coastlines(resolution='110m',color='k', lw=0.2, zorder=13)
     gl = ax.gridlines(draw_labels=True)
 
-    ax.set_title(f"t = {t * LEAP * DT / 60} min", fontsize=fs)
+    ax.set_title(f"t = {t * DT / 60} min", fontsize=fs)
     
-    plt.savefig(f"../graphs/zeta/{int(t/LEAP/divide)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/zeta/{int(t/LEAP)}.png", dpi=DPI)
     plt.close()
 
 def plotOnCubeZeta(t):
-    u = np.loadtxt(f"../outputs/u/u_{t*LEAP}.txt").reshape(6, NX, NY)
-    v = np.loadtxt(f"../outputs/v/v_{t*LEAP}.txt").reshape(6, NX, NY)
+    u = np.loadtxt(f"../outputs/u/u_{t}.txt").reshape(6, NX, NY)
+    v = np.loadtxt(f"../outputs/v/v_{t}.txt").reshape(6, NX, NY)
     x, y = np.loadtxt("../outputs/grids/x.txt").reshape(6, NX, NY), np.loadtxt("../outputs/grids/y.txt").reshape(6, NX, NY)
 
     val = (((v[:, :, 2:] - v[:, :, :-2]) / ((x[:, :, 2:] - x[:, :, :-2]) / 2))[:, 1:-1, :] - ((u[:, 2:, :] - u[:, :-2, :]) / ((y[:, 2:, :] - y[:, :-2, :]) / 2))[:, :, 1:-1])
@@ -367,7 +366,7 @@ def plotOnCubeZeta(t):
     ax2 = fig.add_subplot(3,4,7)
     ax3 = fig.add_subplot(3,4,8)
     ax6 = fig.add_subplot(3,4,10)
-    ax5.set_title(f"t = {t * LEAP * DT / 60} min", fontsize=fs)
+    ax5.set_title(f"t = {t * DT / 60} min", fontsize=fs)
 
     cs1 = ax1.contourf(x[0, 1:-1, 1:-1], y[0, 1:-1, 1:-1], val[0], levels=np.linspace(left_zeta, right_zeta, split_zeta), extend='both', cmap=cmap)
     ax2.contourf(x[1, 1:-1, 1:-1], y[1, 1:-1, 1:-1], val[1], levels=np.linspace(left_zeta, right_zeta, split_zeta), extend='both', cmap=cmap)
@@ -378,6 +377,6 @@ def plotOnCubeZeta(t):
     cb_ax1 = fig.add_axes([0.9235, 0.1, 0.015, 0.78])
     fig.colorbar(cs1, cax=cb_ax1, ticks=np.linspace(left_zeta, right_zeta, split_zeta))
 
-    plt.savefig(f"../graphs/zeta/{int(t/LEAP/divide)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/zeta/{int(t/LEAP)}.png", dpi=DPI)
     plt.close()
     return

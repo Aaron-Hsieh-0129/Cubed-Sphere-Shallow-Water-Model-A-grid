@@ -44,7 +44,7 @@ void Iteration::pu_pt(CSSWM &model) {
 
                 #ifdef SteadyGeostrophy
                     f = 2 * OMEGA * (-cos(model.csswm[p].lon_original[i][j] * cos(model.csswm[p].lat[i][j] * sin(ALPHA0) + sin(model.csswm[p].lat[i][j] * cos(ALPHA0)))));
-                #elif defined(Barotropic)
+                #elif defined(Barotropic) || defined(RossbyHaurwitz)
                     f = 2 * OMEGA * sin(model.csswm[p].lat[i][j]);
                 #else
                     f = 0;
@@ -102,7 +102,7 @@ void Iteration::pv_pt(CSSWM &model) {
 
                 #if defined(SteadyGeostrophy)
                     f = 2 * OMEGA * (-cos(model.csswm[p].lon_original[i][j] * cos(model.csswm[p].lat[i][j] * sin(ALPHA0) + sin(model.csswm[p].lat[i][j] * cos(ALPHA0)))));
-                #elif defined(Barotropic)
+                #elif defined(Barotropic) || defined(RossbyHaurwitz)
                     f = 2 * OMEGA * sin(model.csswm[p].lat[i][j]);
                 #else
                     f = 0;

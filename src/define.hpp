@@ -23,12 +23,13 @@
 // #define GravityWave
 // #define SteadyGeostrophy
 // #define Barotropic
-#define Mountain
+// #define Mountain
+#define RossbyHaurwitz
 
 #define DIFFUSION
 #define TIMEFILTER
-#define KX (150000.)
-#define KY (150000.)
+#define KX (200000.)
+#define KY (200000.)
 #define TIMETS (0.06)
 
 #endif

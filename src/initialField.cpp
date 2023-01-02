@@ -154,6 +154,14 @@ void Init::Init2d(CSSWM & model) {
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * MountainU(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * MountainV(model.csswm[p].lon_original[i][j]); 
                 #endif
+
+                #ifdef RossbyHaurwitz
+                    model.csswm[p].hp[i][j] = RossbyHaurwitzH(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]);
+                    model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * RossbyHaurwitzU(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]) + 
+                                              (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * RossbyHaurwitzV(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]);
+                    model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * RossbyHaurwitzU(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]) + 
+                                              (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * RossbyHaurwitzV(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]); 
+                #endif
             }
         }
     }
@@ -303,3 +311,30 @@ double Init::simpson(double a, double b) {
 	return I2n;
 }
 
+double Init::RossbyHaurwitzH(double lon, double lat) {
+    double h0 = 8E3;
+    double omega = 7.848E-6, K = 7.848E-6;
+    double R = 4.;
+    double c = cos(lat);
+
+    double A = omega / 2. * (2. * OMEGA + omega) * c*c + 
+               0.25 * K*K * pow(c, 2*R) * ((R+1)*c*2 + (2*R*R - R - 2) - 2*R*R*pow(c, -2));
+    double B = (2 * (OMEGA + omega) * K) / ((R+1) * (R+2)) * pow(c, R) * ((R*R+2*R+2) - pow((R+1)*c, 2));
+    double C = 1. / 4. * K*K * pow(c, 2*R) * ((R+1)*c*c - R+2);
+
+    return (h0 + (RADIUS*RADIUS*A + RADIUS*RADIUS*B*cos(R*lon) + RADIUS*RADIUS*C*cos(2*R*lon)) / GRAVITY);
+}
+
+double Init::RossbyHaurwitzU(double lon, double lat) {
+    double R = 4.;
+    double omega = 7.848E-6, K = 7.848E-6;
+    double c = cos(lat);
+    return (RADIUS * omega * cos(lat) + RADIUS * K * pow(c, R-1) * (R*pow(sin(lat), 2) - pow(cos(lat), 2)) * cos(RADIUS*lon));
+}
+
+double Init::RossbyHaurwitzV(double lon, double lat) {
+    double R = 4.;
+    double K = 7.848E-6;
+    double c = cos(lat);
+    return (-RADIUS * K * R * pow(c, R-1) * sin(lat) * sin(RADIUS*lon));
+}

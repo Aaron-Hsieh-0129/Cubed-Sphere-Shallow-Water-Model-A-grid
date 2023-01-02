@@ -23,6 +23,10 @@ private:
     static double MountainU(double, double);
     static double MountainV(double);
 
+    static double RossbyHaurwitzH(double, double);
+    static double RossbyHaurwitzU(double, double);
+    static double RossbyHaurwitzV(double, double);
+
     static double simpson(double, double);
     static double func(double);
 };
