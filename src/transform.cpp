@@ -1,4 +1,4 @@
-#include "constrcution.hpp"
+#include "construction.hpp"
 
 
 void CSSWM::matrixMul(double firstMatrix[4], double secondMatrix[4], double mult[2][2]) {

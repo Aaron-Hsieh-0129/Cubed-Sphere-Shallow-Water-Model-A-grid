@@ -1,4 +1,4 @@
-#include "constrcution.hpp"
+#include "construction.hpp"
 
 CSSWM::patch::patch() {
     for (int i = 0; i < NX; i++) {

@@ -1,4 +1,4 @@
-#include "constrcution.hpp"
+#include "construction.hpp"
 
 void CSSWM::BP_h(CSSWM &model) {
     double B, A1, A2, V1, V2;

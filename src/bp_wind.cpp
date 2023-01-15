@@ -1,4 +1,4 @@
-#include "constrcution.hpp"
+#include "construction.hpp"
 
 void CSSWM::BP_wind_convert(CSSWM &model) {
     for (int idx = 0; idx < NX; idx++) {
