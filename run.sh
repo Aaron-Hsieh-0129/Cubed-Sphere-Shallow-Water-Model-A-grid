@@ -1,7 +1,7 @@
 # This shell script is to execute the whole program, plot all graphs, and make videos 
 #!/bin/bash
-mkdir bin outputs graphs build
-cd build/ && cmake ../
+mkdir build
+cd build/ && cmake ../ && make && ./csswm
 
 cd ../src && python plot_h_wind.py && python plot_zeta.py
 
