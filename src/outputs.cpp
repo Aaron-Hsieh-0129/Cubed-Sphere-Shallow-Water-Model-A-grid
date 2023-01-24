@@ -3,6 +3,8 @@
 using std::fstream;
 using std::ios;
 using std::string;
+using std::vector;
+using namespace netCDF;
 
 void Outputs::create_directory(string directory_name) {
     string str = "mkdir -p " + directory_name;
@@ -16,9 +18,6 @@ void Outputs::create_directory(string directory_name) {
 }
 
 void Outputs::output_parameter(CSSWM &model) {
-    create_directory(OUTPUTPATH + (string) "grids");
-    create_directory("../graphs/grids");
-
     fstream fout[4];
     string dir = OUTPUTPATH + (string) "grids/";
     string grid[4] = {"lon.txt", "lat.txt", "x.txt", "y.txt"};
@@ -41,11 +40,6 @@ void Outputs::output_parameter(CSSWM &model) {
 }
 
 void Outputs::output_h(int n, CSSWM &model) {
-    create_directory(OUTPUTPATH + (string) "h");
-    create_directory("../graphs/h/curvilinear");
-    create_directory("../graphs/h/sphere");
-    create_directory("../graphs/h/sphere_cartopy");
-
     fstream fouth;
     string hname = OUTPUTPATH + (string) "h/h_" + std::to_string(n) + ".txt";
     fouth.open(hname, std::ios::out);
@@ -60,11 +54,6 @@ void Outputs::output_h(int n, CSSWM &model) {
 }
 
 void Outputs::output_u(int n, CSSWM &model) {
-    create_directory(OUTPUTPATH + (string) "u");
-    create_directory(OUTPUTPATH + (string) "u_lon_lat");
-    create_directory("../graphs/wind");
-    create_directory("../graphs/zeta");
-    
     fstream foutu;
     string uname = OUTPUTPATH + (string) "u/u_" + std::to_string(n) + ".txt";
     foutu.open(uname, std::ios::out);
@@ -84,9 +73,6 @@ void Outputs::output_u(int n, CSSWM &model) {
 }
 
 void Outputs::output_v(int n, CSSWM &model) {
-    create_directory(OUTPUTPATH + (string) "v");
-    create_directory(OUTPUTPATH + (string) "v_lon_lat");
-
     fstream foutv;
     string vname = OUTPUTPATH + (string) "v/v_" + std::to_string(n) + ".txt";
     foutv.open(vname, std::ios::out);
@@ -103,4 +89,67 @@ void Outputs::output_v(int n, CSSWM &model) {
         }
     }
     return;
+}
+
+void Outputs::output_parameter_nc(CSSWM &model) {
+    fstream fout[4];
+    string dir = OUTPUTPATH + (string) "nc/";
+
+    NcFile dataFile(dir + "grid.nc", NcFile::replace);       
+    // Create netCDF dimensions
+    NcDim p = dataFile.addDim("p", 6);
+    NcDim xDim = dataFile.addDim("x", NX);
+    NcDim yDim = dataFile.addDim("y", NY);
+    NcDim lonDim = dataFile.addDim("lon", NX);
+    NcDim latDim = dataFile.addDim("lat", NY);
+
+    vector<NcDim> xyDim, lonlatDim;
+    xyDim.push_back(p);
+    xyDim.push_back(xDim);
+    xyDim.push_back(yDim);
+
+    lonlatDim.push_back(p);
+    lonlatDim.push_back(lonDim);
+    lonlatDim.push_back(latDim);
+
+    NcVar x = dataFile.addVar("x_local", ncDouble, xyDim);
+    NcVar y = dataFile.addVar("y_local", ncDouble, xyDim);
+    NcVar lon = dataFile.addVar("lon_sphere", ncDouble, lonlatDim);
+    NcVar lat = dataFile.addVar("lat_sphere", ncDouble, lonlatDim);
+
+    vector<size_t> startp, countp;
+    startp.push_back(0);
+    startp.push_back(0);
+    startp.push_back(0);
+    countp.push_back(1);
+    countp.push_back(NY);
+    countp.push_back(NX);
+
+    for (int p = 0; p < 6; p++) {
+        startp[0] = p;
+        x.putVar(startp, countp, model.csswm[p].x);
+        y.putVar(startp, countp, model.csswm[p].y);
+        lon.putVar(startp, countp, model.csswm[p].lon);
+        lat.putVar(startp, countp, model.csswm[p].lat);
+    }
+}
+
+
+void Outputs::create_all_directory() {
+    // data directory
+    create_directory(OUTPUTPATH + (string) "grids");
+    create_directory(OUTPUTPATH + (string) "h");
+    create_directory(OUTPUTPATH + (string) "u");
+    create_directory(OUTPUTPATH + (string) "u_lon_lat");
+    create_directory(OUTPUTPATH + (string) "v");
+    create_directory(OUTPUTPATH + (string) "v_lon_lat");
+    create_directory(OUTPUTPATH + (string) "nc");
+
+    // plot directory
+    create_directory("../graphs/grids");
+    create_directory("../graphs/h/curvilinear");
+    create_directory("../graphs/h/sphere");
+    create_directory("../graphs/h/sphere_cartopy");
+    create_directory("../graphs/wind");
+    create_directory("../graphs/zeta");
 }

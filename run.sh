@@ -1,9 +1,8 @@
 # This shell script is to execute the whole program, plot all graphs, and make videos 
 #!/bin/bash
-mkdir bin outputs graphs
-make clean
-make
-cd bin && ./csswm
+mkdir bin outputs graphs build
+cd build/ && cmake ../
+
 cd ../src && python plot_h_wind.py && python plot_zeta.py
 
 cd ../graphs/h/curvilinear
