@@ -17,7 +17,7 @@ void Outputs::create_directory(string directory_name) {
     return;
 }
 
-void Outputs::output_parameter(CSSWM &model) {
+void Outputs::grid(CSSWM &model) {
     fstream fout[4];
     string dir = OUTPUTPATH + (string) "grids/";
     string grid[4] = {"lon.txt", "lat.txt", "x.txt", "y.txt"};
@@ -39,7 +39,7 @@ void Outputs::output_parameter(CSSWM &model) {
     }
 }
 
-void Outputs::output_h(int n, CSSWM &model) {
+void Outputs::h(int n, CSSWM &model) {
     fstream fouth;
     string hname = OUTPUTPATH + (string) "h/h_" + std::to_string(n) + ".txt";
     fouth.open(hname, std::ios::out);
@@ -53,7 +53,7 @@ void Outputs::output_h(int n, CSSWM &model) {
     return;
 }
 
-void Outputs::output_u(int n, CSSWM &model) {
+void Outputs::u(int n, CSSWM &model) {
     fstream foutu;
     string uname = OUTPUTPATH + (string) "u/u_" + std::to_string(n) + ".txt";
     foutu.open(uname, std::ios::out);
@@ -72,7 +72,7 @@ void Outputs::output_u(int n, CSSWM &model) {
     return;
 }
 
-void Outputs::output_v(int n, CSSWM &model) {
+void Outputs::v(int n, CSSWM &model) {
     fstream foutv;
     string vname = OUTPUTPATH + (string) "v/v_" + std::to_string(n) + ".txt";
     foutv.open(vname, std::ios::out);
@@ -91,8 +91,7 @@ void Outputs::output_v(int n, CSSWM &model) {
     return;
 }
 
-void Outputs::output_parameter_nc(CSSWM &model) {
-    fstream fout[4];
+void Outputs::grid_nc(CSSWM &model) {
     string dir = OUTPUTPATH + (string) "nc/";
 
     NcFile dataFile(dir + "grid.nc", NcFile::replace);       
@@ -122,8 +121,8 @@ void Outputs::output_parameter_nc(CSSWM &model) {
     startp.push_back(0);
     startp.push_back(0);
     countp.push_back(1);
-    countp.push_back(NY);
     countp.push_back(NX);
+    countp.push_back(NY);
 
     for (int p = 0; p < 6; p++) {
         startp[0] = p;
@@ -134,16 +133,73 @@ void Outputs::output_parameter_nc(CSSWM &model) {
     }
 }
 
+void Outputs::huv_nc(int n, CSSWM &model) {
+    string dir = OUTPUTPATH + (string) "nc/";
+
+    NcFile dataFile(dir + std::to_string(n) + ".nc", NcFile::replace);       
+    // Create netCDF dimensions
+    NcDim p = dataFile.addDim("p", 6);
+    NcDim xDim = dataFile.addDim("x", NX);
+    NcDim yDim = dataFile.addDim("y", NY);
+    NcDim lonDim = dataFile.addDim("lon", NX);
+    NcDim latDim = dataFile.addDim("lat", NY);
+
+    vector<NcDim> xyDim, lonlatDim;
+    xyDim.push_back(p);
+    xyDim.push_back(xDim);
+    xyDim.push_back(yDim);
+
+    lonlatDim.push_back(p);
+    lonlatDim.push_back(lonDim);
+    lonlatDim.push_back(latDim);
+
+    NcVar h = dataFile.addVar("h", ncDouble, xyDim);
+    NcVar u = dataFile.addVar("u", ncDouble, xyDim);
+    NcVar v = dataFile.addVar("v", ncDouble, xyDim);
+
+    NcVar ulonlat = dataFile.addVar("u_lonlat", ncDouble, lonlatDim);
+    NcVar vlonlat = dataFile.addVar("v_lonlat", ncDouble, lonlatDim);
+    double u_lon_lat[6][NX][NY], v_lon_lat[6][NX][NY];
+    for (int p = 0; p < 6; p++) {
+        for (int j = 0; j < NY; j++) {
+            for (int i = 0; i < NX; i++) {
+                u_lon_lat[p][i][j] = model.Cube2Sphere_U(model, p, i, j);
+                v_lon_lat[p][i][j] = model.Cube2Sphere_V(model, p, i, j);
+            }
+        }
+    }
+
+    vector<size_t> startp, countp;
+    startp.push_back(0);
+    startp.push_back(0);
+    startp.push_back(0);
+    countp.push_back(1);
+    countp.push_back(NX);
+    countp.push_back(NY);
+
+    for (int p = 0; p < 6; p++) {
+        startp[0] = p;
+        h.putVar(startp, countp, model.csswm[p].h);
+        u.putVar(startp, countp, model.csswm[p].u);
+        v.putVar(startp, countp, model.csswm[p].v);
+        ulonlat.putVar(startp, countp, u_lon_lat);
+        vlonlat.putVar(startp, countp, v_lon_lat);
+    }
+}
 
 void Outputs::create_all_directory() {
     // data directory
-    create_directory(OUTPUTPATH + (string) "grids");
-    create_directory(OUTPUTPATH + (string) "h");
-    create_directory(OUTPUTPATH + (string) "u");
-    create_directory(OUTPUTPATH + (string) "u_lon_lat");
-    create_directory(OUTPUTPATH + (string) "v");
-    create_directory(OUTPUTPATH + (string) "v_lon_lat");
-    create_directory(OUTPUTPATH + (string) "nc");
+    #ifdef TXTOUTPUT
+        create_directory(OUTPUTPATH + (string) "grids");
+        create_directory(OUTPUTPATH + (string) "h");
+        create_directory(OUTPUTPATH + (string) "u");
+        create_directory(OUTPUTPATH + (string) "u_lon_lat");
+        create_directory(OUTPUTPATH + (string) "v");
+        create_directory(OUTPUTPATH + (string) "v_lon_lat");
+    #endif
+    #ifdef NCOUTPUT
+        create_directory(OUTPUTPATH + (string) "nc");
+    #endif
 
     // plot directory
     create_directory("../graphs/grids");

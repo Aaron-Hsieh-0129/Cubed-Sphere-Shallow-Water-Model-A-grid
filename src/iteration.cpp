@@ -146,8 +146,12 @@ void Iteration::pv_pt(CSSWM &model) {
 
 void Iteration::leap_frog(CSSWM &model) {
     Outputs::create_all_directory();
-    Outputs::output_parameter_nc(model);
-    Outputs::output_parameter(model);
+    #ifdef NCOUTPUT
+        Outputs::grid_nc(model);
+    #endif
+    #ifdef TXTOUTPUT
+        Outputs::grid(model);
+    #endif
     int n = 0;
     double timenow = 0.;
     double temp = TIMEEND / DT;
@@ -157,9 +161,15 @@ void Iteration::leap_frog(CSSWM &model) {
         std::cout << n << std::endl;
 
         if (n % OUTPUTINTERVAL == 0) {
-            // Outputs::output_h(n, model);
-            // Outputs::output_u(n, model);
-            // Outputs::output_v(n, model);
+            #ifdef TXTOUTPUT
+                Outputs::h(n, model);
+                Outputs::u(n, model);
+                Outputs::v(n, model);
+            #endif
+
+            #ifdef NCOUTPUT
+                Outputs::huv_nc(n, model);
+            #endif
         }
 
         n++;

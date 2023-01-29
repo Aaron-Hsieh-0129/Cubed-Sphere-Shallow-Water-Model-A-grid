@@ -16,6 +16,8 @@
 #define TIMEEND (86400 * 12 * 2)
 #define OUTPUTINTERVAL (50)
 #define OUTPUTPATH "../outputs/"
+#define TXTOUTPUT
+#define NCOUTPUT
 
 #define ALPHA0 (0)
 // #define ADVECTION

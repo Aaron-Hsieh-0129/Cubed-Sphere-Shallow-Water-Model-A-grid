@@ -7,12 +7,13 @@
 
 class Outputs {
 public:
-    static void output_parameter(CSSWM &);
-    static void output_h(int, CSSWM &);
-    static void output_u(int, CSSWM &);
-    static void output_v(int, CSSWM &);
+    static void grid(CSSWM &);
+    static void h(int, CSSWM &);
+    static void u(int, CSSWM &);
+    static void v(int, CSSWM &);
 
-    static void output_parameter_nc(CSSWM &);
+    static void grid_nc(CSSWM &);
+    static void huv_nc(int, CSSWM &);
 
     static void create_all_directory();
 
