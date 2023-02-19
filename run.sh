@@ -4,7 +4,6 @@ rm -rf build outputs
 mkdir build
 cd build/ && cmake ../ && make && ./csswm
 
-conda activate python3.8
 cd ../src && python plot_h_wind.py && python plot_zeta.py
 
 cd ../graphs/h/curvilinear
@@ -26,4 +25,3 @@ ffmpeg -r 3 -i %d.png zeta.gif -y
 cd ../sphere_cartopy
 ffmpeg -r 3 -i %d.png -pix_fmt yuv420p zeta.mov -y
 ffmpeg -r 3 -i %d.png zeta.gif -y
-conda deactivate
