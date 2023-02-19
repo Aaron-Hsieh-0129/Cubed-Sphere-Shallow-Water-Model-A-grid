@@ -6,3 +6,4 @@ graphs
 __pycache__
 *.mov
 doc
+.ipynb_checkpoints

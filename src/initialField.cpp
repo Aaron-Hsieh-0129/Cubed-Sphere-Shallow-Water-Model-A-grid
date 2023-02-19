@@ -266,8 +266,8 @@ double Init::MountainV(double lon) {
 double Init::BarotropicH(double lat) {
     Rosetta::GaussLegendreQuadrature<5> gl5;
     double h0 = 10000.;
-    // return h0 - simpson(-M_PI / 2, lat) / GRAVITY;
-    return h0 - gl5.integrate(-M_PI/2, lat, func) / GRAVITY;
+    return h0 - simpson(-M_PI / 2, lat) / GRAVITY;
+    // return h0 - gl5.integrate(-M_PI/2, lat, func) / GRAVITY;
 }
 
 

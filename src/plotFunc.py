@@ -7,21 +7,21 @@ from cartopy.mpl.gridliner import LONGITUDE_FORMATTER, LATITUDE_FORMATTER
 
 
 ######## Should Be Tuned ########### 
-left, right, split = 6000, 12000, 21
+left, right, split = 8000, 10500, 21
 wind = 20
-skip_car = 20
+skip_car = 55
 scale_car = 4000
 skip = 10
 scale = 1000
-skip_sph = 10
+skip_sph = 12
 scale_sph = 3000
 
 left_zeta, right_zeta, split_zeta = -16 * 10 ** (-5), 16 * 10 ** (-5), 17
 
-DT = 180
-DX = DY = 2
+DT = 45
+DX = DY = 0.5
 
-LEAP = 100
+LEAP = 400
 ######## Should Be Tuned ###########
 
 NX = NY = int(90 / DX)
@@ -37,7 +37,7 @@ def plotOnCubeWindMul(t):
     u = np.loadtxt(f"../outputs/u/u_{t}.txt").reshape(6, NX, NY)
     v = np.loadtxt(f"../outputs/v/v_{t}.txt").reshape(6, NX, NY)
 
-    fig = plt.figure(figsize=(18,10))
+    fig = plt.figure(figsize=(18,10), dpi=DPI)
     ax5 = fig.add_subplot(3,4,2)
     ax4 = fig.add_subplot(3,4,5)
     ax1 = fig.add_subplot(3,4,6)
@@ -79,14 +79,14 @@ def plotOnSphereWindMul(t):
     x = x * 180 / np.pi
     y = y * 180 / np.pi
 
-    x[0, :, :NX//2] = x[0, :, :NX//2] - 360
-    x[4, :, :NX//2] = x[4, :, :NX//2] - 360
-    x[5, :, :NX//2] = x[5, :, :NX//2] - 360
+    # x[0, :, :NX//2] = x[0, :, :NX//2] - 360
+    # x[4, :, :NX//2] = x[4, :, :NX//2] - 360
+    # x[5, :, :NX//2] = x[5, :, :NX//2] - 360
 
     u = np.loadtxt(f"../outputs/u_lon_lat/u_lon_lat_{t}.txt").reshape(6, NX, NY)
     v = np.loadtxt(f"../outputs/v_lon_lat/v_lon_lat_{t}.txt").reshape(6, NX, NY)
 
-    plt.figure(figsize=(18,8))
+    plt.figure(figsize=(18,8), dpi=DPI)
     plt.xlabel("LON")
     plt.ylabel("LAT")
     plt.title(f"t = {t * DT / 60} min", fontsize=fs)
@@ -127,7 +127,7 @@ def plotOnSphereMul(t):
     u = np.loadtxt(f"../outputs/u_lon_lat/u_lon_lat_{t}.txt").reshape(6, NX, NY)
     v = np.loadtxt(f"../outputs/v_lon_lat/v_lon_lat_{t}.txt").reshape(6, NX, NY)
 
-    plt.figure(figsize=(18,8))
+    plt.figure(figsize=(18,8), dpi=DPI)
     plt.xlabel("LON")
     plt.ylabel("LAT")
     plt.title(f"t = {t * DT / 60} min", fontsize=fs)
@@ -141,7 +141,7 @@ def plotOnSphereMul(t):
     plt.contourf(x[5], y[5], val[5], levels=np.linspace(left, right, split), extend='both', cmap=cmap)
     cbar = plt.colorbar(pad=0.05)
     cbar.set_ticks(np.linspace(left, right, split))
-      
+    
     plt.savefig(f"../graphs/h/sphere/{int(t/LEAP)}.png", dpi=DPI)
     plt.close()
     return
@@ -152,7 +152,7 @@ def plotOnCubeMul(t):
     u = np.loadtxt(f"../outputs/u/u_{t}.txt").reshape(6, NX, NY)
     v = np.loadtxt(f"../outputs/v/v_{t}.txt").reshape(6, NX, NY)
 
-    fig = plt.figure(figsize=(18,10))
+    fig = plt.figure(figsize=(18,10), dpi=DPI)
     ax5 = fig.add_subplot(3,4,2)
     ax4 = fig.add_subplot(3,4,5)
     ax1 = fig.add_subplot(3,4,6)
@@ -197,7 +197,7 @@ def plotSphereCartopy(t):
     cb_ax1 = fig.add_axes([0.92, 0.16, 0.012, 0.67])
     fig.colorbar(cs, cax=cb_ax1, ticks=np.linspace(left, right, split))
 
-    ax.coastlines(resolution='110m',color='k', lw=0.2, zorder=13)
+    # ax.coastlines(resolution='110m',color='k', lw=0.2, zorder=13)
     gl = ax.gridlines(draw_labels=True)
 
     ax.set_title(f"t = {t * DT / 60} min", fontsize=fs)
@@ -233,7 +233,7 @@ def plotSphereWindCartopy(t):
     Q = ax.quiver(x[::skip_car], y[::skip_car], u[mask][::skip_car], v[mask][::skip_car], angles='xy', units="width", scale=scale_sph, color=wind_color)
     ax.quiverkey(Q, 0.85, 0.85, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')
 
-    ax.coastlines(resolution='110m',color='k', lw=0.2, zorder=13)
+    # ax.coastlines(resolution='110m',color='k', lw=0.2, zorder=13)
     gl = ax.gridlines(draw_labels=True)
 
     ax.set_title(f"t = {t * DT / 60} min", fontsize=fs)
@@ -277,7 +277,7 @@ def plotWind():
     lon[4, :, :NX//2] = lon[4, :, :NX//2] - 360
     lon[5, :, :NX//2] = lon[5, :, :NX//2] - 360
 
-    plt.figure(figsize=(18, 12))
+    plt.figure(figsize=(18, 12), dpi=DPI)
     plt.title("Spherical Coordinate")
 
     plt.quiver(lon[0][::skip_sph, ::skip_sph], lat[0][::skip_sph, ::skip_sph], u[0][::skip_sph, ::skip_sph], v[0][::skip_sph, ::skip_sph], angles='xy', units="width", scale=scale_sph)
@@ -310,6 +310,10 @@ def plotWind():
     Q = ax.quiver(x[::skip_car], y[::skip_car], u[mask][::skip_car], v[mask][::skip_car], angles='xy', units="width", scale=scale_car)
     ax.quiverkey(Q, 0.85, 0.85, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')
 
+    gl = ax.gridlines(draw_labels=True)
+
+    ax.set_title(f"Sphere", fontsize=fs)
+
     plt.savefig("../graphs/wind/spherical_cartopy.png", dpi=DPI)
     plt.close()
 
@@ -327,7 +331,7 @@ def plotSphereCartopyZeta(t):
 
     map_proj = ccrs.PlateCarree(central_longitude=0.)
     data_crs = ccrs.PlateCarree()
-    fig, ax = plt.subplots(nrows=1,ncols=1,figsize=(12,8),subplot_kw={'projection': map_proj},dpi=DPI)
+    fig, ax = plt.subplots(nrows=1,ncols=1,figsize=(12,8),subplot_kw={'projection': map_proj}, dpi=DPI)
 
     pos = ax.get_position()
     pset = [0.07, 0.05, 0.8, 0.9]
@@ -343,12 +347,12 @@ def plotSphereCartopyZeta(t):
     cb_ax1 = fig.add_axes([0.92, 0.16, 0.012, 0.67])
     fig.colorbar(cs, cax=cb_ax1, ticks=np.linspace(left_zeta, right_zeta, split_zeta))
 
-    ax.coastlines(resolution='110m',color='k', lw=0.2, zorder=13)
+    # ax.coastlines(resolution='110m',color='k', lw=0.2, zorder=13)
     gl = ax.gridlines(draw_labels=True)
 
     ax.set_title(f"t = {t * DT / 60} min", fontsize=fs)
-    
-    plt.savefig(f"../graphs/zeta/{int(t/LEAP)}.png", dpi=DPI)
+
+    plt.savefig(f"../graphs/zeta/sphere_cartopy/{int(t/LEAP)}.png", dpi=DPI)
     plt.close()
 
 def plotOnCubeZeta(t):
@@ -359,7 +363,7 @@ def plotOnCubeZeta(t):
     val = (((v[:, :, 2:] - v[:, :, :-2]) / ((x[:, :, 2:] - x[:, :, :-2]) / 2))[:, 1:-1, :] - ((u[:, 2:, :] - u[:, :-2, :]) / ((y[:, 2:, :] - y[:, :-2, :]) / 2))[:, :, 1:-1])
 
 
-    fig = plt.figure(figsize=(18,10))
+    fig = plt.figure(figsize=(18,10), dpi=DPI)
     ax5 = fig.add_subplot(3,4,2)
     ax4 = fig.add_subplot(3,4,5)
     ax1 = fig.add_subplot(3,4,6)
@@ -377,6 +381,6 @@ def plotOnCubeZeta(t):
     cb_ax1 = fig.add_axes([0.9235, 0.1, 0.015, 0.78])
     fig.colorbar(cs1, cax=cb_ax1, ticks=np.linspace(left_zeta, right_zeta, split_zeta))
 
-    plt.savefig(f"../graphs/zeta/{int(t/LEAP)}.png", dpi=DPI)
+    plt.savefig(f"../graphs/zeta/curvilinear/{int(t/LEAP)}.png", dpi=DPI)
     plt.close()
     return

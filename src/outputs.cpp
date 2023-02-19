@@ -182,8 +182,8 @@ void Outputs::huv_nc(int n, CSSWM &model) {
         h.putVar(startp, countp, model.csswm[p].h);
         u.putVar(startp, countp, model.csswm[p].u);
         v.putVar(startp, countp, model.csswm[p].v);
-        ulonlat.putVar(startp, countp, u_lon_lat);
-        vlonlat.putVar(startp, countp, v_lon_lat);
+        ulonlat.putVar(startp, countp, u_lon_lat[p]);
+        vlonlat.putVar(startp, countp, v_lon_lat[p]);
     }
 }
 
@@ -207,5 +207,6 @@ void Outputs::create_all_directory() {
     create_directory("../graphs/h/sphere");
     create_directory("../graphs/h/sphere_cartopy");
     create_directory("../graphs/wind");
-    create_directory("../graphs/zeta");
+    create_directory("../graphs/zeta/curvilinear");
+    create_directory("../graphs/zeta/sphere_cartopy");
 }
