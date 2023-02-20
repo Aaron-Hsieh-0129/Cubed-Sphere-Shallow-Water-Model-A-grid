@@ -8,7 +8,7 @@ import xarray as xr
 
 
 ######## Should Be Tuned ########### 
-left, right, split = 8000, 12000, 21
+left, right, split = 8000, 10500, 21
 wind = 20
 skip_car = 55
 scale_car = 4000
@@ -34,7 +34,8 @@ fs = 15
 
 def plotOnCubeWindMul(t):
     path = f"../outputs/nc/{t}.nc"
-    x, y = xr.open_dataset("../outputs/nc/grid.nc")['x_local'][:, 1:-1, 1:-1].to_numpy(), xr.open_dataset("../outputs/nc/grid.nc")['y_local'][:, 1:-1, 1:-1].to_numpy()
+    x = xr.open_dataset("../outputs/nc/grid.nc")['x_local'][:, 1:-1, 1:-1].to_numpy(), 
+    y = xr.open_dataset("../outputs/nc/grid.nc")['y_local'][:, 1:-1, 1:-1].to_numpy()
     val = xr.open_dataset(path)['h'][:, 1:-1, 1:-1].to_numpy()
     u = xr.open_dataset(path)['u'][:, 1:-1, 1:-1].to_numpy()
     v = xr.open_dataset(path)['v'][:, 1:-1, 1:-1].to_numpy()
@@ -71,7 +72,7 @@ def plotOnCubeWindMul(t):
     ax5.quiverkey(Q, 0.7, 0.9, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')  
     ax6.quiverkey(Q, 0.7, 0.9, wind, f"{wind}" + r'$ \frac{m}{s}$', labelpos='E', coordinates='figure')   
     
-    plt.savefig(f"../graphs/h/curvilinear/{int(t/LEAP)}.png", dpi=DPI, transparent=True)
+    plt.savefig(f"../graphs/h/curvilinear/{int(t/LEAP)}.png", dpi=DPI)
     plt.close()
     return
 
@@ -98,7 +99,7 @@ def plotSphereWindCartopy(t):
     x = np.compress(mask, x)
     y = np.compress(mask, y)
 
-    cs = ax.tricontourf(x,y,h[mask],extend="both",cmap=cmap,levels=np.linspace(left, right, split))
+    cs = ax.tricontourf(x, y, h[mask], extend="both", cmap=cmap, levels=np.linspace(left, right, split))
     ax.set_global()
     cb_ax1 = fig.add_axes([0.92, 0.16, 0.012, 0.67])
     fig.colorbar(cs, cax=cb_ax1, ticks=np.linspace(left, right, split))
@@ -111,14 +112,15 @@ def plotSphereWindCartopy(t):
 
     ax.set_title(f"t = {t * DT / 60} min", fontsize=fs)
     
-    plt.savefig(f"../graphs/h/sphere_cartopy/{int(t/LEAP)}.png", dpi=DPI, transparent=True)
+    plt.savefig(f"../graphs/h/sphere_cartopy/{int(t/LEAP)}.png", dpi=DPI)
     plt.close()
 
 
 def plotSphereCartopyZeta(t):
     u = xr.open_dataset(f"../outputs/nc/{t}.nc")['u'][:, 1:-1, 1:-1].to_numpy()
     v = xr.open_dataset(f"../outputs/nc/{t}.nc")['v'][:, 1:-1, 1:-1].to_numpy()
-    x, y = xr.open_dataset("../outputs/nc/grid.nc")['x_local'][:, 1:-1, 1:-1].to_numpy(), xr.open_dataset("../outputs/nc/grid.nc")['y_local'][:, 1:-1, 1:-1].to_numpy()
+    x = xr.open_dataset("../outputs/nc/grid.nc")['x_local'][:, 1:-1, 1:-1].to_numpy()
+    y = xr.open_dataset("../outputs/nc/grid.nc")['y_local'][:, 1:-1, 1:-1].to_numpy()
 
     zeta = (((v[:, 2:, :] - v[:, :-2, :]) / ((x[:, 2:, :] - x[:, :-2, :]) / 2))[:, :, 1:-1] - ((u[:, :, 2:] - u[:, :, :-2]) / ((y[:, :, 2:] - y[:, :, :-2]) / 2))[:, 1:-1, :]).flatten()
 
@@ -154,7 +156,8 @@ def plotSphereCartopyZeta(t):
 def plotOnCubeZeta(t):
     u = xr.open_dataset(f"../outputs/nc/{t}.nc")['u'][:, 1:-1, 1:-1].to_numpy()
     v = xr.open_dataset(f"../outputs/nc/{t}.nc")['v'][:, 1:-1, 1:-1].to_numpy()
-    x, y = xr.open_dataset("../outputs/nc/grid.nc")['x_local'][:, 1:-1, 1:-1].to_numpy(), xr.open_dataset("../outputs/nc/grid.nc")['y_local'][:, 1:-1, 1:-1].to_numpy()
+    x = xr.open_dataset("../outputs/nc/grid.nc")['x_local'][:, 1:-1, 1:-1].to_numpy(), 
+    y = xr.open_dataset("../outputs/nc/grid.nc")['y_local'][:, 1:-1, 1:-1].to_numpy()
 
     val = (((v[:, 2:, :] - v[:, :-2, :]) / ((x[:, 2:, :] - x[:, :-2, :]) / 2))[:, :, 1:-1] - ((u[:, :, 2:] - u[:, :, :-2]) / ((y[:, :, 2:] - y[:, :, :-2]) / 2))[:, 1:-1, :])
 
