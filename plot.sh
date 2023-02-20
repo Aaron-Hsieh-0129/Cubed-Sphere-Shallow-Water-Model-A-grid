@@ -4,10 +4,6 @@ cd ../graphs/h/curvilinear
 ffmpeg -r 3 -i %d.png -pix_fmt yuv420p h+wind.mov -y
 ffmpeg -r 3 -i %d.png h+wind.gif -y
 
-cd ../sphere
-ffmpeg -r 3 -i %d.png -pix_fmt yuv420p h+wind.mov -y
-ffmpeg -r 3 -i %d.png h+wind.gif -y
-
 cd ../sphere_cartopy
 ffmpeg -r 3 -i %d.png -pix_fmt yuv420p h+wind.mov -y
 ffmpeg -r 3 -i %d.png h+wind.gif -y
