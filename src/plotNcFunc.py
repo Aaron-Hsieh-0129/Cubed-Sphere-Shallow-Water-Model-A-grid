@@ -143,7 +143,7 @@ def plotSphereCartopyZeta(t):
     cb_ax1 = fig.add_axes([0.92, 0.16, 0.012, 0.67])
     fig.colorbar(cs, cax=cb_ax1, ticks=np.linspace(left_zeta, right_zeta, split_zeta))
 
-    ax.coastlines(resolution='110m',color='k', lw=0.2, zorder=13)
+    # ax.coastlines(resolution='110m',color='k', lw=0.2, zorder=13)
     gl = ax.gridlines(draw_labels=True)
 
     ax.set_title(f"t = {t * DT / 60} min", fontsize=fs)
