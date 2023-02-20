@@ -34,7 +34,7 @@ fs = 15
 
 def plotOnCubeWindMul(t):
     path = f"../outputs/nc/{t}.nc"
-    x = xr.open_dataset("../outputs/nc/grid.nc")['x_local'][:, 1:-1, 1:-1].to_numpy(), 
+    x = xr.open_dataset("../outputs/nc/grid.nc")['x_local'][:, 1:-1, 1:-1].to_numpy()
     y = xr.open_dataset("../outputs/nc/grid.nc")['y_local'][:, 1:-1, 1:-1].to_numpy()
     val = xr.open_dataset(path)['h'][:, 1:-1, 1:-1].to_numpy()
     u = xr.open_dataset(path)['u'][:, 1:-1, 1:-1].to_numpy()
@@ -156,7 +156,7 @@ def plotSphereCartopyZeta(t):
 def plotOnCubeZeta(t):
     u = xr.open_dataset(f"../outputs/nc/{t}.nc")['u'][:, 1:-1, 1:-1].to_numpy()
     v = xr.open_dataset(f"../outputs/nc/{t}.nc")['v'][:, 1:-1, 1:-1].to_numpy()
-    x = xr.open_dataset("../outputs/nc/grid.nc")['x_local'][:, 1:-1, 1:-1].to_numpy(), 
+    x = xr.open_dataset("../outputs/nc/grid.nc")['x_local'][:, 1:-1, 1:-1].to_numpy()
     y = xr.open_dataset("../outputs/nc/grid.nc")['y_local'][:, 1:-1, 1:-1].to_numpy()
 
     val = (((v[:, 2:, :] - v[:, :-2, :]) / ((x[:, 2:, :] - x[:, :-2, :]) / 2))[:, :, 1:-1] - ((u[:, :, 2:] - u[:, :, :-2]) / ((y[:, :, 2:] - y[:, :, :-2]) / 2))[:, 1:-1, :])
