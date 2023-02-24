@@ -153,7 +153,7 @@ void Iteration::leap_frog(CSSWM &model) {
         Outputs::grid(model);
     #endif
     int n = 0;
-    double timenow = 0.;
+    // double timenow = 0.;
     double temp = TIMEEND / DT;
     int nmax = (int) temp;
 
@@ -173,7 +173,7 @@ void Iteration::leap_frog(CSSWM &model) {
         }
 
         n++;
-        timenow = n * DT;
+        // timenow = n * DT;
 
         // Integrate
         ph_pt(model);
