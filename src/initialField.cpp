@@ -1,101 +1,5 @@
 #include "initialField.hpp"
 
-namespace Rosetta {
-    template <int N>
-    class GaussLegendreQuadrature {
-    public:
-        enum {eDEGREE = N};
-
-        /*! Compute the integral of a functor
-        *
-        *   @param a    lower limit of integration
-        *   @param b    upper limit of integration
-        *   @param f    the function to integrate
-        *   @param err  callback in case of problems
-        */
-        template <typename Function>
-        double integrate(double a, double b, Function f) {
-            double p = (b - a) / 2;
-            double q = (b + a) / 2;
-            const LegendrePolynomial& legpoly = s_LegendrePolynomial;
-
-            double sum = 0;
-            for (int i = 1; i <= eDEGREE; ++i) {
-                sum += legpoly.weight(i) * f(p * legpoly.root(i) + q);
-            }
-        
-            return p * sum;
-        }
-
-    private:
-        class LegendrePolynomial {
-        public:
-            LegendrePolynomial () {
-                // Solve roots and weights
-                for (int i = 0; i <= eDEGREE; ++i) {
-                    double dr = 1;
-
-                    // Find zero
-                    Evaluation eval(cos(M_PI * (i - 0.25) / (eDEGREE + 0.5)));
-                    do {
-                        dr = eval.v() / eval.d();
-                        eval.evaluate(eval.x() - dr);
-                    } while (fabs (dr) > 2e-16);
-
-                    this->_r[i] = eval.x();
-                    this->_w[i] = 2 / ((1 - eval.x() * eval.x()) * eval.d() * eval.d());
-                }
-            }
-
-            double root(int i) const { return this->_r[i]; }
-            double weight(int i) const { return this->_w[i]; }
-        private:
-            double _r[eDEGREE + 1];
-            double _w[eDEGREE + 1];
-
-            /*! Evaluate the value *and* derivative of the
-            *   Legendre polynomial
-            */
-            class Evaluation {
-            public:
-                explicit Evaluation (double x) : _x(x), _v(1), _d(0) {
-                    this->evaluate(x);
-                }
-
-                void evaluate(double x) {
-                    this->_x = x;
-
-                    double vsub1 = x;
-                    double vsub2 = 1;
-                    double f     = 1 / (x * x - 1);
-                
-                    for (int i = 2; i <= eDEGREE; ++i) {
-                        this->_v = ((2 * i - 1) * x * vsub1 - (i - 1) * vsub2) / i;
-                        this->_d = i * f * (x * this->_v - vsub1);
-
-                        vsub2 = vsub1;
-                        vsub1 = this->_v;
-                    }
-                }
-
-                double v() const { return this->_v; }
-                double d() const { return this->_d; }
-                double x() const { return this->_x; }
-
-            private:
-                double _x;
-                double _v;
-                double _d;
-            };
-        };
-
-        static LegendrePolynomial s_LegendrePolynomial;
-    };
-
-    template <int N>
-    typename GaussLegendreQuadrature<N>::LegendrePolynomial GaussLegendreQuadrature<N>::s_LegendrePolynomial;
-}
-
 void Init::Init2d(CSSWM & model) {
     for (int p = 0; p < 6; p++) {
         for (int j = 0; j < NY; j++) {
@@ -108,7 +12,7 @@ void Init::Init2d(CSSWM & model) {
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * SteadyGeostrophyV(model.csswm[p].lon_original[i][j]);
                 #endif
 
-                #if defined(Jung) || defined(ADVECTION)
+                #if defined(Jung)
                     model.csswm[p].hp[i][j] = JungH(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]);
                     double mult[2][2];
                     model.matrixMul(model.gLower[i][j], model.csswm[p].IA[i][j], mult);
@@ -118,6 +22,14 @@ void Init::Init2d(CSSWM & model) {
                     model.matrixMul(model.gLower[i][j], model.csswm[p].IA[i][j], mult);
                     model.csswm[p].vp[i][j] = mult[1][0] * JungU(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]) + 
                                               mult[1][1] * JungV(model.csswm[p].lon_original[i][j]);
+                #endif
+
+                #if defined(Advection)
+                    model.csswm[p].hp[i][j] = AdvectionH(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]);
+                    model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * AdvectionU(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]) + 
+                                              (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * AdvectionV(model.csswm[p].lon_original[i][j]);
+                    model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * AdvectionU(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]) + 
+                                              (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * AdvectionV(model.csswm[p].lon_original[i][j]);
                 #endif
 
                 #ifdef DeformationalFlow
@@ -161,6 +73,10 @@ void Init::Init2d(CSSWM & model) {
                                               (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * RossbyHaurwitzV(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]);
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * RossbyHaurwitzU(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * RossbyHaurwitzV(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]); 
+                #endif
+
+                #if defined(TrueSol)
+                    model.csswm[p].h_true[i][j] = model.csswm[p].h[i][j];
                 #endif
             }
         }
@@ -218,6 +134,27 @@ double Init::JungV(double lon) {
     return v;
 }
 
+double Init::AdvectionH(double lon, double lat) {
+    double h0 = 1000.;
+    double lonC = 3. * M_PI / 2., latC = 0.;
+    double rd = RADIUS * acos(sin(latC) * sin(lat) + cos(latC) * cos(lat) * cos(lon-lonC));
+    double r0 = RADIUS / 3.;
+    if (rd < r0) return h0 / 2. * (1 + cos(M_PI * rd / r0));
+    else return 0.;
+}
+
+double Init::AdvectionU(double lon, double lat) {
+    double u0 = 2 * M_PI * RADIUS / (12. * 86400);
+    double u = u0 * (cos(ALPHA0) * cos(lat) + sin(ALPHA0) * sin(lon) * sin(lat));
+    return u;
+}
+
+double Init::AdvectionV(double lon) {
+    double u0 = 2 * M_PI * RADIUS / (12. * 86400);
+    double v = - u0 * sin(ALPHA0) * cos(lon);
+    return v;
+}
+
 double Init::Gravity(double lon, double lat) {
     double h0 = 1000;
     double lonC = 0., latC = 0.;
@@ -228,53 +165,48 @@ double Init::Gravity(double lon, double lat) {
 }
 
 double Init::SteadyGeostrophyH(double lon, double lat) {
-    double h0 = 2.94E5 / GRAVITY;
+    double h0 = 2.94E4 / GRAVITY;
     double u0 = 2 * M_PI * RADIUS / (12. * 86400);
     return h0 - (RADIUS * OMEGA * u0 + u0 * u0 / 2.) * pow(-cos(lon) * cos(lat) * sin(ALPHA0) + sin(lat) * cos(ALPHA0), 2) / GRAVITY;
 }
 
 double Init::SteadyGeostrophyU(double lon, double lat) {
     double u0 = 2 * M_PI * RADIUS / (12. * 86400);
-    double u = u0 * (cos(ALPHA0) * cos(lat) + sin(ALPHA0) * cos(lon) * sin(lat));
-    return u;
+    return u0 * (cos(ALPHA0) * cos(lat) + sin(ALPHA0) * cos(lon) * sin(lat));
 }
 
 double Init::SteadyGeostrophyV(double lon) {
     double u0 = 2 * M_PI * RADIUS / (12. * 86400);
-    double v = - u0 * sin(ALPHA0) * sin(lon);
-    return v;
+    return -u0 * sin(ALPHA0) * sin(lon);
 }
 
 double Init::MountainH(double lon, double lat) {
     double h0 = 5960;
-    double u0 = 2 * M_PI * RADIUS / (12. * 86400);
+    double u0 = 20;
     return h0 - (RADIUS * OMEGA * u0 + u0 * u0 / 2.) * pow(-cos(lon) * cos(lat) * sin(ALPHA0) + sin(lat) * cos(ALPHA0), 2) / GRAVITY;
 }
 
 double Init::MountainU(double lon, double lat) {
     double u0 = 20;
-    double u = u0 * (cos(0) * cos(lat) + sin(0) * cos(lon) * sin(lat));
+    double u = u0 * (cos(ALPHA0) * cos(lat) + sin(ALPHA0) * cos(lon) * sin(lat));
     return u;
 }
 
 double Init::MountainV(double lon) {
     double u0 = 20;
-    double v = - u0 * sin(0) * sin(lon);
+    double v = - u0 * sin(ALPHA0) * sin(lon);
     return v;
 }
 
 double Init::BarotropicH(double lat) {
-    Rosetta::GaussLegendreQuadrature<5> gl5;
     double h0 = 10000.;
     return h0 - simpson(-M_PI / 2, lat) / GRAVITY;
-    // return h0 - gl5.integrate(-M_PI/2, lat, func) / GRAVITY;
 }
 
 
 double Init::BarotropicHPrime(double lon, double lat) {
     double alpha = 1. / 3., beta = 1. / 15., theta2 = M_PI / 4., hHat = 120;
-    return hHat * cos(lat) * exp(-pow(lon / alpha, 2) - pow((theta2 - lat) / beta, 2));
-
+    if (-M_PI < lon && lon < M_PI) return hHat * cos(lat) * exp(-pow(lon / alpha, 2) - pow((theta2 - lat) / beta, 2));
 }
 
 double Init::BarotropicU(double lat) {

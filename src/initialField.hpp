@@ -10,6 +10,11 @@ private:
     static double JungH(double, double);
     static double JungU(double, double);
     static double JungV(double);
+    
+    static double AdvectionH(double, double);
+    static double AdvectionU(double, double);
+    static double AdvectionV(double);
+
     static double Gravity(double, double);
     static double SteadyGeostrophyH(double, double);
     static double SteadyGeostrophyU(double, double);

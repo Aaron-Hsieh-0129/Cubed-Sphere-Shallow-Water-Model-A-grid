@@ -19,15 +19,16 @@
 #define TXTOUTPUT
 #define NCOUTPUT
 
+// Jung
 #define ALPHA0 (0)
-// #define ADVECTION
-// #define Jung
+// #define Advection
 // #define GravityWave
 // #define SteadyGeostrophy
 #define Barotropic
 // #define Mountain
 // #define RossbyHaurwitz
 
+// #define TrueSol
 #define DIFFUSION
 #define TIMEFILTER
 #define KX (200000.)
