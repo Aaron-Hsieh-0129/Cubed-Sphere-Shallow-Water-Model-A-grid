@@ -177,14 +177,14 @@ void Iteration::leap_frog(CSSWM &model) {
 
         // Integrate
         ph_pt(model);
-        #ifndef ADVECTION
+        #ifndef Advection
             pu_pt(model);
             pv_pt(model);
         #endif
 
         // Boundary exchange and interpolation
         model.BP_h(model);
-        #ifndef ADVECTION
+        #ifndef Advection
             // model.BP_wind_convert(model);
             // model.BP_wind_interpolation(model);
             model.BP_wind_interpolation2(model);
