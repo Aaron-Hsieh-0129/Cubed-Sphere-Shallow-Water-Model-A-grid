@@ -74,10 +74,6 @@ void Init::Init2d(CSSWM & model) {
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * RossbyHaurwitzU(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * RossbyHaurwitzV(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]); 
                 #endif
-
-                #if defined(TrueSol)
-                    model.csswm[p].h_true[i][j] = model.csswm[p].h[i][j];
-                #endif
             }
         }
     }

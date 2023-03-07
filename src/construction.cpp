@@ -6,10 +6,6 @@ CSSWM::patch::patch() {
             hp[i][j] = h[i][j] = hm[i][j] = FILLVALUE;
             up[i][j] = u[i][j] = um[i][j] = FILLVALUE;
             vp[i][j] = v[i][j] = vm[i][j] = FILLVALUE;
-            
-            #if defined(TrueSol)
-                h_true[i][j] = FILLVALUE;
-            #endif
 
             lon[i][j] = lat[i][j] = FILLVALUE;
 

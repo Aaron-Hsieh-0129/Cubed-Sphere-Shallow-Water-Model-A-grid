@@ -22,10 +22,6 @@ void Iteration::ph_pt(CSSWM &model) {
                     model.csswm[p].hp[i][j] += D2T * KX * (model.csswm[p].hm[i+1][j] - 2. * model.csswm[p].hm[i][j] + model.csswm[p].hm[i-1][j]) / pow(dx_for_h, 2) + 
                                                D2T * KY * (model.csswm[p].hm[i][j+1] - 2. * model.csswm[p].hm[i][j] + model.csswm[p].hm[i][j-1]) / pow(dy_for_h, 2);
                 #endif
-
-                #if defined(TrueSol)
-                    // model.csswm[p].h_true[i][j] = AdvectionH(model.csswm[p].lon_original[i][j], model.csswm[p].lat[i][j]);
-                #endif
             }
         }
     }

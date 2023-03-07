@@ -156,9 +156,6 @@ void Outputs::huv_nc(int n, CSSWM &model) {
     NcVar h = dataFile.addVar("h", ncDouble, xyDim);
     NcVar u = dataFile.addVar("u", ncDouble, xyDim);
     NcVar v = dataFile.addVar("v", ncDouble, xyDim);
-    #if defined(TrueSol)
-        NcVar h_true = dataFile.addVar("h_true", ncDouble, xyDim);
-    #endif
 
     NcVar ulonlat = dataFile.addVar("u_lonlat", ncDouble, lonlatDim);
     NcVar vlonlat = dataFile.addVar("v_lonlat", ncDouble, lonlatDim);
@@ -185,9 +182,7 @@ void Outputs::huv_nc(int n, CSSWM &model) {
         h.putVar(startp, countp, model.csswm[p].h);
         u.putVar(startp, countp, model.csswm[p].u);
         v.putVar(startp, countp, model.csswm[p].v);
-        #if defined(TrueSol)
-            h_true.putVar(startp, countp, model.csswm[p].h_true);
-        #endif
+
         ulonlat.putVar(startp, countp, u_lon_lat[p]);
         vlonlat.putVar(startp, countp, v_lon_lat[p]);
     }

@@ -14,11 +14,6 @@ public:
         double up[NX][NY], u[NX][NY], um[NX][NY];
         double vp[NX][NY], v[NX][NY], vm[NX][NY];
 
-        #if defined(TrueSol)
-            double h_true[NX][NY];
-            double h_init[NX][NY];
-        #endif
-
         #ifdef Mountain
             double hs[NX][NY];
         #endif
