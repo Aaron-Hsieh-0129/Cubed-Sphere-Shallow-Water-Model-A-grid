@@ -43,7 +43,7 @@ void Iteration::pu_pt(CSSWM &model) {
                 dy_for_u = model.csswm[p].y[i][j+1] - model.csswm[p].y[i][j-1];
 
                 #if defined(SteadyGeostrophy) || defined(Mountain)
-                    f = 2 * OMEGA * (-cos(model.csswm[p].lon_original[i][j] * cos(model.csswm[p].lat[i][j] * sin(ALPHA0) + sin(model.csswm[p].lat[i][j] * cos(ALPHA0)))));
+                    f = 2 * OMEGA * (-cos(model.csswm[p].lon_original[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #elif defined(Barotropic) || defined(RossbyHaurwitz)
                     f = 2 * OMEGA * sin(model.csswm[p].lat[i][j]);
                 #else
@@ -101,7 +101,7 @@ void Iteration::pv_pt(CSSWM &model) {
                 dy_for_v = model.csswm[p].y[i][j+1] - model.csswm[p].y[i][j-1];
 
                 #if defined(SteadyGeostrophy) || defined(Mountain)
-                    f = 2 * OMEGA * (-cos(model.csswm[p].lon_original[i][j] * cos(model.csswm[p].lat[i][j] * sin(ALPHA0) + sin(model.csswm[p].lat[i][j] * cos(ALPHA0)))));
+                    f = 2 * OMEGA * (-cos(model.csswm[p].lon_original[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #elif defined(Barotropic) || defined(RossbyHaurwitz)
                     f = 2 * OMEGA * sin(model.csswm[p].lat[i][j]);
                 #else
