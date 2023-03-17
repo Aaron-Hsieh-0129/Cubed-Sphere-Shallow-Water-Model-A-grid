@@ -206,13 +206,4 @@ void Outputs::create_all_directory() {
     #ifdef NCOUTPUT
         create_directory(OUTPUTPATH + (string) "nc");
     #endif
-
-    // plot directory
-    create_directory("../graphs/grids");
-    create_directory("../graphs/h/curvilinear");
-    create_directory("../graphs/h/sphere");
-    create_directory("../graphs/h/sphere_cartopy");
-    create_directory("../graphs/wind");
-    create_directory("../graphs/zeta/curvilinear");
-    create_directory("../graphs/zeta/sphere_cartopy");
 }
