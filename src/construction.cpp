@@ -314,7 +314,7 @@ CSSWM::CSSWM() {
     #endif
 
     // Construct patch to patch transformation matrix (Declare at transform.cpp)
-    // Cube2Cube_matrix();
+    Cube2Cube_matrix();
 
     delete[] alpha;
     delete[] beta;

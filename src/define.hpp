@@ -12,11 +12,11 @@
 #define DT (180.)
 #define TIMEEND (86400 * 12 * 2)
 #define OUTPUTPATH "/data/Aaron/CSSWM-A-grid/Cases/Barotropic/180/outputs/"
-#define OUTPUTINTERVAL (50)
+#define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace
-// #define TXTOUTPUT
 #define NCOUTPUT
+// #define TXTOUTPUT
 
 #if defined(SecondOrderSpace)
     #define NX ((int) (90/DX + 2))
@@ -29,9 +29,9 @@
 #define D2T (2. * DT)
 
 // Jung
-#define ALPHA0 (M_PI / 4.)
-#define Advection
-// #define GravityWave
+#define ALPHA0 (0)
+// #define Advection
+#define GravityWave
 // #define SteadyGeostrophy
 // #define Barotropic
 // #define Mountain

@@ -161,7 +161,7 @@ void Iteration::ph_pt_4(CSSWM &model) {
 
                 psqrtGHU_py = (1. / (model.sqrtG[i][j] * 12. * dy_for_h)) * 
                               (-1.*(model.sqrtG[i][j+2] * model.csswm[p].h[i][j+2] * (model.gUpper[i][j+2][2] * model.csswm[p].u[i][j+2] + model.gUpper[i][j+2][3] * model.csswm[p].v[i][j+2])) 
-                               +8.*(model.sqrtG[i][j+1] * model.csswm[p].h[i][j+1] * (model.gUpper[i][j+1][2] * model.csswm[p].u[i][j+1] + model.gUpper[i][j+1][3] * model.csswm[p].v[i][j+2]))
+                               +8.*(model.sqrtG[i][j+1] * model.csswm[p].h[i][j+1] * (model.gUpper[i][j+1][2] * model.csswm[p].u[i][j+1] + model.gUpper[i][j+1][3] * model.csswm[p].v[i][j+1]))
                                -8.*(model.sqrtG[i][j-1] * model.csswm[p].h[i][j-1] * (model.gUpper[i][j-1][2] * model.csswm[p].u[i][j-1] + model.gUpper[i][j-1][3] * model.csswm[p].v[i][j-1]))
                                +1.*(model.sqrtG[i][j-2] * model.csswm[p].h[i][j-2] * (model.gUpper[i][j-2][2] * model.csswm[p].u[i][j-2] + model.gUpper[i][j-2][3] * model.csswm[p].v[i][j-2])));
             
@@ -219,8 +219,8 @@ void Iteration::pu_pt_4(CSSWM &model) {
                          -8.*(model.gUpper[i-1][j][3] * pow(model.csswm[p].v[i-1][j], 2))
                          +1.*(model.gUpper[i-2][j][3] * pow(model.csswm[p].v[i-2][j], 2)));
 
-                rotationU = (((-1*model.csswm[p].v[i+2][j]+8*model.csswm[p].v[i+1][j]-8*model.csswm[p].v[i-1][j]+1*model.csswm[p].v[i-2][j]) / (12.*dx_for_u)) - 
-                             ((-1*model.csswm[p].u[i][j+2]+8*model.csswm[p].u[i][j+1]-8*model.csswm[p].u[i][j-1]+1*model.csswm[p].u[i][j-2]) / (12.*dy_for_u)) 
+                rotationU = (((-1.*model.csswm[p].v[i+2][j] + 8.*model.csswm[p].v[i+1][j] - 8.*model.csswm[p].v[i-1][j] + 1.*model.csswm[p].v[i-2][j]) / (12.*dx_for_u)) - 
+                             ((-1.*model.csswm[p].u[i][j+2] + 8.*model.csswm[p].u[i][j+1] - 8.*model.csswm[p].u[i][j-1] + 1.*model.csswm[p].u[i][j-2]) / (12.*dy_for_u)) 
                              + model.sqrtG[i][j] * f) 
                              * (model.gUpper[i][j][2] * model.csswm[p].u[i][j] + model.gUpper[i][j][3] * model.csswm[p].v[i][j]);
             
@@ -264,7 +264,7 @@ void Iteration::pv_pt_4(CSSWM &model) {
                     f = 0;
                 #endif
 
-                pgH_py = GRAVITY / (12.*dy_for_v) * (-1*model.csswm[p].h[i][j+2] + 8.*model.csswm[p].h[i][j+1] - 8*model.csswm[p].h[i][j-1] + 1*model.csswm[p].h[i][j-2]);
+                pgH_py = GRAVITY / (12.*dy_for_v) * (-1.*model.csswm[p].h[i][j+2] + 8.*model.csswm[p].h[i][j+1] - 8.*model.csswm[p].h[i][j-1] + 1.*model.csswm[p].h[i][j-2]);
 
                 pU2_py = 0.5 /(12.*dy_for_v) * 
                         (-1.*(model.gUpper[i][j+2][0] * pow(model.csswm[p].u[i][j+2], 2))
@@ -272,7 +272,7 @@ void Iteration::pv_pt_4(CSSWM &model) {
                          -8.*(model.gUpper[i][j-1][0] * pow(model.csswm[p].u[i][j-1], 2))
                          +1.*(model.gUpper[i][j-2][0] * pow(model.csswm[p].u[i][j-2], 2)));
 
-                pUV_py = 1 / (12.*dy_for_v) * 
+                pUV_py = 1. / (12.*dy_for_v) * 
                         (-1.*(model.gUpper[i][j+2][1] * model.csswm[p].u[i][j+2] * model.csswm[p].v[i][j+2])
                          +8.*(model.gUpper[i][j+1][1] * model.csswm[p].u[i][j+1] * model.csswm[p].v[i][j+1])
                          -8.*(model.gUpper[i][j-1][1] * model.csswm[p].u[i][j-1] * model.csswm[p].v[i][j-1])
@@ -359,7 +359,7 @@ void Iteration::leap_frog(CSSWM &model) {
             ph_pt_4(model);
             #ifndef Advection
                 pu_pt_4(model);
-                pv_pt_4(model);
+                // pv_pt_4(model);
             #endif
 
             // Boundary exchange and interpolation

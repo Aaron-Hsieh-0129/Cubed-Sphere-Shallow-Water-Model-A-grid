@@ -44,7 +44,7 @@ void CSSWM::BP_h(CSSWM &model) {
         int p1, p2, i1, j1, i2, j2, reversed, lonlat;
         for (int pp = 0; pp < 24; pp++) {
             p1 = model.match_ouTTer[pp][0], p2 = model.match_ouTTer[pp][1], i1 = model.match_ouTTer[pp][2], j1 = model.match_ouTTer[pp][3], i2 = model.match_ouTTer[pp][4], j2 = model.match_ouTTer[pp][5], reversed = model.match_ouTTer[pp][6], lonlat = model.match_ouTTer[pp][7];
-            for (int idx = 2; idx < NX-2; idx++) {
+            for (int idx = 0; idx < NX; idx++) {
                 if (lonlat == 0) {
                     int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
                     int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;

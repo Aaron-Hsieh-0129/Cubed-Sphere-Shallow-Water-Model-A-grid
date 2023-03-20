@@ -25,7 +25,12 @@ public:
 
         double A[NX][NY][4], IA[NX][NY][4];
 
-        double IP1_L[NX][4], IP1_R[NX][4], IP1_U[NX][4], IP1_D[NX][4]; 
+        #if defined(SecondOrderSpace)
+            double IP1_L[NX][4], IP1_R[NX][4], IP1_U[NX][4], IP1_D[NX][4]; 
+        #elif defined(FourthOrderSpace)
+            double IP_ouTTer_L[NX][4], IP_ouTTer_R[NX][4], IP_ouTTer_U[NX][4], IP_ouTTer_D[NX][4]; 
+            double IP_ouTer_L[NX][4], IP_ouTer_R[NX][4], IP_ouTer_U[NX][4], IP_ouTer_D[NX][4]; 
+        #endif
     };
 
     CSSWM();

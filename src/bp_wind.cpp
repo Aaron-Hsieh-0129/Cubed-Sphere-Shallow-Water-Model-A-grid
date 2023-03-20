@@ -155,6 +155,7 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
         }
     }
 }
+*/
 
 void CSSWM::BP_wind_interpolation2(CSSWM &model) {
     double B, A1, A2, V1, V2, V3, V4;
@@ -164,49 +165,38 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
     double alpha, beta;
     double alpha_B, beta_B;
     double gLower[4], IA[4], A[4], gUpper[4];
+    int I1, I2_1, I2_2, J1, J2_1, J2_2;
     for (int pp = 0; pp < 24; pp++) {
-        p1 = model.match[pp][0], p2 = model.match[pp][1], i1 = model.match[pp][2], j1 = model.match[pp][3], i2 = model.match[pp][4], j2 = model.match[pp][5], reversed = model.match[pp][6], lonlat = model.match[pp][7];
+        #if defined(SecondOrderSpace)
+            p1 = match[pp][0], p2 = match[pp][1], i1 = match[pp][2], j1 = match[pp][3], i2 = match[pp][4], j2 = match[pp][5], reversed = match[pp][6], lonlat = match[pp][7];
+        #elif defined(FourthOrderSpace)
+            p1 = match_ouTTer[pp][0], p2 = match_ouTTer[pp][1], i1 = match_ouTTer[pp][2], j1 = match_ouTTer[pp][3], i2 = match_ouTTer[pp][4], j2 = match_ouTTer[pp][5], reversed = match_ouTTer[pp][6], lonlat = match_ouTTer[pp][7];
+        #endif
         for (int idx = 0; idx < NX; idx++) {
             if (lonlat == 0) {
-                int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
-                int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
+                I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
+                #if defined(SecondOrderSpace)
+                    I2_1 = i2 == -1 ? reversed ? checkIP[NX-1-idx][0] : checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP[NY-1-idx][0] : checkIP[idx][0] : j2;
+                    I2_2 = i2 == -1 ? reversed ? checkIP[NX-1-idx][1] : checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP[NY-1-idx][1] : checkIP[idx][1] : j2;
+                #elif defined(FourthOrderSpace)
+                    I2_1 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][0] : checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][0] : checkIP_ouTTer[idx][0] : j2;
+                    I2_2 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][1] : checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][1] : checkIP_ouTTer[idx][1] : j2;
+                #endif
 
                 B = model.csswm[p1].lat[I1][J1];
                 A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
                 V1 = model.csswm[p2].up[I2_1][J2_1], V2 = model.csswm[p2].up[I2_2][J2_2];
                 V3 = model.csswm[p2].vp[I2_1][J2_1], V4 = model.csswm[p2].vp[I2_2][J2_2];
-
-
-                uIP = model.interpolate(A1, A2, V1, V2, B);
-                vIP = model.interpolate(A1, A2, V3, V4, B);
-
-                if (i1 == -1) {
-                    if (j1 == 0) {
-                        model.csswm[p1].up[I1][J1] = model.csswm[p1].IP1_D[I1][0] * uIP + model.csswm[p1].IP1_D[I1][1] * vIP;
-                        model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP1_D[I1][2] * uIP + model.csswm[p1].IP1_D[I1][3] * vIP;
-                    }
-                    else if (j1 == NY-1) {
-                        model.csswm[p1].up[I1][J1] = model.csswm[p1].IP1_U[I1][0] * uIP + model.csswm[p1].IP1_U[I1][1] * vIP;
-                        model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP1_U[I1][2] * uIP + model.csswm[p1].IP1_U[I1][3] * vIP;
-                    }
-                }
-                else if (j1 == -1) {
-                    if (i1 == 0) {
-                        model.csswm[p1].up[I1][J1] = model.csswm[p1].IP1_L[J1][0] * uIP + model.csswm[p1].IP1_L[J1][1] * vIP;
-                        model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP1_L[J1][2] * uIP + model.csswm[p1].IP1_L[J1][3] * vIP;
-                    }
-                    else if (i1 == NY-1) {
-                        model.csswm[p1].up[I1][J1] = model.csswm[p1].IP1_R[J1][0] * uIP + model.csswm[p1].IP1_R[J1][1] * vIP;
-                        model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP1_R[J1][2] * uIP + model.csswm[p1].IP1_R[J1][3] * vIP;
-                    }
-                }
-                
             }
             else {
-                int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
-                int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
+                I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
+                #if defined(SecondOrderSpace)
+                    I2_1 = i2 == -1 ? reversed ? checkIP[NX-1-idx][0] : checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP[NY-1-idx][0] : checkIP[idx][0] : j2;
+                    I2_2 = i2 == -1 ? reversed ? checkIP[NX-1-idx][1] : checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP[NY-1-idx][1] : checkIP[idx][1] : j2;
+                #elif defined(FourthOrderSpace)
+                    I2_1 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][0] : checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][0] : checkIP_ouTTer[idx][0] : j2;
+                    I2_2 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][1] : checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][1] : checkIP_ouTTer[idx][1] : j2;
+                #endif
 
                 B = model.csswm[p1].lon[I1][J1];
                 A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
@@ -215,43 +205,106 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
 
                 if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
                 if (A1 > B && B < A2) B += 2 * M_PI;
-                
-                alpha = model.alpha2D[I1][J1];
-                beta = model.beta2D[I1][J1];
+            }
 
-                uIP = model.interpolate(A1, A2, V1, V2, B);
-                vIP = model.interpolate(A1, A2, V3, V4, B);
+            uIP = model.interpolate(A1, A2, V1, V2, B);
+            vIP = model.interpolate(A1, A2, V3, V4, B);
 
-                alpha_B = model.interpolate(A1, A2, model.alpha2D[I2_1][J2_1], model.alpha2D[I2_2][J2_2], B);
-                beta_B = model.interpolate(A1, A2, model.beta2D[I2_1][J2_1], model.beta2D[I2_2][J2_2], B);
-
-                model.get_gLower(gLower, alpha, beta);
-                model.get_IA(IA, p1, alpha, beta);
-                model.get_A(A, p2, alpha_B, beta_B);
-                model.get_gUpper(gUpper, alpha_B, beta_B);
-
-                if (i1 == -1) {
-                    if (j1 == 0) {
+            if (i1 == -1) {
+                if (j1 == 0) {
+                    #if defined(SecondOrderSpace)
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP1_D[I1][0] * uIP + model.csswm[p1].IP1_D[I1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP1_D[I1][2] * uIP + model.csswm[p1].IP1_D[I1][3] * vIP;
-                    }
-                    else if (j1 == NY-1) {
+                    #elif defined(FourthOrderSpace)
+                        model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTTer_D[I1][0] * uIP + model.csswm[p1].IP_ouTTer_D[I1][1] * vIP;
+                        model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTTer_D[I1][2] * uIP + model.csswm[p1].IP_ouTTer_D[I1][3] * vIP;
+                    #endif
+                }
+                else if (j1 == NY-1) {
+                    #if defined(SecondOrderSpace)
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP1_U[I1][0] * uIP + model.csswm[p1].IP1_U[I1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP1_U[I1][2] * uIP + model.csswm[p1].IP1_U[I1][3] * vIP;
-                    }
+                    #elif defined(FourthOrderSpace)
+                        model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTTer_U[I1][0] * uIP + model.csswm[p1].IP_ouTTer_U[I1][1] * vIP;
+                        model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTTer_U[I1][2] * uIP + model.csswm[p1].IP_ouTTer_U[I1][3] * vIP;
+                    #endif
                 }
-                else if (j1 == -1) {
-                    if (i1 == 0) {
+            }
+            else if (j1 == -1) {
+                if (i1 == 0) {
+                    #if defined(SecondOrderSpace)
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP1_L[J1][0] * uIP + model.csswm[p1].IP1_L[J1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP1_L[J1][2] * uIP + model.csswm[p1].IP1_L[J1][3] * vIP;
-                    }
-                    else if (i1 == NY-1) {
+                    #elif defined(FourthOrderSpace)
+                        model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTTer_L[J1][0] * uIP + model.csswm[p1].IP_ouTTer_L[J1][1] * vIP;
+                        model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTTer_L[J1][2] * uIP + model.csswm[p1].IP_ouTTer_L[J1][3] * vIP;
+                    #endif
+                }
+                else if (i1 == NY-1) {
+                    #if defined(SecondOrderSpace)
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP1_R[J1][0] * uIP + model.csswm[p1].IP1_R[J1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP1_R[J1][2] * uIP + model.csswm[p1].IP1_R[J1][3] * vIP;
-                    }
+                    #elif defined(FourthOrderSpace)
+                        model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTTer_R[J1][0] * uIP + model.csswm[p1].IP_ouTTer_R[J1][1] * vIP;
+                        model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTTer_R[J1][2] * uIP + model.csswm[p1].IP_ouTTer_R[J1][3] * vIP;
+                    #endif
                 }
             }
         }
     }
+
+    #if defined(FourthOrderSpace)
+        for (int pp = 0; pp < 24; pp++) {
+            p1 = match_ouTer[pp][0], p2 = match_ouTer[pp][1], i1 = match_ouTer[pp][2], j1 = match_ouTer[pp][3], i2 = match_ouTer[pp][4], j2 = match_ouTer[pp][5], reversed = match_ouTer[pp][6], lonlat = match_ouTer[pp][7];
+            for (int idx = 0; idx < NX; idx++) {
+                if (lonlat == 0) {
+                    I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
+                    I2_1 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][0] : checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][0] : checkIP_ouTer[idx][0] : j2;
+                    I2_2 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][1] : checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][1] : checkIP_ouTer[idx][1] : j2;
+
+                    B = model.csswm[p1].lat[I1][J1];
+                    A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
+                    V1 = model.csswm[p2].up[I2_1][J2_1], V2 = model.csswm[p2].up[I2_2][J2_2];
+                    V3 = model.csswm[p2].vp[I2_1][J2_1], V4 = model.csswm[p2].vp[I2_2][J2_2];
+                }
+                else {
+                    I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
+                    I2_1 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][0] : checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][0] : checkIP_ouTer[idx][0] : j2;
+                    I2_2 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][1] : checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][1] : checkIP_ouTer[idx][1] : j2;
+
+                    B = model.csswm[p1].lon[I1][J1];
+                    A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
+                    V1 = model.csswm[p2].up[I2_1][J2_1], V2 = model.csswm[p2].up[I2_2][J2_2];
+                    V3 = model.csswm[p2].vp[I2_1][J2_1], V4 = model.csswm[p2].vp[I2_2][J2_2];
+
+                    if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
+                    if (A1 > B && B < A2) B += 2 * M_PI;
+                }
+
+                uIP = model.interpolate(A1, A2, V1, V2, B);
+                vIP = model.interpolate(A1, A2, V3, V4, B);
+
+                if (i1 == -1) {
+                    if (j1 == 0) {
+                        model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_D[I1][0] * uIP + model.csswm[p1].IP_ouTer_D[I1][1] * vIP;
+                        model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_D[I1][2] * uIP + model.csswm[p1].IP_ouTer_D[I1][3] * vIP;
+                    }
+                    else if (j1 == NY-1) {
+                        model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_U[I1][0] * uIP + model.csswm[p1].IP_ouTer_U[I1][1] * vIP;
+                        model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_U[I1][2] * uIP + model.csswm[p1].IP_ouTer_U[I1][3] * vIP;
+                    }
+                }
+                else if (j1 == -1) {
+                    if (i1 == 0) {
+                        model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_L[J1][0] * uIP + model.csswm[p1].IP_ouTer_L[J1][1] * vIP;
+                        model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_L[J1][2] * uIP + model.csswm[p1].IP_ouTer_L[J1][3] * vIP;
+                    }
+                    else if (i1 == NY-1) {
+                        model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_R[J1][0] * uIP + model.csswm[p1].IP_ouTer_R[J1][1] * vIP;
+                        model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_R[J1][2] * uIP + model.csswm[p1].IP_ouTer_R[J1][3] * vIP;
+                    }
+                }
+            }
+        }
+    #endif
 }
-*/
