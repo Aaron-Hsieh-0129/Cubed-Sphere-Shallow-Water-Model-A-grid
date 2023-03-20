@@ -82,7 +82,7 @@ void CSSWM::BP_wind_convert(CSSWM &model) {
     }
 }
 
-
+/*
 void CSSWM::BP_wind_interpolation(CSSWM &model) {
     double B, A1, A2, V1, V2, V3, V4;
 
@@ -254,3 +254,4 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
         }
     }
 }
+*/

@@ -212,7 +212,7 @@ double CSSWM::Cube2Cube_V_2(double gLower[4], double IA[4], double A[4], double 
     return mult[1][0] * u + mult[1][1] * v;
 }
 
-
+/*
 void CSSWM::Cube2Cube_matrix() {
     // Construct the patch to patch transformation matrix 
     int p1, p2, i1, j1, i2, j2, reversed, lonlat;
@@ -375,3 +375,4 @@ void CSSWM::Cube2Cube_matrix() {
         }
     }
 }
+*/

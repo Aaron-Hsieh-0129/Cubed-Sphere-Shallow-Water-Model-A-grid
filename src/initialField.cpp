@@ -141,13 +141,13 @@ double Init::AdvectionH(double lon, double lat) {
 
 double Init::AdvectionU(double lon, double lat) {
     double u0 = 2 * M_PI * RADIUS / (12. * 86400);
-    double u = u0 * (cos(ALPHA0) * cos(lat) + sin(ALPHA0) * sin(lon) * sin(lat));
+    double u = u0 * (cos(ALPHA0) * cos(lat) + sin(ALPHA0) * cos(lon) * sin(lat));
     return u;
 }
 
 double Init::AdvectionV(double lon) {
     double u0 = 2 * M_PI * RADIUS / (12. * 86400);
-    double v = - u0 * sin(ALPHA0) * cos(lon);
+    double v = - u0 * sin(ALPHA0) * sin(lon);
     return v;
 }
 

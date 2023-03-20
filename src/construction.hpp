@@ -32,8 +32,16 @@ public:
     patch csswm[6];
     double sqrtG[NX][NY], gamma[NX][NY], gLower[NX][NY][4], gUpper[NX][NY][4];
     double alpha2D[NX][NY], beta2D[NX][NY];
-    int checkIP[NX][2];
-    int match[24][8];
+    
+    #if defined(SecondOrderSpace)
+        int match[24][8];
+        int checkIP[NX][2];
+    #elif defined(FourthOrderSpace)
+        int match_ouTTer[24][8];
+        int match_ouTer[24][8];
+        int checkIP_ouTTer[NX][2];
+        int checkIP_ouTer[NX][2];
+    #endif
 
     // ***********************************************************************************
     // In construction.cpp
