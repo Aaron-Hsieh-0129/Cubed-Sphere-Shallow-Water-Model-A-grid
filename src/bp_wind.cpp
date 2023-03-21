@@ -2,83 +2,236 @@
 
 void CSSWM::BP_wind_convert(CSSWM &model) {
     for (int idx = 0; idx < NX; idx++) {
-        // patch0 (Left, Right, Up, Down)
-        model.csswm[0].up[0][idx] = model.Cube2Cube_U(model, 0, 3, 0, idx, NX-2, idx);
-        model.csswm[0].vp[0][idx] = model.Cube2Cube_V(model, 0, 3, 0, idx, NX-2, idx);
+        #if defined(SecondOrderSpace)
+            // patch0 (Left, Right, Up, Down)
+            model.csswm[0].up[0][idx] = model.Cube2Cube_U(model, 0, 3, 0, idx, NX-2, idx);
+            model.csswm[0].vp[0][idx] = model.Cube2Cube_V(model, 0, 3, 0, idx, NX-2, idx);
 
-        model.csswm[0].up[NX-1][idx] = model.Cube2Cube_U(model, 0, 1, NX-1, idx, 1, idx);
-        model.csswm[0].vp[NX-1][idx] = model.Cube2Cube_V(model, 0, 1, NX-1, idx, 1, idx);
+            model.csswm[0].up[NX-1][idx] = model.Cube2Cube_U(model, 0, 1, NX-1, idx, 1, idx);
+            model.csswm[0].vp[NX-1][idx] = model.Cube2Cube_V(model, 0, 1, NX-1, idx, 1, idx);
 
-        model.csswm[0].up[idx][NY-1] = model.Cube2Cube_U(model, 0, 4, idx, NY-1, idx, 1);
-        model.csswm[0].vp[idx][NY-1] = model.Cube2Cube_V(model, 0, 4, idx, NY-1, idx, 1);
+            model.csswm[0].up[idx][NY-1] = model.Cube2Cube_U(model, 0, 4, idx, NY-1, idx, 1);
+            model.csswm[0].vp[idx][NY-1] = model.Cube2Cube_V(model, 0, 4, idx, NY-1, idx, 1);
 
-        model.csswm[0].up[idx][0] = model.Cube2Cube_U(model, 0, 5, idx, 0, idx, NY-2);
-        model.csswm[0].vp[idx][0] = model.Cube2Cube_V(model, 0, 5, idx, 0, idx, NY-2);
+            model.csswm[0].up[idx][0] = model.Cube2Cube_U(model, 0, 5, idx, 0, idx, NY-2);
+            model.csswm[0].vp[idx][0] = model.Cube2Cube_V(model, 0, 5, idx, 0, idx, NY-2);
 
-        // patch1 (Left, Right, Up, Down)
-        model.csswm[1].up[0][idx] = model.Cube2Cube_U(model, 1, 0, 0, idx, NX-2, idx);
-        model.csswm[1].vp[0][idx] = model.Cube2Cube_V(model, 1, 0, 0, idx, NX-2, idx);
+            // patch1 (Left, Right, Up, Down)
+            model.csswm[1].up[0][idx] = model.Cube2Cube_U(model, 1, 0, 0, idx, NX-2, idx);
+            model.csswm[1].vp[0][idx] = model.Cube2Cube_V(model, 1, 0, 0, idx, NX-2, idx);
 
-        model.csswm[1].up[NX-1][idx] = model.Cube2Cube_U(model, 1, 2, NX-1, idx, 1, idx);
-        model.csswm[1].vp[NX-1][idx] = model.Cube2Cube_V(model, 1, 2, NX-1, idx, 1, idx);
+            model.csswm[1].up[NX-1][idx] = model.Cube2Cube_U(model, 1, 2, NX-1, idx, 1, idx);
+            model.csswm[1].vp[NX-1][idx] = model.Cube2Cube_V(model, 1, 2, NX-1, idx, 1, idx);
 
-        model.csswm[1].up[idx][NY-1] = model.Cube2Cube_BV2AU(model, 1, 4, idx, NY-1, NX-2, idx);
-        model.csswm[1].vp[idx][NY-1] = model.Cube2Cube_BU2AV(model, 1, 4, idx, NY-1, NX-2, idx);
+            model.csswm[1].up[idx][NY-1] = model.Cube2Cube_BV2AU(model, 1, 4, idx, NY-1, NX-2, idx);
+            model.csswm[1].vp[idx][NY-1] = model.Cube2Cube_BU2AV(model, 1, 4, idx, NY-1, NX-2, idx);
 
-        model.csswm[1].up[idx][0] = model.Cube2Cube_BV2AU(model, 1, 5, idx, 0, NX-2, NY-1-idx);
-        model.csswm[1].vp[idx][0] = model.Cube2Cube_BU2AV(model, 1, 5, idx, 0, NX-2, NY-1-idx);
+            model.csswm[1].up[idx][0] = model.Cube2Cube_BV2AU(model, 1, 5, idx, 0, NX-2, NY-1-idx);
+            model.csswm[1].vp[idx][0] = model.Cube2Cube_BU2AV(model, 1, 5, idx, 0, NX-2, NY-1-idx);
 
-        // patch2 (Left, Right, Up, Down)
-        model.csswm[2].up[0][idx] = model.Cube2Cube_U(model, 2, 1, 0, idx, NX-2, idx);
-        model.csswm[2].vp[0][idx] = model.Cube2Cube_V(model, 2, 1, 0, idx, NX-2, idx);
+            // patch2 (Left, Right, Up, Down)
+            model.csswm[2].up[0][idx] = model.Cube2Cube_U(model, 2, 1, 0, idx, NX-2, idx);
+            model.csswm[2].vp[0][idx] = model.Cube2Cube_V(model, 2, 1, 0, idx, NX-2, idx);
 
-        model.csswm[2].up[NX-1][idx] = model.Cube2Cube_U(model, 2, 3, NX-1, idx, 1, idx);
-        model.csswm[2].vp[NX-1][idx] = model.Cube2Cube_V(model, 2, 3, NX-1, idx, 1, idx);
+            model.csswm[2].up[NX-1][idx] = model.Cube2Cube_U(model, 2, 3, NX-1, idx, 1, idx);
+            model.csswm[2].vp[NX-1][idx] = model.Cube2Cube_V(model, 2, 3, NX-1, idx, 1, idx);
 
-        model.csswm[2].up[idx][NY-1] = model.Cube2Cube_U(model, 2, 4, idx, NY-1, NX-1-idx, NY-2);
-        model.csswm[2].vp[idx][NY-1] = model.Cube2Cube_V(model, 2, 4, idx, NY-1, NX-1-idx, NY-2);
+            model.csswm[2].up[idx][NY-1] = model.Cube2Cube_U(model, 2, 4, idx, NY-1, NX-1-idx, NY-2);
+            model.csswm[2].vp[idx][NY-1] = model.Cube2Cube_V(model, 2, 4, idx, NY-1, NX-1-idx, NY-2);
 
-        model.csswm[2].up[idx][0] = model.Cube2Cube_U(model, 2, 5, idx, 0, NX-1-idx, 1);
-        model.csswm[2].vp[idx][0] = model.Cube2Cube_V(model, 2, 5, idx, 0, NX-1-idx, 1);
+            model.csswm[2].up[idx][0] = model.Cube2Cube_U(model, 2, 5, idx, 0, NX-1-idx, 1);
+            model.csswm[2].vp[idx][0] = model.Cube2Cube_V(model, 2, 5, idx, 0, NX-1-idx, 1);
 
-        // patch3 (Left, Right, Up, Down)
-        model.csswm[3].up[0][idx] = model.Cube2Cube_U(model, 3, 2, 0, idx, NX-2, idx);
-        model.csswm[3].vp[0][idx] = model.Cube2Cube_V(model, 3, 2, 0, idx, NX-2, idx);
+            // patch3 (Left, Right, Up, Down)
+            model.csswm[3].up[0][idx] = model.Cube2Cube_U(model, 3, 2, 0, idx, NX-2, idx);
+            model.csswm[3].vp[0][idx] = model.Cube2Cube_V(model, 3, 2, 0, idx, NX-2, idx);
 
-        model.csswm[3].up[NX-1][idx] = model.Cube2Cube_U(model, 3, 0, NX-1, idx, 1, idx);
-        model.csswm[3].vp[NX-1][idx] = model.Cube2Cube_V(model, 3, 0, NX-1, idx, 1, idx);
+            model.csswm[3].up[NX-1][idx] = model.Cube2Cube_U(model, 3, 0, NX-1, idx, 1, idx);
+            model.csswm[3].vp[NX-1][idx] = model.Cube2Cube_V(model, 3, 0, NX-1, idx, 1, idx);
 
-        model.csswm[3].up[idx][NY-1] = model.Cube2Cube_BV2AU(model, 3, 4, idx, NY-1, 1, NY-1-idx);
-        model.csswm[3].vp[idx][NY-1] = model.Cube2Cube_BU2AV(model, 3, 4, idx, NY-1, 1, NY-1-idx);
+            model.csswm[3].up[idx][NY-1] = model.Cube2Cube_BV2AU(model, 3, 4, idx, NY-1, 1, NY-1-idx);
+            model.csswm[3].vp[idx][NY-1] = model.Cube2Cube_BU2AV(model, 3, 4, idx, NY-1, 1, NY-1-idx);
 
-        model.csswm[3].up[idx][0] = model.Cube2Cube_BV2AU(model, 3, 5, idx, 0, 1, idx);
-        model.csswm[3].vp[idx][0] = model.Cube2Cube_BU2AV(model, 3, 5, idx, 0, 1, idx);
+            model.csswm[3].up[idx][0] = model.Cube2Cube_BV2AU(model, 3, 5, idx, 0, 1, idx);
+            model.csswm[3].vp[idx][0] = model.Cube2Cube_BU2AV(model, 3, 5, idx, 0, 1, idx);
 
-        // patch4 (Left, Right, Up, Down)
-        model.csswm[4].up[0][idx] = model.Cube2Cube_BV2AU(model, 4, 3, 0, idx, NX-1-idx, NY-2);
-        model.csswm[4].vp[0][idx] = model.Cube2Cube_BU2AV(model, 4, 3, 0, idx, NX-1-idx, NY-2);
+            // patch4 (Left, Right, Up, Down)
+            model.csswm[4].up[0][idx] = model.Cube2Cube_BV2AU(model, 4, 3, 0, idx, NX-1-idx, NY-2);
+            model.csswm[4].vp[0][idx] = model.Cube2Cube_BU2AV(model, 4, 3, 0, idx, NX-1-idx, NY-2);
 
-        model.csswm[4].up[NX-1][idx] = model.Cube2Cube_BV2AU(model, 4, 1, NX-1, idx, idx, NY-2);
-        model.csswm[4].vp[NX-1][idx] = model.Cube2Cube_BU2AV(model, 4, 1, NX-1, idx, idx, NY-2);
+            model.csswm[4].up[NX-1][idx] = model.Cube2Cube_BV2AU(model, 4, 1, NX-1, idx, idx, NY-2);
+            model.csswm[4].vp[NX-1][idx] = model.Cube2Cube_BU2AV(model, 4, 1, NX-1, idx, idx, NY-2);
 
-        model.csswm[4].up[idx][NY-1] = model.Cube2Cube_U(model, 4, 2, idx, NY-1, NX-1-idx, NY-2);
-        model.csswm[4].vp[idx][NY-1] = model.Cube2Cube_V(model, 4, 2, idx, NY-1, NX-1-idx, NY-2);
+            model.csswm[4].up[idx][NY-1] = model.Cube2Cube_U(model, 4, 2, idx, NY-1, NX-1-idx, NY-2);
+            model.csswm[4].vp[idx][NY-1] = model.Cube2Cube_V(model, 4, 2, idx, NY-1, NX-1-idx, NY-2);
 
-        model.csswm[4].up[idx][0] = model.Cube2Cube_U(model, 4, 0, idx, 0, idx, NY-2);
-        model.csswm[4].vp[idx][0] = model.Cube2Cube_V(model, 4, 0, idx, 0, idx, NY-2);
+            model.csswm[4].up[idx][0] = model.Cube2Cube_U(model, 4, 0, idx, 0, idx, NY-2);
+            model.csswm[4].vp[idx][0] = model.Cube2Cube_V(model, 4, 0, idx, 0, idx, NY-2);
 
-        // patch5 (Left, Right, Up, Down)
-        model.csswm[5].up[0][idx] = model.Cube2Cube_BV2AU(model, 5, 3, 0, idx, idx, 1);
-        model.csswm[5].vp[0][idx] = model.Cube2Cube_BU2AV(model, 5, 3, 0, idx, idx, 1);
+            // patch5 (Left, Right, Up, Down)
+            model.csswm[5].up[0][idx] = model.Cube2Cube_BV2AU(model, 5, 3, 0, idx, idx, 1);
+            model.csswm[5].vp[0][idx] = model.Cube2Cube_BU2AV(model, 5, 3, 0, idx, idx, 1);
 
-        model.csswm[5].up[NX-1][idx] = model.Cube2Cube_BV2AU(model, 5, 1, NX-1, idx, NX-1-idx, 1);
-        model.csswm[5].vp[NX-1][idx] = model.Cube2Cube_BU2AV(model, 5, 1, NX-1, idx, NX-1-idx, 1);
+            model.csswm[5].up[NX-1][idx] = model.Cube2Cube_BV2AU(model, 5, 1, NX-1, idx, NX-1-idx, 1);
+            model.csswm[5].vp[NX-1][idx] = model.Cube2Cube_BU2AV(model, 5, 1, NX-1, idx, NX-1-idx, 1);
 
-        model.csswm[5].up[idx][NY-1] = model.Cube2Cube_U(model, 5, 0, idx, NY-1, idx, 1);
-        model.csswm[5].vp[idx][NY-1] = model.Cube2Cube_V(model, 5, 0, idx, NY-1, idx, 1);
+            model.csswm[5].up[idx][NY-1] = model.Cube2Cube_U(model, 5, 0, idx, NY-1, idx, 1);
+            model.csswm[5].vp[idx][NY-1] = model.Cube2Cube_V(model, 5, 0, idx, NY-1, idx, 1);
 
-        model.csswm[5].up[idx][0] = model.Cube2Cube_U(model, 5, 2, idx, 0, NX-1-idx, 1);
-        model.csswm[5].vp[idx][0] = model.Cube2Cube_V(model, 5, 2, idx, 0, NX-1-idx, 1);
+            model.csswm[5].up[idx][0] = model.Cube2Cube_U(model, 5, 2, idx, 0, NX-1-idx, 1);
+            model.csswm[5].vp[idx][0] = model.Cube2Cube_V(model, 5, 2, idx, 0, NX-1-idx, 1);
+        #elif defined(FourthOrderSpace)
+            // patch0 (Left, Right, Up, Down)
+            model.csswm[0].up[0][idx] = model.Cube2Cube_U(model, 0, 3, 0, idx, NX-4, idx);
+            model.csswm[0].vp[0][idx] = model.Cube2Cube_V(model, 0, 3, 0, idx, NX-4, idx);
+
+            model.csswm[0].up[NX-1][idx] = model.Cube2Cube_U(model, 0, 1, NX-1, idx, 3, idx);
+            model.csswm[0].vp[NX-1][idx] = model.Cube2Cube_V(model, 0, 1, NX-1, idx, 3, idx);
+
+            model.csswm[0].up[idx][NY-1] = model.Cube2Cube_U(model, 0, 4, idx, NY-1, idx, 3);
+            model.csswm[0].vp[idx][NY-1] = model.Cube2Cube_V(model, 0, 4, idx, NY-1, idx, 3);
+
+            model.csswm[0].up[idx][0] = model.Cube2Cube_U(model, 0, 5, idx, 0, idx, NY-4);
+            model.csswm[0].vp[idx][0] = model.Cube2Cube_V(model, 0, 5, idx, 0, idx, NY-4);
+
+            model.csswm[0].up[1][idx] = model.Cube2Cube_U(model, 0, 3, 0, idx, NX-3, idx);
+            model.csswm[0].vp[1][idx] = model.Cube2Cube_V(model, 0, 3, 0, idx, NX-3, idx);
+
+            model.csswm[0].up[NX-2][idx] = model.Cube2Cube_U(model, 0, 1, NX-1, idx, 2, idx);
+            model.csswm[0].vp[NX-2][idx] = model.Cube2Cube_V(model, 0, 1, NX-1, idx, 2, idx);
+
+            model.csswm[0].up[idx][NY-2] = model.Cube2Cube_U(model, 0, 4, idx, NY-1, idx, 2);
+            model.csswm[0].vp[idx][NY-2] = model.Cube2Cube_V(model, 0, 4, idx, NY-1, idx, 2);
+
+            model.csswm[0].up[idx][1] = model.Cube2Cube_U(model, 0, 5, idx, 0, idx, NY-3);
+            model.csswm[0].vp[idx][1] = model.Cube2Cube_V(model, 0, 5, idx, 0, idx, NY-3);
+
+
+            // patch1 (Left, Right, Up, Down)
+            model.csswm[1].up[0][idx] = model.Cube2Cube_U(model, 1, 0, 0, idx, NX-4, idx);
+            model.csswm[1].vp[0][idx] = model.Cube2Cube_V(model, 1, 0, 0, idx, NX-4, idx);
+
+            model.csswm[1].up[NX-1][idx] = model.Cube2Cube_U(model, 1, 2, NX-1, idx, 3, idx);
+            model.csswm[1].vp[NX-1][idx] = model.Cube2Cube_V(model, 1, 2, NX-1, idx, 3, idx);
+
+            model.csswm[1].up[idx][NY-1] = model.Cube2Cube_BV2AU(model, 1, 4, idx, NY-1, NX-4, idx);
+            model.csswm[1].vp[idx][NY-1] = model.Cube2Cube_BU2AV(model, 1, 4, idx, NY-1, NX-4, idx);
+
+            model.csswm[1].up[idx][0] = model.Cube2Cube_BV2AU(model, 1, 5, idx, 0, NX-4, NY-1-idx);
+            model.csswm[1].vp[idx][0] = model.Cube2Cube_BU2AV(model, 1, 5, idx, 0, NX-4, NY-1-idx);
+
+            model.csswm[1].up[1][idx] = model.Cube2Cube_U(model, 1, 0, 0, idx, NX-3, idx);
+            model.csswm[1].vp[1][idx] = model.Cube2Cube_V(model, 1, 0, 0, idx, NX-3, idx);
+
+            model.csswm[1].up[NX-2][idx] = model.Cube2Cube_U(model, 1, 2, NX-1, idx, 2, idx);
+            model.csswm[1].vp[NX-2][idx] = model.Cube2Cube_V(model, 1, 2, NX-1, idx, 2, idx);
+
+            model.csswm[1].up[idx][NY-2] = model.Cube2Cube_BV2AU(model, 1, 4, idx, NY-1, NX-3, idx);
+            model.csswm[1].vp[idx][NY-2] = model.Cube2Cube_BU2AV(model, 1, 4, idx, NY-1, NX-3, idx);
+
+            model.csswm[1].up[idx][1] = model.Cube2Cube_BV2AU(model, 1, 5, idx, 0, NX-3, NY-1-idx);
+            model.csswm[1].vp[idx][1] = model.Cube2Cube_BU2AV(model, 1, 5, idx, 0, NX-3, NY-1-idx);
+
+            // patch2 (Left, Right, Up, Down)
+            model.csswm[2].up[0][idx] = model.Cube2Cube_U(model, 2, 1, 0, idx, NX-4, idx);
+            model.csswm[2].vp[0][idx] = model.Cube2Cube_V(model, 2, 1, 0, idx, NX-4, idx);
+
+            model.csswm[2].up[NX-1][idx] = model.Cube2Cube_U(model, 2, 3, NX-1, idx, 3, idx);
+            model.csswm[2].vp[NX-1][idx] = model.Cube2Cube_V(model, 2, 3, NX-1, idx, 3, idx);
+
+            model.csswm[2].up[idx][NY-1] = model.Cube2Cube_U(model, 2, 4, idx, NY-1, NX-1-idx, NY-4);
+            model.csswm[2].vp[idx][NY-1] = model.Cube2Cube_V(model, 2, 4, idx, NY-1, NX-1-idx, NY-4);
+
+            model.csswm[2].up[idx][0] = model.Cube2Cube_U(model, 2, 5, idx, 0, NX-1-idx, 3);
+            model.csswm[2].vp[idx][0] = model.Cube2Cube_V(model, 2, 5, idx, 0, NX-1-idx, 3);
+
+            model.csswm[2].up[1][idx] = model.Cube2Cube_U(model, 2, 1, 0, idx, NX-3, idx);
+            model.csswm[2].vp[1][idx] = model.Cube2Cube_V(model, 2, 1, 0, idx, NX-3, idx);
+
+            model.csswm[2].up[NX-2][idx] = model.Cube2Cube_U(model, 2, 3, NX-1, idx, 2, idx);
+            model.csswm[2].vp[NX-2][idx] = model.Cube2Cube_V(model, 2, 3, NX-1, idx, 2, idx);
+
+            model.csswm[2].up[idx][NY-2] = model.Cube2Cube_U(model, 2, 4, idx, NY-1, NX-1-idx, NY-3);
+            model.csswm[2].vp[idx][NY-2] = model.Cube2Cube_V(model, 2, 4, idx, NY-1, NX-1-idx, NY-3);
+
+            model.csswm[2].up[idx][1] = model.Cube2Cube_U(model, 2, 5, idx, 0, NX-1-idx, 2);
+            model.csswm[2].vp[idx][1] = model.Cube2Cube_V(model, 2, 5, idx, 0, NX-1-idx, 2);
+
+            // patch3 (Left, Right, Up, Down)
+            model.csswm[3].up[0][idx] = model.Cube2Cube_U(model, 3, 2, 0, idx, NX-4, idx);
+            model.csswm[3].vp[0][idx] = model.Cube2Cube_V(model, 3, 2, 0, idx, NX-4, idx);
+
+            model.csswm[3].up[NX-1][idx] = model.Cube2Cube_U(model, 3, 0, NX-1, idx, 3, idx);
+            model.csswm[3].vp[NX-1][idx] = model.Cube2Cube_V(model, 3, 0, NX-1, idx, 3, idx);
+
+            model.csswm[3].up[idx][NY-1] = model.Cube2Cube_BV2AU(model, 3, 4, idx, NY-1, 3, NY-1-idx);
+            model.csswm[3].vp[idx][NY-1] = model.Cube2Cube_BU2AV(model, 3, 4, idx, NY-1, 3, NY-1-idx);
+
+            model.csswm[3].up[idx][0] = model.Cube2Cube_BV2AU(model, 3, 5, idx, 0, 3, idx);
+            model.csswm[3].vp[idx][0] = model.Cube2Cube_BU2AV(model, 3, 5, idx, 0, 3, idx);
+
+            model.csswm[3].up[1][idx] = model.Cube2Cube_U(model, 3, 2, 0, idx, NX-3, idx);
+            model.csswm[3].vp[1][idx] = model.Cube2Cube_V(model, 3, 2, 0, idx, NX-3, idx);
+
+            model.csswm[3].up[NX-2][idx] = model.Cube2Cube_U(model, 3, 0, NX-1, idx, 2, idx);
+            model.csswm[3].vp[NX-2][idx] = model.Cube2Cube_V(model, 3, 0, NX-1, idx, 2, idx);
+
+            model.csswm[3].up[idx][NY-2] = model.Cube2Cube_BV2AU(model, 3, 4, idx, NY-1, 2, NY-1-idx);
+            model.csswm[3].vp[idx][NY-2] = model.Cube2Cube_BU2AV(model, 3, 4, idx, NY-1, 2, NY-1-idx);
+
+            model.csswm[3].up[idx][1] = model.Cube2Cube_BV2AU(model, 3, 5, idx, 0, 2, idx);
+            model.csswm[3].vp[idx][1] = model.Cube2Cube_BU2AV(model, 3, 5, idx, 0, 2, idx);
+
+            // patch4 (Left, Right, Up, Down)
+            model.csswm[4].up[0][idx] = model.Cube2Cube_BV2AU(model, 4, 3, 0, idx, NX-1-idx, NY-4);
+            model.csswm[4].vp[0][idx] = model.Cube2Cube_BU2AV(model, 4, 3, 0, idx, NX-1-idx, NY-4);
+
+            model.csswm[4].up[NX-1][idx] = model.Cube2Cube_BV2AU(model, 4, 1, NX-1, idx, idx, NY-4);
+            model.csswm[4].vp[NX-1][idx] = model.Cube2Cube_BU2AV(model, 4, 1, NX-1, idx, idx, NY-4);
+
+            model.csswm[4].up[idx][NY-1] = model.Cube2Cube_U(model, 4, 2, idx, NY-1, NX-1-idx, NY-4);
+            model.csswm[4].vp[idx][NY-1] = model.Cube2Cube_V(model, 4, 2, idx, NY-1, NX-1-idx, NY-4);
+
+            model.csswm[4].up[idx][0] = model.Cube2Cube_U(model, 4, 0, idx, 0, idx, NY-4);
+            model.csswm[4].vp[idx][0] = model.Cube2Cube_V(model, 4, 0, idx, 0, idx, NY-4);
+
+            model.csswm[4].up[1][idx] = model.Cube2Cube_BV2AU(model, 4, 3, 0, idx, NX-1-idx, NY-3);
+            model.csswm[4].vp[1][idx] = model.Cube2Cube_BU2AV(model, 4, 3, 0, idx, NX-1-idx, NY-3);
+
+            model.csswm[4].up[NX-2][idx] = model.Cube2Cube_BV2AU(model, 4, 1, NX-1, idx, idx, NY-3);
+            model.csswm[4].vp[NX-2][idx] = model.Cube2Cube_BU2AV(model, 4, 1, NX-1, idx, idx, NY-3);
+
+            model.csswm[4].up[idx][NY-2] = model.Cube2Cube_U(model, 4, 2, idx, NY-1, NX-1-idx, NY-3);
+            model.csswm[4].vp[idx][NY-2] = model.Cube2Cube_V(model, 4, 2, idx, NY-1, NX-1-idx, NY-3);
+
+            model.csswm[4].up[idx][1] = model.Cube2Cube_U(model, 4, 0, idx, 0, idx, NY-3);
+            model.csswm[4].vp[idx][1] = model.Cube2Cube_V(model, 4, 0, idx, 0, idx, NY-3);
+
+            // patch5 (Left, Right, Up, Down)
+            model.csswm[5].up[0][idx] = model.Cube2Cube_BV2AU(model, 5, 3, 0, idx, idx, 3);
+            model.csswm[5].vp[0][idx] = model.Cube2Cube_BU2AV(model, 5, 3, 0, idx, idx, 3);
+
+            model.csswm[5].up[NX-1][idx] = model.Cube2Cube_BV2AU(model, 5, 1, NX-1, idx, NX-1-idx, 3);
+            model.csswm[5].vp[NX-1][idx] = model.Cube2Cube_BU2AV(model, 5, 1, NX-1, idx, NX-1-idx, 3);
+
+            model.csswm[5].up[idx][NY-1] = model.Cube2Cube_U(model, 5, 0, idx, NY-1, idx, 3);
+            model.csswm[5].vp[idx][NY-1] = model.Cube2Cube_V(model, 5, 0, idx, NY-1, idx, 3);
+
+            model.csswm[5].up[idx][0] = model.Cube2Cube_U(model, 5, 2, idx, 0, NX-1-idx, 3);
+            model.csswm[5].vp[idx][0] = model.Cube2Cube_V(model, 5, 2, idx, 0, NX-1-idx, 3);
+
+            model.csswm[5].up[1][idx] = model.Cube2Cube_BV2AU(model, 5, 3, 0, idx, idx, 2);
+            model.csswm[5].vp[1][idx] = model.Cube2Cube_BU2AV(model, 5, 3, 0, idx, idx, 2);
+
+            model.csswm[5].up[NX-2][idx] = model.Cube2Cube_BV2AU(model, 5, 1, NX-1, idx, NX-1-idx, 2);
+            model.csswm[5].vp[NX-2][idx] = model.Cube2Cube_BU2AV(model, 5, 1, NX-1, idx, NX-1-idx, 2);
+
+            model.csswm[5].up[idx][NY-2] = model.Cube2Cube_U(model, 5, 0, idx, NY-1, idx, 2);
+            model.csswm[5].vp[idx][NY-2] = model.Cube2Cube_V(model, 5, 0, idx, NY-1, idx, 2);
+
+            model.csswm[5].up[idx][1] = model.Cube2Cube_U(model, 5, 2, idx, 0, NX-1-idx, 2);
+            model.csswm[5].vp[idx][1] = model.Cube2Cube_V(model, 5, 2, idx, 0, NX-1-idx, 2);
+        #endif
     }
 }
 
@@ -162,8 +315,6 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
 
     int p1, p2, i1, j1, i2, j2, reversed, lonlat;
     double uIP, vIP;
-    double alpha, beta;
-    double alpha_B, beta_B;
     double gLower[4], IA[4], A[4], gUpper[4];
     int I1, I2_1, I2_2, J1, J2_1, J2_2;
     for (int pp = 0; pp < 24; pp++) {
@@ -285,21 +436,21 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
                 vIP = model.interpolate(A1, A2, V3, V4, B);
 
                 if (i1 == -1) {
-                    if (j1 == 0) {
+                    if (j1 == 1) {
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_D[I1][0] * uIP + model.csswm[p1].IP_ouTer_D[I1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_D[I1][2] * uIP + model.csswm[p1].IP_ouTer_D[I1][3] * vIP;
                     }
-                    else if (j1 == NY-1) {
+                    else if (j1 == NY-2) {
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_U[I1][0] * uIP + model.csswm[p1].IP_ouTer_U[I1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_U[I1][2] * uIP + model.csswm[p1].IP_ouTer_U[I1][3] * vIP;
                     }
                 }
                 else if (j1 == -1) {
-                    if (i1 == 0) {
+                    if (i1 == 1) {
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_L[J1][0] * uIP + model.csswm[p1].IP_ouTer_L[J1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_L[J1][2] * uIP + model.csswm[p1].IP_ouTer_L[J1][3] * vIP;
                     }
-                    else if (i1 == NY-1) {
+                    else if (i1 == NY-2) {
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_R[J1][0] * uIP + model.csswm[p1].IP_ouTer_R[J1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_R[J1][2] * uIP + model.csswm[p1].IP_ouTer_R[J1][3] * vIP;
                     }

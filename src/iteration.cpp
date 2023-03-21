@@ -359,7 +359,7 @@ void Iteration::leap_frog(CSSWM &model) {
             ph_pt_4(model);
             #ifndef Advection
                 pu_pt_4(model);
-                // pv_pt_4(model);
+                pv_pt_4(model);
             #endif
 
             // Boundary exchange and interpolation

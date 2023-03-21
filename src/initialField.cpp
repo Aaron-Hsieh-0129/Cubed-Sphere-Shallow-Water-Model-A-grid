@@ -131,7 +131,7 @@ double Init::JungV(double lon) {
 }
 
 double Init::AdvectionH(double lon, double lat) {
-    double h0 = 1000.;
+    double h0 = 100.;
     double lonC = 3. * M_PI / 2., latC = 0.;
     double rd = RADIUS * acos(sin(latC) * sin(lat) + cos(latC) * cos(lat) * cos(lon-lonC));
     double r0 = RADIUS / 3.;
