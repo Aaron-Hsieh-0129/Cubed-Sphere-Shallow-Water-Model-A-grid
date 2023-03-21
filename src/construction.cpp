@@ -121,7 +121,8 @@ void CSSWM::Construct_p5_lonlat_xy_AIA(int p, double alpha2D[NX][NY], double bet
     }
 }
 
-void initMatch(int match[24][8]) {
+#if defined(SecondOrderSpace)
+void initMatch_1point(int match[24][8]) {
     // Construct a array for dealing with interpolation between all patch
     // (p1, p2, i1, j1, i2, j2, reversed, LonLat: 1/0) 
     // Left, Right, Up, Down
@@ -138,18 +139,58 @@ void initMatch(int match[24][8]) {
             match[i][j] = tmp[i][j];
         }
     }
-
+    return;
 }
+#elif defined(FourthOrderSpace)
+void initMatch_2point(int match_ouTer[24][8], int match_ouTTer[24][8]) {
+    // Construct a array for dealing with interpolation between all patch
+    // (p1, p2, i1, j1, i2, j2, reversed, LonLat: 1/0) 
+    // Left, Right, Up, Down
+    int tmp_ouTTer[24][8] = {
+        {0, 3, 0, -1, NX-4, -1, 0, 0},  {0, 1, NX-1, -1, 3, -1, 0, 0},    {0, 4, -1, NY-1, -1, 3, 0, 1},     {0, 5, -1, 0, -1, NY-4, 0, 1},
+        {1, 0, 0, -1, NX-4, -1, 0, 0},  {1, 2, NX-1, -1, 3, -1, 0, 0},    {1, 4, -1, NY-1, NX-4, -1, 0, 1},  {1, 5, -1, 0, NX-4, -1, 1, 1},
+        {2, 1, 0, -1, NX-4, -1, 0, 0},  {2, 3, NX-1, -1, 3, -1, 0, 0},    {2, 4, -1, NY-1, -1, NY-4, 1, 1},  {2, 5, -1, 0, -1, 3, 1, 1},
+        {3, 2, 0, -1, NX-4, -1, 0, 0},  {3, 0, NX-1, -1, 3, -1, 0, 0},    {3, 4, -1, NY-1, 3, -1, 1, 1},     {3, 5, -1, 0, 3, -1, 0, 1},
+        {4, 3, 0, -1, -1, NY-4, 1, 1},  {4, 1, NX-1, -1, -1, NY-4, 0, 1}, {4, 2, -1, NY-1, -1, NY-4, 1, 1},  {4, 0, -1, 0, -1, NY-4, 0, 1},
+        {5, 3, 0, -1, -1, 3, 0, 1},     {5, 1, NX-1, -1, -1, 3, 1, 1},    {5, 0, -1, NY-1, -1, 3, 0, 1},     {5, 2, -1, 0, -1, 3, 1, 1}
+    };
+
+    int tmp_ouTer[24][8] = {
+        {0, 3, 1, -1, NX-3, -1, 0, 0},  {0, 1, NX-2, -1, 2, -1, 0, 0},    {0, 4, -1, NY-2, -1, 2, 0, 1},     {0, 5, -1, 1, -1, NY-3, 0, 1},
+        {1, 0, 1, -1, NX-3, -1, 0, 0},  {1, 2, NX-2, -1, 2, -1, 0, 0},    {1, 4, -1, NY-2, NX-3, -1, 0, 1},  {1, 5, -1, 1, NX-3, -1, 1, 1},
+        {2, 1, 1, -1, NX-3, -1, 0, 0},  {2, 3, NX-2, -1, 2, -1, 0, 0},    {2, 4, -1, NY-2, -1, NY-3, 1, 1},  {2, 5, -1, 1, -1, 2, 1, 1},
+        {3, 2, 1, -1, NX-3, -1, 0, 0},  {3, 0, NX-2, -1, 2, -1, 0, 0},    {3, 4, -1, NY-2, 2, -1, 1, 1},     {3, 5, -1, 1, 2, -1, 0, 1},
+        {4, 3, 1, -1, -1, NY-3, 1, 1},  {4, 1, NX-2, -1, -1, NY-3, 0, 1}, {4, 2, -1, NY-2, -1, NY-3, 1, 1},  {4, 0, -1, 1, -1, NY-3, 0, 1},
+        {5, 3, 1, -1, -1, 2, 0, 1},     {5, 1, NX-2, -1, -1, 2, 1, 1},    {5, 0, -1, NY-2, -1, 2, 0, 1},     {5, 2, -1, 1, -1, 2, 1, 1}
+    };
+
+    for (int i = 0; i < 24; i++) {
+        for (int j = 0; j < 8; j++) {
+            match_ouTTer[i][j] = tmp_ouTTer[i][j];
+            match_ouTer[i][j] = tmp_ouTer[i][j];
+        }
+    }
+    return;
+}
+#endif
 
 CSSWM::CSSWM() {
     // Init new 1D array
     double *alpha = new double[NX], *beta = new double[NY];
 
     for (int i = 0; i < NX; i++) {
-        alpha[i] = -M_PI/4. + (M_PI/2.) / (NX-2) * (i-0.5);
+        #if defined(SecondOrderSpace)
+            alpha[i] = -M_PI/4. + (M_PI/2.) / (NX-2) * (i-0.5);
+        #elif defined(FourthOrderSpace)
+            alpha[i] = -M_PI/4. + (M_PI/2.) / (NX-4) * (i-1.5);
+        #endif
     }
     for (int j = 0; j < NY; j++) {
-        beta[j] = -M_PI/4. + (M_PI/2.) / (NX-2) * (j-0.5);
+        #if defined(SecondOrderSpace)
+            beta[j] = -M_PI/4. + (M_PI/2.) / (NX-2) * (j-0.5);
+        #elif defined(FourthOrderSpace)
+            beta[j] = -M_PI/4. + (M_PI/2.) / (NX-4) * (j-1.5);
+        #endif
     }
 
 
@@ -174,42 +215,105 @@ CSSWM::CSSWM() {
         Construct_p0123_lonlat_xy_AIA(p, alpha2D, beta2D, gamma, csswm[p].lon, csswm[p].lat, csswm[p].x, csswm[p].y, csswm[p].A, csswm[p].IA);
     }
 
+    #if defined(SecondOrderSpace)
+        // Interpolation matrix construction
+        int idx = 0, ipIdx = 0;
+        double A1, A2, B;
 
-    // Interpolation matrix construction
-    int idx = 0, ipIdx = 0;
-    double A1, A2, B;
+        // Construct Interpolation 2D array filled with index (Note that all interpolation relation between every boundary is same)
+        while (idx < NX && ipIdx < NX - 1) {
+            B = csswm[0].lat[NX-1][idx];
+            A1 = csswm[1].lat[1][ipIdx], A2 = csswm[1].lat[1][ipIdx+1];
 
-    // Construct Interpolation 2D array filled with index (Note that all interpolation relation between every boundary is same)
-    while (idx < NX && ipIdx < NX - 1) {
-        B = csswm[0].lat[NX-1][idx];
-        A1 = csswm[1].lat[1][ipIdx], A2 = csswm[1].lat[1][ipIdx+1];
+            if (A1 < B && B < A2) {
+                checkIP[idx][0] = ipIdx;
+                checkIP[idx][1] = ipIdx + 1;
+                idx++;
+            }
+            else if (A1 == B) {
+                checkIP[idx][0] = ipIdx;
+                checkIP[idx][1] = ipIdx;
+                idx++;
+            }
+            else if (A2 == B) {
+                checkIP[idx][0] = ipIdx + 1;
+                checkIP[idx][1] = ipIdx + 1;
+                idx++;
+            }
+            else {
+                ipIdx++;
+            }
+        } 
+    #elif defined(FourthOrderSpace)
+        // For ouTTer
+        // Interpolation matrix construction
+        int idx = 0, ipIdx = 0;
+        double A1, A2, B;
+        // Construct Interpolation 2D array filled with index (Note that all interpolation relation between every boundary is same)
+        while (idx < NX && ipIdx < NX - 1) {
+            B = csswm[0].lat[NX-1][idx];
+            A1 = csswm[1].lat[3][ipIdx], A2 = csswm[1].lat[3][ipIdx+1];
 
-        if (A1 < B && B < A2) {
-            checkIP[idx][0] = ipIdx;
-            checkIP[idx][1] = ipIdx + 1;
-            idx++;
+            if (A1 < B && B < A2) {
+                checkIP_ouTTer[idx][0] = ipIdx;
+                checkIP_ouTTer[idx][1] = ipIdx + 1;
+                idx++;
+            }
+            else if (A1 == B) {
+                checkIP_ouTTer[idx][0] = ipIdx;
+                checkIP_ouTTer[idx][1] = ipIdx;
+                idx++;
+            }
+            else if (A2 == B) {
+                checkIP_ouTTer[idx][0] = ipIdx + 1;
+                checkIP_ouTTer[idx][1] = ipIdx + 1;
+                idx++;
+            }
+            else {
+                ipIdx++;
+            }
+        } 
+
+        // For ouTer
+        // Interpolation matrix construction
+        idx = 0, ipIdx = 0;
+        A1 = 0, A2 = 0, B = 0;
+        // Construct Interpolation 2D array filled with index (Note that all interpolation relation between every boundary is same)
+        while (idx < NX && ipIdx < NX - 1) {
+            B = csswm[0].lat[NX-2][idx];
+            A1 = csswm[1].lat[2][ipIdx], A2 = csswm[1].lat[2][ipIdx+1];
+
+            if (A1 < B && B < A2) {
+                checkIP_ouTer[idx][0] = ipIdx;
+                checkIP_ouTer[idx][1] = ipIdx + 1;
+                idx++;
+            }
+            else if (A1 == B) {
+                checkIP_ouTer[idx][0] = ipIdx;
+                checkIP_ouTer[idx][1] = ipIdx;
+                idx++;
+            }
+            else if (A2 == B) {
+                checkIP_ouTer[idx][0] = ipIdx + 1;
+                checkIP_ouTer[idx][1] = ipIdx + 1;
+                idx++;
+            }
+            else {
+                ipIdx++;
+            }
         }
-        else if (A1 == B) {
-            checkIP[idx][0] = ipIdx;
-            checkIP[idx][1] = ipIdx;
-            idx++;
-        }
-        else if (A2 == B) {
-            checkIP[idx][0] = ipIdx + 1;
-            checkIP[idx][1] = ipIdx + 1;
-            idx++;
-        }
-        else {
-            ipIdx++;
-        }
-    } 
+    #endif
 
     // Construct a array for dealing with interpolation between all patch
     // (p1, p2, i1, j1, i2, j2, reversed, LonLat: 1/0) 
     // Left, Right, Up, Down
-    initMatch(match);
+    #if defined(SecondOrderSpace)
+        initMatch_1point(match);
+    #elif defined(FourthOrderSpace)
+        initMatch_2point(match_ouTer, match_ouTTer);
+    #endif
 
-    // Construct patch to patch transformation matrix
+    // Construct patch to patch transformation matrix (Declare at transform.cpp)
     Cube2Cube_matrix();
 
     delete[] alpha;

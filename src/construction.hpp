@@ -25,15 +25,28 @@ public:
 
         double A[NX][NY][4], IA[NX][NY][4];
 
-        double IP1_L[NX][4], IP1_R[NX][4], IP1_U[NX][4], IP1_D[NX][4]; 
+        #if defined(SecondOrderSpace)
+            double IP1_L[NX][4], IP1_R[NX][4], IP1_U[NX][4], IP1_D[NX][4]; 
+        #elif defined(FourthOrderSpace)
+            double IP_ouTTer_L[NX][4], IP_ouTTer_R[NX][4], IP_ouTTer_U[NX][4], IP_ouTTer_D[NX][4]; 
+            double IP_ouTer_L[NX][4], IP_ouTer_R[NX][4], IP_ouTer_U[NX][4], IP_ouTer_D[NX][4]; 
+        #endif
     };
 
     CSSWM();
     patch csswm[6];
     double sqrtG[NX][NY], gamma[NX][NY], gLower[NX][NY][4], gUpper[NX][NY][4];
     double alpha2D[NX][NY], beta2D[NX][NY];
-    int checkIP[NX][2];
-    int match[24][8];
+    
+    #if defined(SecondOrderSpace)
+        int match[24][8];
+        int checkIP[NX][2];
+    #elif defined(FourthOrderSpace)
+        int match_ouTTer[24][8];
+        int match_ouTer[24][8];
+        int checkIP_ouTTer[NX][2];
+        int checkIP_ouTer[NX][2];
+    #endif
 
     // ***********************************************************************************
     // In construction.cpp
@@ -62,6 +75,9 @@ public:
     // ***********************************************************************************
     // In bp_h.cpp
     void BP_h(CSSWM &);
+    #if defined(Mountain)
+        void BP_hs(CSSWM &);
+    #endif
     double interpolate(double A1, double A2, double V1, double V2, double B);
     // ***********************************************************************************
 

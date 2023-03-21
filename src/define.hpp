@@ -7,25 +7,34 @@
 #define GRAVITY (9.80616)
 #define OMEGA (7.292E-5)
 
-#define DX (0.5)
-#define DY (0.5)
-#define NX ((int) (90/DX + 2))
-#define NY ((int) (90/DY + 2))
-#define DT (45.)
-#define D2T (2. * DT)
+#define DX (2)
+#define DY (2)
+#define DT (180.)
 #define TIMEEND (86400 * 12 * 2)
-#define OUTPUTINTERVAL (50)
-#define OUTPUTPATH "../outputs/"
-// #define TXTOUTPUT
+#define OUTPUTPATH "/data/Aaron/CSSWM-A-grid/Cases/Barotropic/180/outputs/"
+#define OUTPUTINTERVAL (1)
+// #define SecondOrderSpace
+#define FourthOrderSpace
 #define NCOUTPUT
+// #define TXTOUTPUT
+
+#if defined(SecondOrderSpace)
+    #define NX ((int) (90/DX + 2))
+    #define NY ((int) (90/DY + 2))
+#elif defined(FourthOrderSpace) 
+    #define NX ((int) (90/DX + 4))
+    #define NY ((int) (90/DY + 4))
+#endif
+
+#define D2T (2. * DT)
 
 // Jung
 #define ALPHA0 (0)
 // #define Advection
 // #define GravityWave
 // #define SteadyGeostrophy
-#define Barotropic
-// #define Mountain
+// #define Barotropic
+#define Mountain
 // #define RossbyHaurwitz
 
 // #define TrueSol
