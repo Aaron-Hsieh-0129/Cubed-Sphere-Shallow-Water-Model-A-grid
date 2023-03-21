@@ -221,7 +221,7 @@ void CSSWM::Cube2Cube_matrix() {
     int count = 0;
     double A1, A2, B;
     double gLower_tmp[4], gUpper_tmp[4], A_tmp[4], IA_tmp[4];
-    int I1, I2_1, I2_2, J1, J2_1, J2_2;
+    int I1 = -999, I2_1 = -999, I2_2 = -999, J1 = -999, J2_1 = -999, J2_2 = -999;
     for (int pp = 0; pp < 24; pp++) {
         #if defined(SecondOrderSpace)
             p1 = match[pp][0], p2 = match[pp][1], i1 = match[pp][2], j1 = match[pp][3], i2 = match[pp][4], j2 = match[pp][5], reversed = match[pp][6], lonlat = match[pp][7];

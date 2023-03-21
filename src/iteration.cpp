@@ -226,7 +226,7 @@ void Iteration::pu_pt_4(CSSWM &model) {
             
 
                 #ifdef Mountain
-                    pgHs_py = GRAVITY / (12.*dx_for_v) * (-1.*model.csswm[p].hs[i+2][j] + 8.*model.csswm[p].hs[i+1][j] - 8.*model.csswm[p].hs[i-1][j] + 1.*model.csswm[p].hs[i-2][j]);
+                    pgHs_px = GRAVITY / (12.*dx_for_u) * (-1.*model.csswm[p].hs[i+2][j] + 8.*model.csswm[p].hs[i+1][j] - 8.*model.csswm[p].hs[i-1][j] + 1.*model.csswm[p].hs[i-2][j]);
                     model.csswm[p].up[i][j] = model.csswm[p].um[i][j] + D2T * (-pgH_px - pgHs_px - pU2_px - pUV_px - pV2_px + rotationU);
                 #else
                     model.csswm[p].up[i][j] = model.csswm[p].um[i][j] + D2T * (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);

@@ -78,6 +78,18 @@ void Init::Init2d(CSSWM & model) {
         }
     }
 
+    #if defined(Mountain)
+        model.BP_hs(model);
+    #endif
+
+
+    model.BP_h(model);
+    #ifndef Advection
+        // model.BP_wind_convert(model);
+        // model.BP_wind_interpolation(model);
+        model.BP_wind_interpolation2(model);
+    #endif
+    
     for (int p = 0; p < 6; p++) {
         for (int i = 0; i < NX; i++) {
             for (int j = 0; j < NY; j++) {
@@ -131,7 +143,7 @@ double Init::JungV(double lon) {
 }
 
 double Init::AdvectionH(double lon, double lat) {
-    double h0 = 100.;
+    double h0 = 1000.;
     double lonC = 3. * M_PI / 2., latC = 0.;
     double rd = RADIUS * acos(sin(latC) * sin(lat) + cos(latC) * cos(lat) * cos(lon-lonC));
     double r0 = RADIUS / 3.;
@@ -203,6 +215,7 @@ double Init::BarotropicH(double lat) {
 double Init::BarotropicHPrime(double lon, double lat) {
     double alpha = 1. / 3., beta = 1. / 15., theta2 = M_PI / 4., hHat = 120;
     if (-M_PI < lon && lon < M_PI) return hHat * cos(lat) * exp(-pow(lon / alpha, 2) - pow((theta2 - lat) / beta, 2));
+    else return 0;
 }
 
 double Init::BarotropicU(double lat) {

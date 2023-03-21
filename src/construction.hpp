@@ -75,6 +75,9 @@ public:
     // ***********************************************************************************
     // In bp_h.cpp
     void BP_h(CSSWM &);
+    #if defined(Mountain)
+        void BP_hs(CSSWM &);
+    #endif
     double interpolate(double A1, double A2, double V1, double V2, double B);
     // ***********************************************************************************
 

@@ -315,7 +315,6 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
 
     int p1, p2, i1, j1, i2, j2, reversed, lonlat;
     double uIP, vIP;
-    double gLower[4], IA[4], A[4], gUpper[4];
     int I1, I2_1, I2_2, J1, J2_1, J2_2;
     for (int pp = 0; pp < 24; pp++) {
         #if defined(SecondOrderSpace)

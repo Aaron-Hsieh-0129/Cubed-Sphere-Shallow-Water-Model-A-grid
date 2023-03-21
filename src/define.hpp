@@ -31,10 +31,10 @@
 // Jung
 #define ALPHA0 (0)
 // #define Advection
-#define GravityWave
+// #define GravityWave
 // #define SteadyGeostrophy
 // #define Barotropic
-// #define Mountain
+#define Mountain
 // #define RossbyHaurwitz
 
 // #define TrueSol
