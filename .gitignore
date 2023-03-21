@@ -8,3 +8,4 @@ __pycache__
 doc
 .ipynb_checkpoints
 log.txt
+*.ipynb
