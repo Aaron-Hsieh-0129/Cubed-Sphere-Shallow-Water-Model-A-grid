@@ -7,12 +7,12 @@
 #define GRAVITY (9.80616)
 #define OMEGA (7.292E-5)
 
-#define DX (2)
-#define DY (2)
-#define DT (180.)
+#define DX (0.5)
+#define DY (0.5)
+#define DT (45.)
 #define TIMEEND (86400 * 12 * 2)
-#define OUTPUTPATH "/data/Aaron/CSSWM-A-grid/Cases/Barotropic/180/outputs/"
-#define OUTPUTINTERVAL (1)
+#define OUTPUTPATH "/data/Aaron/CSSWM-A-grid/Cases/Mountain/180/outputs/"
+#define OUTPUTINTERVAL (4)
 // #define SecondOrderSpace
 #define FourthOrderSpace
 #define NCOUTPUT
@@ -40,8 +40,8 @@
 // #define TrueSol
 #define DIFFUSION
 #define TIMEFILTER
-#define KX (200000.)
-#define KY (200000.)
+#define KX (1000000.)
+#define KY (1000000.)
 #define TIMETS (0.06)
 
 #endif

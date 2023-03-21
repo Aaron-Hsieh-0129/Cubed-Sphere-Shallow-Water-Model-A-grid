@@ -12,6 +12,14 @@ void Init::Init2d(CSSWM & model) {
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * SteadyGeostrophyV(model.csswm[p].lon[i][j]);
                 #endif
 
+                #if defined(Advection)
+                    model.csswm[p].hp[i][j] = AdvectionH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
+                    model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * AdvectionU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
+                                              (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * AdvectionV(model.csswm[p].lon[i][j]);
+                    model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * AdvectionU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
+                                              (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * AdvectionV(model.csswm[p].lon[i][j]);
+                #endif
+
                 #if defined(Jung)
                     model.csswm[p].hp[i][j] = JungH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
                     double mult[2][2];
@@ -22,14 +30,6 @@ void Init::Init2d(CSSWM & model) {
                     model.matrixMul(model.gLower[i][j], model.csswm[p].IA[i][j], mult);
                     model.csswm[p].vp[i][j] = mult[1][0] * JungU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
                                               mult[1][1] * JungV(model.csswm[p].lon[i][j]);
-                #endif
-
-                #if defined(Advection)
-                    model.csswm[p].hp[i][j] = AdvectionH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
-                    model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * AdvectionU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
-                                              (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * AdvectionV(model.csswm[p].lon[i][j]);
-                    model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * AdvectionU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
-                                              (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * AdvectionV(model.csswm[p].lon[i][j]);
                 #endif
 
                 #ifdef DeformationalFlow
