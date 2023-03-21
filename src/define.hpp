@@ -40,8 +40,8 @@
 // #define TrueSol
 #define DIFFUSION
 #define TIMEFILTER
-#define KX (1000000.)
-#define KY (1000000.)
+#define KX (200000.)
+#define KY (200000.)
 #define TIMETS (0.06)
 
 #endif
