@@ -7,12 +7,12 @@
 #define GRAVITY (9.80616)
 #define OMEGA (7.292E-5)
 
-#define DX (0.5)
-#define DY (0.5)
-#define DT (45.)
+#define DX (2)
+#define DY (2)
+#define DT (180.)
 #define TIMEEND (86400 * 12 * 2)
-#define OUTPUTPATH "/data/Aaron/CSSWM-A-grid/Cases/Mountain/180/outputs/"
-#define OUTPUTINTERVAL (4)
+#define OUTPUTPATH "/data/Aaron/CSSWM-A-grid/Cases/Geostrophic/45/pi_4/outputs/"
+#define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace
 #define NCOUTPUT
@@ -29,12 +29,12 @@
 #define D2T (2. * DT)
 
 // Jung
-#define ALPHA0 (0)
+#define ALPHA0 (M_PI / 4.)
 // #define Advection
 // #define GravityWave
-// #define SteadyGeostrophy
+#define SteadyGeostrophy
 // #define Barotropic
-#define Mountain
+// #define Mountain
 // #define RossbyHaurwitz
 
 // #define TrueSol

@@ -235,8 +235,9 @@ void CSSWM::BP_wind_convert(CSSWM &model) {
     }
 }
 
-/*
+
 void CSSWM::BP_wind_interpolation(CSSWM &model) {
+
     double B, A1, A2, V1, V2, V3, V4;
 
     int p1, p2, i1, j1, i2, j2, reversed, lonlat;
@@ -245,13 +246,22 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
     double alpha_B, beta_B;
     double gLower[4], IA[4], A[4], gUpper[4];
     for (int pp = 0; pp < 24; pp++) {
-        p1 = model.match[pp][0], p2 = model.match[pp][1], i1 = model.match[pp][2], j1 = model.match[pp][3], i2 = model.match[pp][4], j2 = model.match[pp][5], reversed = model.match[pp][6], lonlat = model.match[pp][7];
+        #if defined(SecondOrderSpace)
+            p1 = model.match[pp][0], p2 = model.match[pp][1], i1 = model.match[pp][2], j1 = model.match[pp][3], i2 = model.match[pp][4], j2 = model.match[pp][5], reversed = model.match[pp][6], lonlat = model.match[pp][7];
+        #elif defined(FourthOrderSpace)
+            p1 = model.match_ouTTer[pp][0], p2 = model.match_ouTTer[pp][1], i1 = model.match_ouTTer[pp][2], j1 = model.match_ouTTer[pp][3], i2 = model.match_ouTTer[pp][4], j2 = model.match_ouTTer[pp][5], reversed = model.match_ouTTer[pp][6], lonlat = model.match_ouTTer[pp][7];
+        #endif
         for (int idx = 0; idx < NX; idx++) {
-            if (lonlat == 0) {
+            #if defined(SecondOrderSpace)
                 int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
                 int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
                 int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
-
+            #elif defined(FourthOrderSpace)
+                int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
+                int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
+                int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
+            #endif
+            if (lonlat == 0) {
                 B = model.csswm[p1].lat[I1][J1];
                 A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
                 V1 = model.csswm[p2].up[I2_1][J2_1], V2 = model.csswm[p2].up[I2_2][J2_2];
@@ -270,15 +280,8 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
                 model.get_IA(IA, p1, alpha, beta);
                 model.get_A(A, p2, alpha_B, beta_B);
                 model.get_gUpper(gUpper, alpha_B, beta_B);
-                model.csswm[p1].up[I1][J1] = model.Cube2Cube_U_2(gLower, IA, A, gUpper, uIP, vIP);
-                model.csswm[p1].vp[I1][J1] = model.Cube2Cube_V_2(gLower, IA, A, gUpper, uIP, vIP);
-                
             }
             else {
-                int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
-                int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
-
                 B = model.csswm[p1].lon[I1][J1];
                 A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
                 V1 = model.csswm[p2].up[I2_1][J2_1], V2 = model.csswm[p2].up[I2_2][J2_2];
@@ -300,15 +303,70 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
                 model.get_IA(IA, p1, alpha, beta);
                 model.get_A(A, p2, alpha_B, beta_B);
                 model.get_gUpper(gUpper, alpha_B, beta_B);
+            }
+            model.csswm[p1].up[I1][J1] = model.Cube2Cube_U_2(gLower, IA, A, gUpper, uIP, vIP);
+            model.csswm[p1].vp[I1][J1] = model.Cube2Cube_V_2(gLower, IA, A, gUpper, uIP, vIP);
+        }
+    }
 
-                // std::cout << gUpper[0] << " " << gUpper[1] << " " << gUpper[2] << " " << gUpper[3] << " " << std::endl;
+    #if defined(FourthOrderSpace)
+        for (int pp = 0; pp < 24; pp++) {
+            p1 = model.match_ouTer[pp][0], p2 = model.match_ouTer[pp][1], i1 = model.match_ouTer[pp][2], j1 = model.match_ouTer[pp][3], i2 = model.match_ouTer[pp][4], j2 = model.match_ouTer[pp][5], reversed = model.match_ouTer[pp][6], lonlat = model.match_ouTer[pp][7];
+
+            for (int idx = 0; idx < NX; idx++) {
+                    int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
+                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
+                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
+                if (lonlat == 0) {
+                    B = model.csswm[p1].lat[I1][J1];
+                    A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
+                    V1 = model.csswm[p2].up[I2_1][J2_1], V2 = model.csswm[p2].up[I2_2][J2_2];
+                    V3 = model.csswm[p2].vp[I2_1][J2_1], V4 = model.csswm[p2].vp[I2_2][J2_2];
+
+                    alpha = model.alpha2D[I1][J1];
+                    beta = model.beta2D[I1][J1];
+
+                    uIP = model.interpolate(A1, A2, V1, V2, B);
+                    vIP = model.interpolate(A1, A2, V3, V4, B);
+
+                    alpha_B = model.interpolate(A1, A2, model.alpha2D[I2_1][J2_1], model.alpha2D[I2_2][J2_2], B);
+                    beta_B = model.interpolate(A1, A2, model.beta2D[I2_1][J2_1], model.beta2D[I2_2][J2_2], B);
+
+                    model.get_gLower(gLower, alpha, beta);
+                    model.get_IA(IA, p1, alpha, beta);
+                    model.get_A(A, p2, alpha_B, beta_B);
+                    model.get_gUpper(gUpper, alpha_B, beta_B);
+                }
+                else {
+                    B = model.csswm[p1].lon[I1][J1];
+                    A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
+                    V1 = model.csswm[p2].up[I2_1][J2_1], V2 = model.csswm[p2].up[I2_2][J2_2];
+                    V3 = model.csswm[p2].vp[I2_1][J2_1], V4 = model.csswm[p2].vp[I2_2][J2_2];
+
+                    if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
+                    if (A1 > B && B < A2) B += 2 * M_PI;
+                    
+                    alpha = model.alpha2D[I1][J1];
+                    beta = model.beta2D[I1][J1];
+
+                    uIP = model.interpolate(A1, A2, V1, V2, B);
+                    vIP = model.interpolate(A1, A2, V3, V4, B);
+
+                    alpha_B = model.interpolate(A1, A2, model.alpha2D[I2_1][J2_1], model.alpha2D[I2_2][J2_2], B);
+                    beta_B = model.interpolate(A1, A2, model.beta2D[I2_1][J2_1], model.beta2D[I2_2][J2_2], B);
+
+                    model.get_gLower(gLower, alpha, beta);
+                    model.get_IA(IA, p1, alpha, beta);
+                    model.get_A(A, p2, alpha_B, beta_B);
+                    model.get_gUpper(gUpper, alpha_B, beta_B);
+                }
                 model.csswm[p1].up[I1][J1] = model.Cube2Cube_U_2(gLower, IA, A, gUpper, uIP, vIP);
                 model.csswm[p1].vp[I1][J1] = model.Cube2Cube_V_2(gLower, IA, A, gUpper, uIP, vIP);
             }
         }
-    }
+    #endif
 }
-*/
+
 
 void CSSWM::BP_wind_interpolation2(CSSWM &model) {
     double B, A1, A2, V1, V2, V3, V4;
@@ -323,31 +381,21 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
             p1 = match_ouTTer[pp][0], p2 = match_ouTTer[pp][1], i1 = match_ouTTer[pp][2], j1 = match_ouTTer[pp][3], i2 = match_ouTTer[pp][4], j2 = match_ouTTer[pp][5], reversed = match_ouTTer[pp][6], lonlat = match_ouTTer[pp][7];
         #endif
         for (int idx = 0; idx < NX; idx++) {
+            I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
+            #if defined(SecondOrderSpace)
+                I2_1 = i2 == -1 ? reversed ? checkIP[NX-1-idx][0] : checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP[NY-1-idx][0] : checkIP[idx][0] : j2;
+                I2_2 = i2 == -1 ? reversed ? checkIP[NX-1-idx][1] : checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP[NY-1-idx][1] : checkIP[idx][1] : j2;
+            #elif defined(FourthOrderSpace)
+                I2_1 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][0] : checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][0] : checkIP_ouTTer[idx][0] : j2;
+                I2_2 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][1] : checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][1] : checkIP_ouTTer[idx][1] : j2;
+            #endif
             if (lonlat == 0) {
-                I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                #if defined(SecondOrderSpace)
-                    I2_1 = i2 == -1 ? reversed ? checkIP[NX-1-idx][0] : checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP[NY-1-idx][0] : checkIP[idx][0] : j2;
-                    I2_2 = i2 == -1 ? reversed ? checkIP[NX-1-idx][1] : checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP[NY-1-idx][1] : checkIP[idx][1] : j2;
-                #elif defined(FourthOrderSpace)
-                    I2_1 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][0] : checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][0] : checkIP_ouTTer[idx][0] : j2;
-                    I2_2 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][1] : checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][1] : checkIP_ouTTer[idx][1] : j2;
-                #endif
-
                 B = model.csswm[p1].lat[I1][J1];
                 A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
                 V1 = model.csswm[p2].up[I2_1][J2_1], V2 = model.csswm[p2].up[I2_2][J2_2];
                 V3 = model.csswm[p2].vp[I2_1][J2_1], V4 = model.csswm[p2].vp[I2_2][J2_2];
             }
             else {
-                I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                #if defined(SecondOrderSpace)
-                    I2_1 = i2 == -1 ? reversed ? checkIP[NX-1-idx][0] : checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP[NY-1-idx][0] : checkIP[idx][0] : j2;
-                    I2_2 = i2 == -1 ? reversed ? checkIP[NX-1-idx][1] : checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP[NY-1-idx][1] : checkIP[idx][1] : j2;
-                #elif defined(FourthOrderSpace)
-                    I2_1 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][0] : checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][0] : checkIP_ouTTer[idx][0] : j2;
-                    I2_2 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][1] : checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][1] : checkIP_ouTTer[idx][1] : j2;
-                #endif
-
                 B = model.csswm[p1].lon[I1][J1];
                 A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
                 V1 = model.csswm[p2].up[I2_1][J2_1], V2 = model.csswm[p2].up[I2_2][J2_2];
