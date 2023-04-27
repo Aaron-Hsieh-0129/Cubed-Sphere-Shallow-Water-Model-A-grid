@@ -9,3 +9,5 @@ doc
 .ipynb_checkpoints
 log.txt
 *.ipynb
+report
+docs
