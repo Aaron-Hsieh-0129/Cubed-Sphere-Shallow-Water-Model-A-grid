@@ -252,12 +252,11 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
             p1 = model.match_ouTTer[pp][0], p2 = model.match_ouTTer[pp][1], i1 = model.match_ouTTer[pp][2], j1 = model.match_ouTTer[pp][3], i2 = model.match_ouTTer[pp][4], j2 = model.match_ouTTer[pp][5], reversed = model.match_ouTTer[pp][6], lonlat = model.match_ouTTer[pp][7];
         #endif
         for (int idx = 0; idx < NX; idx++) {
+            int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
             #if defined(SecondOrderSpace)
-                int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
                 int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
                 int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
             #elif defined(FourthOrderSpace)
-                int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
                 int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
                 int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
             #endif
@@ -306,6 +305,8 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
             }
             model.csswm[p1].up[I1][J1] = model.Cube2Cube_U_2(gLower, IA, A, gUpper, uIP, vIP);
             model.csswm[p1].vp[I1][J1] = model.Cube2Cube_V_2(gLower, IA, A, gUpper, uIP, vIP);
+
+            // std::cout << "(" << I2_1 << ", " << J2_1 << ")" << ", (" << I2_2 << ", " << J2_2 << ")" << std::endl;
         }
     }
 
@@ -314,9 +315,9 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
             p1 = model.match_ouTer[pp][0], p2 = model.match_ouTer[pp][1], i1 = model.match_ouTer[pp][2], j1 = model.match_ouTer[pp][3], i2 = model.match_ouTer[pp][4], j2 = model.match_ouTer[pp][5], reversed = model.match_ouTer[pp][6], lonlat = model.match_ouTer[pp][7];
 
             for (int idx = 0; idx < NX; idx++) {
-                    int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
-                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
+                int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
+                int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
+                int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
                 if (lonlat == 0) {
                     B = model.csswm[p1].lat[I1][J1];
                     A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
@@ -438,7 +439,7 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTTer_L[J1][2] * uIP + model.csswm[p1].IP_ouTTer_L[J1][3] * vIP;
                     #endif
                 }
-                else if (i1 == NY-1) {
+                else if (i1 == NX-1) {
                     #if defined(SecondOrderSpace)
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP1_R[J1][0] * uIP + model.csswm[p1].IP1_R[J1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP1_R[J1][2] * uIP + model.csswm[p1].IP1_R[J1][3] * vIP;
@@ -497,7 +498,7 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_L[J1][0] * uIP + model.csswm[p1].IP_ouTer_L[J1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_L[J1][2] * uIP + model.csswm[p1].IP_ouTer_L[J1][3] * vIP;
                     }
-                    else if (i1 == NY-2) {
+                    else if (i1 == NX-2) {
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_R[J1][0] * uIP + model.csswm[p1].IP_ouTer_R[J1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_R[J1][2] * uIP + model.csswm[p1].IP_ouTer_R[J1][3] * vIP;
                     }

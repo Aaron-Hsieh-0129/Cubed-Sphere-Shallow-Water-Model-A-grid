@@ -365,9 +365,9 @@ void Iteration::leap_frog(CSSWM &model) {
             // Boundary exchange and interpolation
             model.BP_h(model);
             #ifndef Advection
-                model.BP_wind_convert(model);
-                model.BP_wind_interpolation(model);
-                // model.BP_wind_interpolation2(model);
+                // model.BP_wind_convert(model);
+                // model.BP_wind_interpolation(model);
+                model.BP_wind_interpolation2(model);
             #endif
         #endif
 

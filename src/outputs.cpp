@@ -115,9 +115,20 @@ void Outputs::grid_nc(CSSWM &model) {
     NcVar y = dataFile.addVar("y_local", ncDouble, xyDim);
     NcVar lon = dataFile.addVar("lon_sphere", ncDouble, lonlatDim);
     NcVar lat = dataFile.addVar("lat_sphere", ncDouble, lonlatDim);
+    NcVar A = dataFile.addVar("area_sphere_coeff", ncDouble, lonlatDim);
     #if defined(Mountain)
         NcVar hs = dataFile.addVar("hs", ncDouble, xyDim);
     #endif
+
+    double area[6][NX][NY];
+    for (int p = 0; p < 6; p++) {
+        for (int i = 0; i < NX; i++) {
+            for (int j = 0; j < NY; j++) {
+                area[p][i][j] = model.sqrtG[i][j];
+            }
+        }
+    }
+    
     vector<size_t> startp, countp;
     startp.push_back(0);
     startp.push_back(0);
@@ -132,6 +143,7 @@ void Outputs::grid_nc(CSSWM &model) {
         y.putVar(startp, countp, model.csswm[p].y);
         lon.putVar(startp, countp, model.csswm[p].lon);
         lat.putVar(startp, countp, model.csswm[p].lat);
+        A.putVar(startp, countp, area);
         #if defined(Mountain)
             hs.putVar(startp, countp, model.csswm[p].hs);
         #endif

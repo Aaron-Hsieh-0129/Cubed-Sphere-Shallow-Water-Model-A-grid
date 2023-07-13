@@ -229,28 +229,20 @@ void CSSWM::Cube2Cube_matrix() {
             p1 = match_ouTTer[pp][0], p2 = match_ouTTer[pp][1], i1 = match_ouTTer[pp][2], j1 = match_ouTTer[pp][3], i2 = match_ouTTer[pp][4], j2 = match_ouTTer[pp][5], reversed = match_ouTTer[pp][6], lonlat = match_ouTTer[pp][7];
         #endif
         for (int idx = 0; idx < NX; idx++) {
-            if (lonlat == 0) {
-                I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                #if defined(SecondOrderSpace)
-                    I2_1 = i2 == -1 ? reversed ? checkIP[NX-1-idx][0] : checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP[NY-1-idx][0] : checkIP[idx][0] : j2;
-                    I2_2 = i2 == -1 ? reversed ? checkIP[NX-1-idx][1] : checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP[NY-1-idx][1] : checkIP[idx][1] : j2;
-                #elif defined(FourthOrderSpace)
-                    I2_1 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][0] : checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][0] : checkIP_ouTTer[idx][0] : j2;
-                    I2_2 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][1] : checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][1] : checkIP_ouTTer[idx][1] : j2;
-                #endif
+            I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
+            #if defined(SecondOrderSpace)
+                I2_1 = i2 == -1 ? reversed ? checkIP[NX-1-idx][0] : checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP[NY-1-idx][0] : checkIP[idx][0] : j2;
+                I2_2 = i2 == -1 ? reversed ? checkIP[NX-1-idx][1] : checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP[NY-1-idx][1] : checkIP[idx][1] : j2;
+            #elif defined(FourthOrderSpace)
+                I2_1 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][0] : checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][0] : checkIP_ouTTer[idx][0] : j2;
+                I2_2 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][1] : checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][1] : checkIP_ouTTer[idx][1] : j2;
+            #endif
 
+            if (lonlat == 0) {
                 B = csswm[p1].lat[I1][J1];
                 A1 = csswm[p2].lat[I2_1][J2_1], A2 = csswm[p2].lat[I2_2][J2_2];
             }
             else {
-                int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                #if defined(SecondOrderSpace)
-                    I2_1 = i2 == -1 ? reversed ? checkIP[NX-1-idx][0] : checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP[NY-1-idx][0] : checkIP[idx][0] : j2;
-                    I2_2 = i2 == -1 ? reversed ? checkIP[NX-1-idx][1] : checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP[NY-1-idx][1] : checkIP[idx][1] : j2;
-                #elif defined(FourthOrderSpace)
-                    I2_1 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][0] : checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][0] : checkIP_ouTTer[idx][0] : j2;
-                    I2_2 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][1] : checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][1] : checkIP_ouTTer[idx][1] : j2;
-                #endif
                 B = csswm[p1].lon[I1][J1];
                 A1 = csswm[p2].lon[I2_1][J2_1], A2 = csswm[p2].lon[I2_2][J2_2];
 
@@ -345,22 +337,17 @@ void CSSWM::Cube2Cube_matrix() {
     #if defined(FourthOrderSpace)
         // Construct the patch to patch transformation matrix 
         for (int pp = 0; pp < 24; pp++) {
-            
             p1 = match_ouTer[pp][0], p2 = match_ouTer[pp][1], i1 = match_ouTer[pp][2], j1 = match_ouTer[pp][3], i2 = match_ouTer[pp][4], j2 = match_ouTer[pp][5], reversed = match_ouTer[pp][6], lonlat = match_ouTer[pp][7];
 
             for (int idx = 0; idx < NX; idx++) {
+                int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
+                int I2_1 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][0] : checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][0] : checkIP_ouTer[idx][0] : j2;
+                int I2_2 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][1] : checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][1] : checkIP_ouTer[idx][1] : j2;
                 if (lonlat == 0) {
-                    I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                    I2_1 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][0] : checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][0] : checkIP_ouTer[idx][0] : j2;
-                    I2_2 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][1] : checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][1] : checkIP_ouTer[idx][1] : j2;
-
                     B = csswm[p1].lat[I1][J1];
                     A1 = csswm[p2].lat[I2_1][J2_1], A2 = csswm[p2].lat[I2_2][J2_2];
                 }
                 else {
-                    I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                    I2_1 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][0] : checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][0] : checkIP_ouTer[idx][0] : j2;
-                    I2_2 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][1] : checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][1] : checkIP_ouTer[idx][1] : j2;
                     B = csswm[p1].lon[I1][J1];
                     A1 = csswm[p2].lon[I2_1][J2_1], A2 = csswm[p2].lon[I2_2][J2_2];
 
@@ -422,7 +409,7 @@ void CSSWM::Cube2Cube_matrix() {
                             }
                         }
                     }
-                    else if (i1 == NY-2) {
+                    else if (i1 == NX-2) {
                         count = 0;
                         for (int i = 0; i < 2; i++) {
                             for (int j = 0; j < 2; j++) {

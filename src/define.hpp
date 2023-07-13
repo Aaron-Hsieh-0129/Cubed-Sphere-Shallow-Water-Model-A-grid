@@ -10,8 +10,8 @@
 #define DX (2)
 #define DY (2)
 #define DT (180.)
-#define TIMEEND (86400 * 12 * 2)
-#define OUTPUTPATH "/data/Aaron/CSSWM-A-grid/Cases/Geostrophic/45/pi_4/outputs/"
+#define TIMEEND (86400 * 3 * 2)
+#define OUTPUTPATH "/data/Aaron/CSSWM2Layers/Advection/45/0/outputs/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace
@@ -29,11 +29,11 @@
 #define D2T (2. * DT)
 
 // Jung
-#define ALPHA0 (M_PI / 4.)
+#define ALPHA0 (0)
 // #define Advection
 // #define GravityWave
-#define SteadyGeostrophy
-// #define Barotropic
+// #define SteadyGeostrophy
+#define Barotropic
 // #define Mountain
 // #define RossbyHaurwitz
 
