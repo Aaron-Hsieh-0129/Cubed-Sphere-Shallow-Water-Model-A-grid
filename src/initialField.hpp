@@ -32,6 +32,8 @@ private:
     static double RossbyHaurwitzU(double, double);
     static double RossbyHaurwitzV(double, double);
 
+    static double EquatorialWaveH(double, double);
+
     static double simpson(double, double);
     static double func(double);
 };

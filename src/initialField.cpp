@@ -74,6 +74,12 @@ void Init::Init2d(CSSWM & model) {
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * RossbyHaurwitzU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * RossbyHaurwitzV(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]); 
                 #endif
+
+                #ifdef EquatorialWave
+                    model.csswm[p].hp[i][j] = 10000. + EquatorialWave(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
+                    model.csswm[p].up[i][j] = 0.;
+                    model.csswm[p].vp[i][j] = 0.;
+                #endif
             }
         }
     }
@@ -278,4 +284,13 @@ double Init::RossbyHaurwitzV(double lon, double lat) {
     double K = 7.848E-6;
     double c = cos(lat);
     return (-RADIUS * K * R * pow(c, R-1) * sin(lat) * sin(RADIUS*lon));
+}
+
+double Init::EquatorialWaveH(double lon, double lat) {
+    double h0 = 100;
+    double lonC = 0., latC = 0.;
+    double rd = RADIUS * acos(sin(latC) * sin(lat) + cos(latC) * cos(lat) * cos(lon-lonC));
+    double r0 = RADIUS / 4.;
+    if (rd < r0) return -h0 / 2. * (1 + cos(M_PI * rd / r0));
+    else return h0;
 }

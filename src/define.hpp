@@ -6,12 +6,13 @@
 #define RADIUS (6371220.)
 #define GRAVITY (9.80616)
 #define OMEGA (7.292E-5)
+#define BETA (2.5E-11)
 
 #define DX (2)
 #define DY (2)
 #define DT (180.)
 #define TIMEEND (86400 * 3 * 2)
-#define OUTPUTPATH "/data/Aaron/CSSWM2Layers/Advection/45/0/outputs/"
+#define OUTPUTPATH "../outputs/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace
@@ -33,9 +34,10 @@
 // #define Advection
 // #define GravityWave
 // #define SteadyGeostrophy
-#define Barotropic
+// #define Barotropic
 // #define Mountain
 // #define RossbyHaurwitz
+#define EquatorialWave
 
 // #define TrueSol
 #define DIFFUSION

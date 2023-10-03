@@ -260,6 +260,8 @@ void Iteration::pv_pt_4(CSSWM &model) {
                     f = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #elif defined(Barotropic) || defined(RossbyHaurwitz)
                     f = 2 * OMEGA * sin(model.csswm[p].lat[i][j]);
+                #elif defined(EquatorialWave)
+                    f = BETA * sin(model.csswm[p].lat[i][j]);
                 #else
                     f = 0;
                 #endif
