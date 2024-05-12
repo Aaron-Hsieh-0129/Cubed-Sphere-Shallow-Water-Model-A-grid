@@ -16,8 +16,13 @@ void Iteration::ph_pt_2(CSSWM &model) {
                 psqrtGHU_py = (1. / (model.sqrtG[i][j] * dy_for_h)) * 
                               ((model.sqrtG[i][j+1] * model.csswm[p].h[i][j+1] * (model.gUpper[i][j+1][2] * model.csswm[p].u[i][j+1] + model.gUpper[i][j+1][3] * model.csswm[p].v[i][j+1])) - 
                                (model.sqrtG[i][j-1] * model.csswm[p].h[i][j-1] * (model.gUpper[i][j-1][2] * model.csswm[p].u[i][j-1] + model.gUpper[i][j-1][3] * model.csswm[p].v[i][j-1])));
-            
-                model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
+
+                #if defined(EquatorialWave)
+                    if (model.status_add_forcing == true) model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py + model.csswm[p].h_forcing[i][j]);
+                    else model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
+                #else
+                    model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
+                #endif
                 
                 #ifdef DIFFUSION
                     model.csswm[p].hp[i][j] += D2T * KX * (model.csswm[p].hm[i+1][j] - 2. * model.csswm[p].hm[i][j] + model.csswm[p].hm[i-1][j]) / pow(dx_for_h, 2) + 
@@ -47,6 +52,10 @@ void Iteration::pu_pt_2(CSSWM &model) {
                     f = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #elif defined(Barotropic) || defined(RossbyHaurwitz)
                     f = 2 * OMEGA * sin(model.csswm[p].lat[i][j]);
+                #elif defined(EquatorialWave)
+                    double f0 = 0;
+                    double beta = 2.5 * 10E-5;
+                    f = f0 + beta * abs(model.csswm[p].lat[i][j] * 180 / M_PI) * (111000);
                 #else
                     f = 0;
                 #endif
@@ -105,6 +114,10 @@ void Iteration::pv_pt_2(CSSWM &model) {
                     f = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #elif defined(Barotropic) || defined(RossbyHaurwitz)
                     f = 2 * OMEGA * sin(model.csswm[p].lat[i][j]);
+                #elif defined(EquatorialWave)
+                    double f0 = 0;
+                    double beta = 2.5 * 10E-5;
+                    f = f0 + beta * abs(model.csswm[p].lat[i][j] * 180 / M_PI) * (111000);
                 #else
                     f = 0;
                 #endif
@@ -165,7 +178,12 @@ void Iteration::ph_pt_4(CSSWM &model) {
                                -8.*(model.sqrtG[i][j-1] * model.csswm[p].h[i][j-1] * (model.gUpper[i][j-1][2] * model.csswm[p].u[i][j-1] + model.gUpper[i][j-1][3] * model.csswm[p].v[i][j-1]))
                                +1.*(model.sqrtG[i][j-2] * model.csswm[p].h[i][j-2] * (model.gUpper[i][j-2][2] * model.csswm[p].u[i][j-2] + model.gUpper[i][j-2][3] * model.csswm[p].v[i][j-2])));
             
-                model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
+                #if defined(EquatorialWave)
+                    if (model.status_add_forcing == true) model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py + model.csswm[p].h_forcing[i][j]);
+                    else model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
+                #else
+                    model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
+                #endif
                 
                 #ifdef DIFFUSION
                     model.csswm[p].hp[i][j] += D2T * KX * (model.csswm[p].hm[i+1][j] - 2. * model.csswm[p].hm[i][j] + model.csswm[p].hm[i-1][j]) / pow(dx_for_h, 2) + 
@@ -195,6 +213,10 @@ void Iteration::pu_pt_4(CSSWM &model) {
                     f = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #elif defined(Barotropic) || defined(RossbyHaurwitz)
                     f = 2 * OMEGA * sin(model.csswm[p].lat[i][j]);
+                #elif defined(EquatorialWave)
+                    double f0 = 0;
+                    double beta = 2.5 * 10E-11;
+                    f = f0 + beta * model.csswm[p].lat[i][j] * 180. / M_PI * (111000.);
                 #else
                     f = 0;
                 #endif
@@ -261,7 +283,9 @@ void Iteration::pv_pt_4(CSSWM &model) {
                 #elif defined(Barotropic) || defined(RossbyHaurwitz)
                     f = 2 * OMEGA * sin(model.csswm[p].lat[i][j]);
                 #elif defined(EquatorialWave)
-                    f = BETA * sin(model.csswm[p].lat[i][j]);
+                    double f0 = 0;
+                    double beta = 2.5 * 10E-11;
+                    f = f0 + beta * model.csswm[p].lat[i][j] * 180. / M_PI * (111000.);
                 #else
                     f = 0;
                 #endif
@@ -340,7 +364,11 @@ void Iteration::leap_frog(CSSWM &model) {
         }
 
         n++;
-        // timenow = n * DT;
+        #if defined(EquatorialWave)
+            if (n * DT >= ADDFORCINGTIME) model.status_add_forcing = false;
+            else model.status_add_forcing = true;
+        #endif
+
 
         // Integrate
         #if defined(SecondOrderSpace)

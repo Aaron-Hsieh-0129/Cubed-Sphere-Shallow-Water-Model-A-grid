@@ -26,7 +26,7 @@ void CSSWM::matrixMul(double firstMatrix[4], double secondMatrix[4], double mult
 
 double CSSWM::Cube2Sphere_U(CSSWM &model, int p, int i, int j) {
     double mult[2][2];
-    model.matrixMul(model.gUpper[i][j], model.csswm[p].A[i][j], mult);
+    model.matrixMul(model.csswm[p].A[i][j], model.gUpper[i][j], mult);
     return mult[0][0] * model.csswm[p].u[i][j] + mult[0][1] * model.csswm[p].v[i][j];
 }
 

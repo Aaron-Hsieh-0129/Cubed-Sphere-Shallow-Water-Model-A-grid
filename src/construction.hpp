@@ -31,12 +31,21 @@ public:
             double IP_ouTTer_L[NX][4], IP_ouTTer_R[NX][4], IP_ouTTer_U[NX][4], IP_ouTTer_D[NX][4]; 
             double IP_ouTer_L[NX][4], IP_ouTer_R[NX][4], IP_ouTer_U[NX][4], IP_ouTer_D[NX][4]; 
         #endif
+
+        #if defined(EquatorialWave)
+            double h_forcing[NX][NY];
+        #endif
     };
 
     CSSWM();
     patch csswm[6];
     double sqrtG[NX][NY], gamma[NX][NY], gLower[NX][NY][4], gUpper[NX][NY][4];
     double alpha2D[NX][NY], beta2D[NX][NY];
+
+    #if defined(EquatorialWave)
+        bool status_add_forcing = true;
+    #endif
+
     
     #if defined(SecondOrderSpace)
         int match[24][8];

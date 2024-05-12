@@ -4,15 +4,15 @@
 #define FILLVALUE (-99999999999999);
 
 #define RADIUS (6371220.)
-#define GRAVITY (9.80616)
+#define GRAVITY (0.1)
 #define OMEGA (7.292E-5)
 #define BETA (2.5E-11)
 
 #define DX (2)
 #define DY (2)
 #define DT (180.)
-#define TIMEEND (86400 * 3 * 2)
-#define OUTPUTPATH "../outputs/"
+#define TIMEEND (86400 * 3 * 24)
+#define OUTPUTPATH "/data/Aaron/CSSWM-A-grid/Leapfrog_4th/0512/EquatorialWave/45_2000min/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace
@@ -45,5 +45,7 @@
 #define KX (200000.)
 #define KY (200000.)
 #define TIMETS (0.06)
+
+#define ADDFORCINGTIME (1200. * 60.)
 
 #endif
