@@ -7,11 +7,11 @@ void CSSWM::BP_h(CSSWM &model) {
     int p1, p2, i1, j1, i2, j2, reversed, lonlat;
     for (int pp = 0; pp < 24; pp++) {
         p1 = model.match[pp][0], p2 = model.match[pp][1], i1 = model.match[pp][2], j1 = model.match[pp][3], i2 = model.match[pp][4], j2 = model.match[pp][5], reversed = model.match[pp][6], lonlat = model.match[pp][7];
-        for (int idx = 0; idx < NX; idx++) {
+        for (int idx = 0; idx < model.nx; idx++) {
             if (lonlat == 0) {
                 int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
-                int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
+                int I2_1 = i2 == -1 ? reversed ? model.checkIP[model.nx-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[model.ny-1-idx][0] : model.checkIP[idx][0] : j2;
+                int I2_2 = i2 == -1 ? reversed ? model.checkIP[model.nx-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[model.ny-1-idx][1] : model.checkIP[idx][1] : j2;
 
                 B = model.csswm[p1].lat[I1][J1];
                 A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
@@ -21,8 +21,8 @@ void CSSWM::BP_h(CSSWM &model) {
             }
             else {
                 int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
-                int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
+                int I2_1 = i2 == -1 ? reversed ? model.checkIP[model.nx-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[model.ny-1-idx][0] : model.checkIP[idx][0] : j2;
+                int I2_2 = i2 == -1 ? reversed ? model.checkIP[model.nx-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[model.ny-1-idx][1] : model.checkIP[idx][1] : j2;
 
                 B = model.csswm[p1].lon[I1][J1];
                 A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
@@ -44,11 +44,11 @@ void CSSWM::BP_h(CSSWM &model) {
         int p1, p2, i1, j1, i2, j2, reversed, lonlat;
         for (int pp = 0; pp < 24; pp++) {
             p1 = model.match_ouTTer[pp][0], p2 = model.match_ouTTer[pp][1], i1 = model.match_ouTTer[pp][2], j1 = model.match_ouTTer[pp][3], i2 = model.match_ouTTer[pp][4], j2 = model.match_ouTTer[pp][5], reversed = model.match_ouTTer[pp][6], lonlat = model.match_ouTTer[pp][7];
-            for (int idx = 0; idx < NX; idx++) {
+            for (int idx = 0; idx < model.nx; idx++) {
                 if (lonlat == 0) {
                     int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
-                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
+                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[model.nx-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[model.ny-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
+                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[model.nx-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[model.ny-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
 
                     B = model.csswm[p1].lat[I1][J1];
                     A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
@@ -58,8 +58,8 @@ void CSSWM::BP_h(CSSWM &model) {
                 }
                 else {
                     int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
-                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
+                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[model.nx-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[model.ny-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
+                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[model.nx-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[model.ny-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
 
                     B = model.csswm[p1].lon[I1][J1];
                     A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
@@ -77,11 +77,11 @@ void CSSWM::BP_h(CSSWM &model) {
         // Interpolate ouTer
         for (int pp = 0; pp < 24; pp++) {
             p1 = model.match_ouTer[pp][0], p2 = model.match_ouTer[pp][1], i1 = model.match_ouTer[pp][2], j1 = model.match_ouTer[pp][3], i2 = model.match_ouTer[pp][4], j2 = model.match_ouTer[pp][5], reversed = model.match_ouTer[pp][6], lonlat = model.match_ouTer[pp][7];
-            for (int idx = 0; idx < NX; idx++) {
+            for (int idx = 0; idx < model.nx; idx++) {
                 if (lonlat == 0) {
                     int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
-                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
+                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
+                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
 
                     B = model.csswm[p1].lat[I1][J1];
                     A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
@@ -91,8 +91,8 @@ void CSSWM::BP_h(CSSWM &model) {
                 }
                 else {
                     int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
-                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
+                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
+                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
 
                     B = model.csswm[p1].lon[I1][J1];
                     A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
@@ -117,11 +117,11 @@ void CSSWM::BP_hs(CSSWM &model) {
     int p1, p2, i1, j1, i2, j2, reversed, lonlat;
     for (int pp = 0; pp < 24; pp++) {
         p1 = model.match[pp][0], p2 = model.match[pp][1], i1 = model.match[pp][2], j1 = model.match[pp][3], i2 = model.match[pp][4], j2 = model.match[pp][5], reversed = model.match[pp][6], lonlat = model.match[pp][7];
-        for (int idx = 0; idx < NX; idx++) {
+        for (int idx = 0; idx < model.nx; idx++) {
             if (lonlat == 0) {
                 int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
-                int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
+                int I2_1 = i2 == -1 ? reversed ? model.checkIP[model.nx-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[model.ny-1-idx][0] : model.checkIP[idx][0] : j2;
+                int I2_2 = i2 == -1 ? reversed ? model.checkIP[model.nx-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[model.ny-1-idx][1] : model.checkIP[idx][1] : j2;
 
                 B = model.csswm[p1].lat[I1][J1];
                 A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
@@ -131,8 +131,8 @@ void CSSWM::BP_hs(CSSWM &model) {
             }
             else {
                 int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
-                int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
+                int I2_1 = i2 == -1 ? reversed ? model.checkIP[model.nx-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[model.ny-1-idx][0] : model.checkIP[idx][0] : j2;
+                int I2_2 = i2 == -1 ? reversed ? model.checkIP[model.nx-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[model.ny-1-idx][1] : model.checkIP[idx][1] : j2;
 
                 B = model.csswm[p1].lon[I1][J1];
                 A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
@@ -154,11 +154,11 @@ void CSSWM::BP_hs(CSSWM &model) {
         int p1, p2, i1, j1, i2, j2, reversed, lonlat;
         for (int pp = 0; pp < 24; pp++) {
             p1 = model.match_ouTTer[pp][0], p2 = model.match_ouTTer[pp][1], i1 = model.match_ouTTer[pp][2], j1 = model.match_ouTTer[pp][3], i2 = model.match_ouTTer[pp][4], j2 = model.match_ouTTer[pp][5], reversed = model.match_ouTTer[pp][6], lonlat = model.match_ouTTer[pp][7];
-            for (int idx = 0; idx < NX; idx++) {
+            for (int idx = 0; idx < model.nx; idx++) {
                 if (lonlat == 0) {
                     int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
-                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
+                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[model.nx-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[model.ny-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
+                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[model.nx-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[model.ny-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
 
                     B = model.csswm[p1].lat[I1][J1];
                     A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
@@ -168,8 +168,8 @@ void CSSWM::BP_hs(CSSWM &model) {
                 }
                 else {
                     int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
-                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
+                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[model.nx-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[model.ny-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
+                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[model.nx-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[model.ny-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
 
                     B = model.csswm[p1].lon[I1][J1];
                     A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
@@ -187,11 +187,11 @@ void CSSWM::BP_hs(CSSWM &model) {
         // Interpolate ouTer
         for (int pp = 0; pp < 24; pp++) {
             p1 = model.match_ouTer[pp][0], p2 = model.match_ouTer[pp][1], i1 = model.match_ouTer[pp][2], j1 = model.match_ouTer[pp][3], i2 = model.match_ouTer[pp][4], j2 = model.match_ouTer[pp][5], reversed = model.match_ouTer[pp][6], lonlat = model.match_ouTer[pp][7];
-            for (int idx = 0; idx < NX; idx++) {
+            for (int idx = 0; idx < model.nx; idx++) {
                 if (lonlat == 0) {
                     int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
-                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
+                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
+                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
 
                     B = model.csswm[p1].lat[I1][J1];
                     A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
@@ -201,8 +201,8 @@ void CSSWM::BP_hs(CSSWM &model) {
                 }
                 else {
                     int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
-                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
+                    int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
+                    int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
 
                     B = model.csswm[p1].lon[I1][J1];
                     A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];

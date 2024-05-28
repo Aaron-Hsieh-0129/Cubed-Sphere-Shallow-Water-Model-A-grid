@@ -1,236 +1,236 @@
 #include "construction.hpp"
 
 void CSSWM::BP_wind_convert(CSSWM &model) {
-    for (int idx = 0; idx < NX; idx++) {
+    for (int idx = 0; idx < model.nx; idx++) {
         #if defined(SecondOrderSpace)
             // patch0 (Left, Right, Up, Down)
-            model.csswm[0].up[0][idx] = model.Cube2Cube_U(model, 0, 3, 0, idx, NX-2, idx);
-            model.csswm[0].vp[0][idx] = model.Cube2Cube_V(model, 0, 3, 0, idx, NX-2, idx);
+            model.csswm[0].up[0][idx] = model.Cube2Cube_U(model, 0, 3, 0, idx, model.nx-2, idx);
+            model.csswm[0].vp[0][idx] = model.Cube2Cube_V(model, 0, 3, 0, idx, model.nx-2, idx);
 
-            model.csswm[0].up[NX-1][idx] = model.Cube2Cube_U(model, 0, 1, NX-1, idx, 1, idx);
-            model.csswm[0].vp[NX-1][idx] = model.Cube2Cube_V(model, 0, 1, NX-1, idx, 1, idx);
+            model.csswm[0].up[model.nx-1][idx] = model.Cube2Cube_U(model, 0, 1, model.nx-1, idx, 1, idx);
+            model.csswm[0].vp[model.nx-1][idx] = model.Cube2Cube_V(model, 0, 1, model.nx-1, idx, 1, idx);
 
-            model.csswm[0].up[idx][NY-1] = model.Cube2Cube_U(model, 0, 4, idx, NY-1, idx, 1);
-            model.csswm[0].vp[idx][NY-1] = model.Cube2Cube_V(model, 0, 4, idx, NY-1, idx, 1);
+            model.csswm[0].up[idx][model.ny-1] = model.Cube2Cube_U(model, 0, 4, idx, model.ny-1, idx, 1);
+            model.csswm[0].vp[idx][model.ny-1] = model.Cube2Cube_V(model, 0, 4, idx, model.ny-1, idx, 1);
 
-            model.csswm[0].up[idx][0] = model.Cube2Cube_U(model, 0, 5, idx, 0, idx, NY-2);
-            model.csswm[0].vp[idx][0] = model.Cube2Cube_V(model, 0, 5, idx, 0, idx, NY-2);
+            model.csswm[0].up[idx][0] = model.Cube2Cube_U(model, 0, 5, idx, 0, idx, model.ny-2);
+            model.csswm[0].vp[idx][0] = model.Cube2Cube_V(model, 0, 5, idx, 0, idx, model.ny-2);
 
             // patch1 (Left, Right, Up, Down)
-            model.csswm[1].up[0][idx] = model.Cube2Cube_U(model, 1, 0, 0, idx, NX-2, idx);
-            model.csswm[1].vp[0][idx] = model.Cube2Cube_V(model, 1, 0, 0, idx, NX-2, idx);
+            model.csswm[1].up[0][idx] = model.Cube2Cube_U(model, 1, 0, 0, idx, model.nx-2, idx);
+            model.csswm[1].vp[0][idx] = model.Cube2Cube_V(model, 1, 0, 0, idx, model.nx-2, idx);
 
-            model.csswm[1].up[NX-1][idx] = model.Cube2Cube_U(model, 1, 2, NX-1, idx, 1, idx);
-            model.csswm[1].vp[NX-1][idx] = model.Cube2Cube_V(model, 1, 2, NX-1, idx, 1, idx);
+            model.csswm[1].up[model.nx-1][idx] = model.Cube2Cube_U(model, 1, 2, model.nx-1, idx, 1, idx);
+            model.csswm[1].vp[model.nx-1][idx] = model.Cube2Cube_V(model, 1, 2, model.nx-1, idx, 1, idx);
 
-            model.csswm[1].up[idx][NY-1] = model.Cube2Cube_BV2AU(model, 1, 4, idx, NY-1, NX-2, idx);
-            model.csswm[1].vp[idx][NY-1] = model.Cube2Cube_BU2AV(model, 1, 4, idx, NY-1, NX-2, idx);
+            model.csswm[1].up[idx][model.ny-1] = model.Cube2Cube_BV2AU(model, 1, 4, idx, model.ny-1, model.nx-2, idx);
+            model.csswm[1].vp[idx][model.ny-1] = model.Cube2Cube_BU2AV(model, 1, 4, idx, model.ny-1, model.nx-2, idx);
 
-            model.csswm[1].up[idx][0] = model.Cube2Cube_BV2AU(model, 1, 5, idx, 0, NX-2, NY-1-idx);
-            model.csswm[1].vp[idx][0] = model.Cube2Cube_BU2AV(model, 1, 5, idx, 0, NX-2, NY-1-idx);
+            model.csswm[1].up[idx][0] = model.Cube2Cube_BV2AU(model, 1, 5, idx, 0, model.nx-2, model.ny-1-idx);
+            model.csswm[1].vp[idx][0] = model.Cube2Cube_BU2AV(model, 1, 5, idx, 0, model.nx-2, model.ny-1-idx);
 
             // patch2 (Left, Right, Up, Down)
-            model.csswm[2].up[0][idx] = model.Cube2Cube_U(model, 2, 1, 0, idx, NX-2, idx);
-            model.csswm[2].vp[0][idx] = model.Cube2Cube_V(model, 2, 1, 0, idx, NX-2, idx);
+            model.csswm[2].up[0][idx] = model.Cube2Cube_U(model, 2, 1, 0, idx, model.nx-2, idx);
+            model.csswm[2].vp[0][idx] = model.Cube2Cube_V(model, 2, 1, 0, idx, model.nx-2, idx);
 
-            model.csswm[2].up[NX-1][idx] = model.Cube2Cube_U(model, 2, 3, NX-1, idx, 1, idx);
-            model.csswm[2].vp[NX-1][idx] = model.Cube2Cube_V(model, 2, 3, NX-1, idx, 1, idx);
+            model.csswm[2].up[model.nx-1][idx] = model.Cube2Cube_U(model, 2, 3, model.nx-1, idx, 1, idx);
+            model.csswm[2].vp[model.nx-1][idx] = model.Cube2Cube_V(model, 2, 3, model.nx-1, idx, 1, idx);
 
-            model.csswm[2].up[idx][NY-1] = model.Cube2Cube_U(model, 2, 4, idx, NY-1, NX-1-idx, NY-2);
-            model.csswm[2].vp[idx][NY-1] = model.Cube2Cube_V(model, 2, 4, idx, NY-1, NX-1-idx, NY-2);
+            model.csswm[2].up[idx][model.ny-1] = model.Cube2Cube_U(model, 2, 4, idx, model.ny-1, model.nx-1-idx, model.ny-2);
+            model.csswm[2].vp[idx][model.ny-1] = model.Cube2Cube_V(model, 2, 4, idx, model.ny-1, model.nx-1-idx, model.ny-2);
 
-            model.csswm[2].up[idx][0] = model.Cube2Cube_U(model, 2, 5, idx, 0, NX-1-idx, 1);
-            model.csswm[2].vp[idx][0] = model.Cube2Cube_V(model, 2, 5, idx, 0, NX-1-idx, 1);
+            model.csswm[2].up[idx][0] = model.Cube2Cube_U(model, 2, 5, idx, 0, model.nx-1-idx, 1);
+            model.csswm[2].vp[idx][0] = model.Cube2Cube_V(model, 2, 5, idx, 0, model.nx-1-idx, 1);
 
             // patch3 (Left, Right, Up, Down)
-            model.csswm[3].up[0][idx] = model.Cube2Cube_U(model, 3, 2, 0, idx, NX-2, idx);
-            model.csswm[3].vp[0][idx] = model.Cube2Cube_V(model, 3, 2, 0, idx, NX-2, idx);
+            model.csswm[3].up[0][idx] = model.Cube2Cube_U(model, 3, 2, 0, idx, model.nx-2, idx);
+            model.csswm[3].vp[0][idx] = model.Cube2Cube_V(model, 3, 2, 0, idx, model.nx-2, idx);
 
-            model.csswm[3].up[NX-1][idx] = model.Cube2Cube_U(model, 3, 0, NX-1, idx, 1, idx);
-            model.csswm[3].vp[NX-1][idx] = model.Cube2Cube_V(model, 3, 0, NX-1, idx, 1, idx);
+            model.csswm[3].up[model.nx-1][idx] = model.Cube2Cube_U(model, 3, 0, model.nx-1, idx, 1, idx);
+            model.csswm[3].vp[model.nx-1][idx] = model.Cube2Cube_V(model, 3, 0, model.nx-1, idx, 1, idx);
 
-            model.csswm[3].up[idx][NY-1] = model.Cube2Cube_BV2AU(model, 3, 4, idx, NY-1, 1, NY-1-idx);
-            model.csswm[3].vp[idx][NY-1] = model.Cube2Cube_BU2AV(model, 3, 4, idx, NY-1, 1, NY-1-idx);
+            model.csswm[3].up[idx][model.ny-1] = model.Cube2Cube_BV2AU(model, 3, 4, idx, model.ny-1, 1, model.ny-1-idx);
+            model.csswm[3].vp[idx][model.ny-1] = model.Cube2Cube_BU2AV(model, 3, 4, idx, model.ny-1, 1, model.ny-1-idx);
 
             model.csswm[3].up[idx][0] = model.Cube2Cube_BV2AU(model, 3, 5, idx, 0, 1, idx);
             model.csswm[3].vp[idx][0] = model.Cube2Cube_BU2AV(model, 3, 5, idx, 0, 1, idx);
 
             // patch4 (Left, Right, Up, Down)
-            model.csswm[4].up[0][idx] = model.Cube2Cube_BV2AU(model, 4, 3, 0, idx, NX-1-idx, NY-2);
-            model.csswm[4].vp[0][idx] = model.Cube2Cube_BU2AV(model, 4, 3, 0, idx, NX-1-idx, NY-2);
+            model.csswm[4].up[0][idx] = model.Cube2Cube_BV2AU(model, 4, 3, 0, idx, model.nx-1-idx, model.ny-2);
+            model.csswm[4].vp[0][idx] = model.Cube2Cube_BU2AV(model, 4, 3, 0, idx, model.nx-1-idx, model.ny-2);
 
-            model.csswm[4].up[NX-1][idx] = model.Cube2Cube_BV2AU(model, 4, 1, NX-1, idx, idx, NY-2);
-            model.csswm[4].vp[NX-1][idx] = model.Cube2Cube_BU2AV(model, 4, 1, NX-1, idx, idx, NY-2);
+            model.csswm[4].up[model.nx-1][idx] = model.Cube2Cube_BV2AU(model, 4, 1, model.nx-1, idx, idx, model.ny-2);
+            model.csswm[4].vp[model.nx-1][idx] = model.Cube2Cube_BU2AV(model, 4, 1, model.nx-1, idx, idx, model.ny-2);
 
-            model.csswm[4].up[idx][NY-1] = model.Cube2Cube_U(model, 4, 2, idx, NY-1, NX-1-idx, NY-2);
-            model.csswm[4].vp[idx][NY-1] = model.Cube2Cube_V(model, 4, 2, idx, NY-1, NX-1-idx, NY-2);
+            model.csswm[4].up[idx][model.ny-1] = model.Cube2Cube_U(model, 4, 2, idx, model.ny-1, model.nx-1-idx, model.ny-2);
+            model.csswm[4].vp[idx][model.ny-1] = model.Cube2Cube_V(model, 4, 2, idx, model.ny-1, model.nx-1-idx, model.ny-2);
 
-            model.csswm[4].up[idx][0] = model.Cube2Cube_U(model, 4, 0, idx, 0, idx, NY-2);
-            model.csswm[4].vp[idx][0] = model.Cube2Cube_V(model, 4, 0, idx, 0, idx, NY-2);
+            model.csswm[4].up[idx][0] = model.Cube2Cube_U(model, 4, 0, idx, 0, idx, model.ny-2);
+            model.csswm[4].vp[idx][0] = model.Cube2Cube_V(model, 4, 0, idx, 0, idx, model.ny-2);
 
             // patch5 (Left, Right, Up, Down)
             model.csswm[5].up[0][idx] = model.Cube2Cube_BV2AU(model, 5, 3, 0, idx, idx, 1);
             model.csswm[5].vp[0][idx] = model.Cube2Cube_BU2AV(model, 5, 3, 0, idx, idx, 1);
 
-            model.csswm[5].up[NX-1][idx] = model.Cube2Cube_BV2AU(model, 5, 1, NX-1, idx, NX-1-idx, 1);
-            model.csswm[5].vp[NX-1][idx] = model.Cube2Cube_BU2AV(model, 5, 1, NX-1, idx, NX-1-idx, 1);
+            model.csswm[5].up[model.nx-1][idx] = model.Cube2Cube_BV2AU(model, 5, 1, model.nx-1, idx, model.nx-1-idx, 1);
+            model.csswm[5].vp[model.nx-1][idx] = model.Cube2Cube_BU2AV(model, 5, 1, model.nx-1, idx, model.nx-1-idx, 1);
 
-            model.csswm[5].up[idx][NY-1] = model.Cube2Cube_U(model, 5, 0, idx, NY-1, idx, 1);
-            model.csswm[5].vp[idx][NY-1] = model.Cube2Cube_V(model, 5, 0, idx, NY-1, idx, 1);
+            model.csswm[5].up[idx][model.ny-1] = model.Cube2Cube_U(model, 5, 0, idx, model.ny-1, idx, 1);
+            model.csswm[5].vp[idx][model.ny-1] = model.Cube2Cube_V(model, 5, 0, idx, model.ny-1, idx, 1);
 
-            model.csswm[5].up[idx][0] = model.Cube2Cube_U(model, 5, 2, idx, 0, NX-1-idx, 1);
-            model.csswm[5].vp[idx][0] = model.Cube2Cube_V(model, 5, 2, idx, 0, NX-1-idx, 1);
+            model.csswm[5].up[idx][0] = model.Cube2Cube_U(model, 5, 2, idx, 0, model.nx-1-idx, 1);
+            model.csswm[5].vp[idx][0] = model.Cube2Cube_V(model, 5, 2, idx, 0, model.nx-1-idx, 1);
         #elif defined(FourthOrderSpace)
             // patch0 (Left, Right, Up, Down)
-            model.csswm[0].up[0][idx] = model.Cube2Cube_U(model, 0, 3, 0, idx, NX-4, idx);
-            model.csswm[0].vp[0][idx] = model.Cube2Cube_V(model, 0, 3, 0, idx, NX-4, idx);
+            model.csswm[0].up[0][idx] = model.Cube2Cube_U(model, 0, 3, 0, idx, model.nx-4, idx);
+            model.csswm[0].vp[0][idx] = model.Cube2Cube_V(model, 0, 3, 0, idx, model.nx-4, idx);
 
-            model.csswm[0].up[NX-1][idx] = model.Cube2Cube_U(model, 0, 1, NX-1, idx, 3, idx);
-            model.csswm[0].vp[NX-1][idx] = model.Cube2Cube_V(model, 0, 1, NX-1, idx, 3, idx);
+            model.csswm[0].up[model.nx-1][idx] = model.Cube2Cube_U(model, 0, 1, model.nx-1, idx, 3, idx);
+            model.csswm[0].vp[model.nx-1][idx] = model.Cube2Cube_V(model, 0, 1, model.nx-1, idx, 3, idx);
 
-            model.csswm[0].up[idx][NY-1] = model.Cube2Cube_U(model, 0, 4, idx, NY-1, idx, 3);
-            model.csswm[0].vp[idx][NY-1] = model.Cube2Cube_V(model, 0, 4, idx, NY-1, idx, 3);
+            model.csswm[0].up[idx][model.ny-1] = model.Cube2Cube_U(model, 0, 4, idx, model.ny-1, idx, 3);
+            model.csswm[0].vp[idx][model.ny-1] = model.Cube2Cube_V(model, 0, 4, idx, model.ny-1, idx, 3);
 
-            model.csswm[0].up[idx][0] = model.Cube2Cube_U(model, 0, 5, idx, 0, idx, NY-4);
-            model.csswm[0].vp[idx][0] = model.Cube2Cube_V(model, 0, 5, idx, 0, idx, NY-4);
+            model.csswm[0].up[idx][0] = model.Cube2Cube_U(model, 0, 5, idx, 0, idx, model.ny-4);
+            model.csswm[0].vp[idx][0] = model.Cube2Cube_V(model, 0, 5, idx, 0, idx, model.ny-4);
 
-            model.csswm[0].up[1][idx] = model.Cube2Cube_U(model, 0, 3, 0, idx, NX-3, idx);
-            model.csswm[0].vp[1][idx] = model.Cube2Cube_V(model, 0, 3, 0, idx, NX-3, idx);
+            model.csswm[0].up[1][idx] = model.Cube2Cube_U(model, 0, 3, 0, idx, model.nx-3, idx);
+            model.csswm[0].vp[1][idx] = model.Cube2Cube_V(model, 0, 3, 0, idx, model.nx-3, idx);
 
-            model.csswm[0].up[NX-2][idx] = model.Cube2Cube_U(model, 0, 1, NX-1, idx, 2, idx);
-            model.csswm[0].vp[NX-2][idx] = model.Cube2Cube_V(model, 0, 1, NX-1, idx, 2, idx);
+            model.csswm[0].up[model.nx-2][idx] = model.Cube2Cube_U(model, 0, 1, model.nx-1, idx, 2, idx);
+            model.csswm[0].vp[model.nx-2][idx] = model.Cube2Cube_V(model, 0, 1, model.nx-1, idx, 2, idx);
 
-            model.csswm[0].up[idx][NY-2] = model.Cube2Cube_U(model, 0, 4, idx, NY-1, idx, 2);
-            model.csswm[0].vp[idx][NY-2] = model.Cube2Cube_V(model, 0, 4, idx, NY-1, idx, 2);
+            model.csswm[0].up[idx][model.ny-2] = model.Cube2Cube_U(model, 0, 4, idx, model.ny-1, idx, 2);
+            model.csswm[0].vp[idx][model.ny-2] = model.Cube2Cube_V(model, 0, 4, idx, model.ny-1, idx, 2);
 
-            model.csswm[0].up[idx][1] = model.Cube2Cube_U(model, 0, 5, idx, 0, idx, NY-3);
-            model.csswm[0].vp[idx][1] = model.Cube2Cube_V(model, 0, 5, idx, 0, idx, NY-3);
+            model.csswm[0].up[idx][1] = model.Cube2Cube_U(model, 0, 5, idx, 0, idx, model.ny-3);
+            model.csswm[0].vp[idx][1] = model.Cube2Cube_V(model, 0, 5, idx, 0, idx, model.ny-3);
 
 
             // patch1 (Left, Right, Up, Down)
-            model.csswm[1].up[0][idx] = model.Cube2Cube_U(model, 1, 0, 0, idx, NX-4, idx);
-            model.csswm[1].vp[0][idx] = model.Cube2Cube_V(model, 1, 0, 0, idx, NX-4, idx);
+            model.csswm[1].up[0][idx] = model.Cube2Cube_U(model, 1, 0, 0, idx, model.nx-4, idx);
+            model.csswm[1].vp[0][idx] = model.Cube2Cube_V(model, 1, 0, 0, idx, model.nx-4, idx);
 
-            model.csswm[1].up[NX-1][idx] = model.Cube2Cube_U(model, 1, 2, NX-1, idx, 3, idx);
-            model.csswm[1].vp[NX-1][idx] = model.Cube2Cube_V(model, 1, 2, NX-1, idx, 3, idx);
+            model.csswm[1].up[model.nx-1][idx] = model.Cube2Cube_U(model, 1, 2, model.nx-1, idx, 3, idx);
+            model.csswm[1].vp[model.nx-1][idx] = model.Cube2Cube_V(model, 1, 2, model.nx-1, idx, 3, idx);
 
-            model.csswm[1].up[idx][NY-1] = model.Cube2Cube_BV2AU(model, 1, 4, idx, NY-1, NX-4, idx);
-            model.csswm[1].vp[idx][NY-1] = model.Cube2Cube_BU2AV(model, 1, 4, idx, NY-1, NX-4, idx);
+            model.csswm[1].up[idx][model.ny-1] = model.Cube2Cube_BV2AU(model, 1, 4, idx, model.ny-1, model.nx-4, idx);
+            model.csswm[1].vp[idx][model.ny-1] = model.Cube2Cube_BU2AV(model, 1, 4, idx, model.ny-1, model.nx-4, idx);
 
-            model.csswm[1].up[idx][0] = model.Cube2Cube_BV2AU(model, 1, 5, idx, 0, NX-4, NY-1-idx);
-            model.csswm[1].vp[idx][0] = model.Cube2Cube_BU2AV(model, 1, 5, idx, 0, NX-4, NY-1-idx);
+            model.csswm[1].up[idx][0] = model.Cube2Cube_BV2AU(model, 1, 5, idx, 0, model.nx-4, model.ny-1-idx);
+            model.csswm[1].vp[idx][0] = model.Cube2Cube_BU2AV(model, 1, 5, idx, 0, model.nx-4, model.ny-1-idx);
 
-            model.csswm[1].up[1][idx] = model.Cube2Cube_U(model, 1, 0, 0, idx, NX-3, idx);
-            model.csswm[1].vp[1][idx] = model.Cube2Cube_V(model, 1, 0, 0, idx, NX-3, idx);
+            model.csswm[1].up[1][idx] = model.Cube2Cube_U(model, 1, 0, 0, idx, model.nx-3, idx);
+            model.csswm[1].vp[1][idx] = model.Cube2Cube_V(model, 1, 0, 0, idx, model.nx-3, idx);
 
-            model.csswm[1].up[NX-2][idx] = model.Cube2Cube_U(model, 1, 2, NX-1, idx, 2, idx);
-            model.csswm[1].vp[NX-2][idx] = model.Cube2Cube_V(model, 1, 2, NX-1, idx, 2, idx);
+            model.csswm[1].up[model.nx-2][idx] = model.Cube2Cube_U(model, 1, 2, model.nx-1, idx, 2, idx);
+            model.csswm[1].vp[model.nx-2][idx] = model.Cube2Cube_V(model, 1, 2, model.nx-1, idx, 2, idx);
 
-            model.csswm[1].up[idx][NY-2] = model.Cube2Cube_BV2AU(model, 1, 4, idx, NY-1, NX-3, idx);
-            model.csswm[1].vp[idx][NY-2] = model.Cube2Cube_BU2AV(model, 1, 4, idx, NY-1, NX-3, idx);
+            model.csswm[1].up[idx][model.ny-2] = model.Cube2Cube_BV2AU(model, 1, 4, idx, model.ny-1, model.nx-3, idx);
+            model.csswm[1].vp[idx][model.ny-2] = model.Cube2Cube_BU2AV(model, 1, 4, idx, model.ny-1, model.nx-3, idx);
 
-            model.csswm[1].up[idx][1] = model.Cube2Cube_BV2AU(model, 1, 5, idx, 0, NX-3, NY-1-idx);
-            model.csswm[1].vp[idx][1] = model.Cube2Cube_BU2AV(model, 1, 5, idx, 0, NX-3, NY-1-idx);
+            model.csswm[1].up[idx][1] = model.Cube2Cube_BV2AU(model, 1, 5, idx, 0, model.nx-3, model.ny-1-idx);
+            model.csswm[1].vp[idx][1] = model.Cube2Cube_BU2AV(model, 1, 5, idx, 0, model.nx-3, model.ny-1-idx);
 
             // patch2 (Left, Right, Up, Down)
-            model.csswm[2].up[0][idx] = model.Cube2Cube_U(model, 2, 1, 0, idx, NX-4, idx);
-            model.csswm[2].vp[0][idx] = model.Cube2Cube_V(model, 2, 1, 0, idx, NX-4, idx);
+            model.csswm[2].up[0][idx] = model.Cube2Cube_U(model, 2, 1, 0, idx, model.nx-4, idx);
+            model.csswm[2].vp[0][idx] = model.Cube2Cube_V(model, 2, 1, 0, idx, model.nx-4, idx);
 
-            model.csswm[2].up[NX-1][idx] = model.Cube2Cube_U(model, 2, 3, NX-1, idx, 3, idx);
-            model.csswm[2].vp[NX-1][idx] = model.Cube2Cube_V(model, 2, 3, NX-1, idx, 3, idx);
+            model.csswm[2].up[model.nx-1][idx] = model.Cube2Cube_U(model, 2, 3, model.nx-1, idx, 3, idx);
+            model.csswm[2].vp[model.nx-1][idx] = model.Cube2Cube_V(model, 2, 3, model.nx-1, idx, 3, idx);
 
-            model.csswm[2].up[idx][NY-1] = model.Cube2Cube_U(model, 2, 4, idx, NY-1, NX-1-idx, NY-4);
-            model.csswm[2].vp[idx][NY-1] = model.Cube2Cube_V(model, 2, 4, idx, NY-1, NX-1-idx, NY-4);
+            model.csswm[2].up[idx][model.ny-1] = model.Cube2Cube_U(model, 2, 4, idx, model.ny-1, model.nx-1-idx, model.ny-4);
+            model.csswm[2].vp[idx][model.ny-1] = model.Cube2Cube_V(model, 2, 4, idx, model.ny-1, model.nx-1-idx, model.ny-4);
 
-            model.csswm[2].up[idx][0] = model.Cube2Cube_U(model, 2, 5, idx, 0, NX-1-idx, 3);
-            model.csswm[2].vp[idx][0] = model.Cube2Cube_V(model, 2, 5, idx, 0, NX-1-idx, 3);
+            model.csswm[2].up[idx][0] = model.Cube2Cube_U(model, 2, 5, idx, 0, model.nx-1-idx, 3);
+            model.csswm[2].vp[idx][0] = model.Cube2Cube_V(model, 2, 5, idx, 0, model.nx-1-idx, 3);
 
-            model.csswm[2].up[1][idx] = model.Cube2Cube_U(model, 2, 1, 0, idx, NX-3, idx);
-            model.csswm[2].vp[1][idx] = model.Cube2Cube_V(model, 2, 1, 0, idx, NX-3, idx);
+            model.csswm[2].up[1][idx] = model.Cube2Cube_U(model, 2, 1, 0, idx, model.nx-3, idx);
+            model.csswm[2].vp[1][idx] = model.Cube2Cube_V(model, 2, 1, 0, idx, model.nx-3, idx);
 
-            model.csswm[2].up[NX-2][idx] = model.Cube2Cube_U(model, 2, 3, NX-1, idx, 2, idx);
-            model.csswm[2].vp[NX-2][idx] = model.Cube2Cube_V(model, 2, 3, NX-1, idx, 2, idx);
+            model.csswm[2].up[model.nx-2][idx] = model.Cube2Cube_U(model, 2, 3, model.nx-1, idx, 2, idx);
+            model.csswm[2].vp[model.nx-2][idx] = model.Cube2Cube_V(model, 2, 3, model.nx-1, idx, 2, idx);
 
-            model.csswm[2].up[idx][NY-2] = model.Cube2Cube_U(model, 2, 4, idx, NY-1, NX-1-idx, NY-3);
-            model.csswm[2].vp[idx][NY-2] = model.Cube2Cube_V(model, 2, 4, idx, NY-1, NX-1-idx, NY-3);
+            model.csswm[2].up[idx][model.ny-2] = model.Cube2Cube_U(model, 2, 4, idx, model.ny-1, model.nx-1-idx, model.ny-3);
+            model.csswm[2].vp[idx][model.ny-2] = model.Cube2Cube_V(model, 2, 4, idx, model.ny-1, model.nx-1-idx, model.ny-3);
 
-            model.csswm[2].up[idx][1] = model.Cube2Cube_U(model, 2, 5, idx, 0, NX-1-idx, 2);
-            model.csswm[2].vp[idx][1] = model.Cube2Cube_V(model, 2, 5, idx, 0, NX-1-idx, 2);
+            model.csswm[2].up[idx][1] = model.Cube2Cube_U(model, 2, 5, idx, 0, model.nx-1-idx, 2);
+            model.csswm[2].vp[idx][1] = model.Cube2Cube_V(model, 2, 5, idx, 0, model.nx-1-idx, 2);
 
             // patch3 (Left, Right, Up, Down)
-            model.csswm[3].up[0][idx] = model.Cube2Cube_U(model, 3, 2, 0, idx, NX-4, idx);
-            model.csswm[3].vp[0][idx] = model.Cube2Cube_V(model, 3, 2, 0, idx, NX-4, idx);
+            model.csswm[3].up[0][idx] = model.Cube2Cube_U(model, 3, 2, 0, idx, model.nx-4, idx);
+            model.csswm[3].vp[0][idx] = model.Cube2Cube_V(model, 3, 2, 0, idx, model.nx-4, idx);
 
-            model.csswm[3].up[NX-1][idx] = model.Cube2Cube_U(model, 3, 0, NX-1, idx, 3, idx);
-            model.csswm[3].vp[NX-1][idx] = model.Cube2Cube_V(model, 3, 0, NX-1, idx, 3, idx);
+            model.csswm[3].up[model.nx-1][idx] = model.Cube2Cube_U(model, 3, 0, model.nx-1, idx, 3, idx);
+            model.csswm[3].vp[model.nx-1][idx] = model.Cube2Cube_V(model, 3, 0, model.nx-1, idx, 3, idx);
 
-            model.csswm[3].up[idx][NY-1] = model.Cube2Cube_BV2AU(model, 3, 4, idx, NY-1, 3, NY-1-idx);
-            model.csswm[3].vp[idx][NY-1] = model.Cube2Cube_BU2AV(model, 3, 4, idx, NY-1, 3, NY-1-idx);
+            model.csswm[3].up[idx][model.ny-1] = model.Cube2Cube_BV2AU(model, 3, 4, idx, model.ny-1, 3, model.ny-1-idx);
+            model.csswm[3].vp[idx][model.ny-1] = model.Cube2Cube_BU2AV(model, 3, 4, idx, model.ny-1, 3, model.ny-1-idx);
 
             model.csswm[3].up[idx][0] = model.Cube2Cube_BV2AU(model, 3, 5, idx, 0, 3, idx);
             model.csswm[3].vp[idx][0] = model.Cube2Cube_BU2AV(model, 3, 5, idx, 0, 3, idx);
 
-            model.csswm[3].up[1][idx] = model.Cube2Cube_U(model, 3, 2, 0, idx, NX-3, idx);
-            model.csswm[3].vp[1][idx] = model.Cube2Cube_V(model, 3, 2, 0, idx, NX-3, idx);
+            model.csswm[3].up[1][idx] = model.Cube2Cube_U(model, 3, 2, 0, idx, model.nx-3, idx);
+            model.csswm[3].vp[1][idx] = model.Cube2Cube_V(model, 3, 2, 0, idx, model.nx-3, idx);
 
-            model.csswm[3].up[NX-2][idx] = model.Cube2Cube_U(model, 3, 0, NX-1, idx, 2, idx);
-            model.csswm[3].vp[NX-2][idx] = model.Cube2Cube_V(model, 3, 0, NX-1, idx, 2, idx);
+            model.csswm[3].up[model.nx-2][idx] = model.Cube2Cube_U(model, 3, 0, model.nx-1, idx, 2, idx);
+            model.csswm[3].vp[model.nx-2][idx] = model.Cube2Cube_V(model, 3, 0, model.nx-1, idx, 2, idx);
 
-            model.csswm[3].up[idx][NY-2] = model.Cube2Cube_BV2AU(model, 3, 4, idx, NY-1, 2, NY-1-idx);
-            model.csswm[3].vp[idx][NY-2] = model.Cube2Cube_BU2AV(model, 3, 4, idx, NY-1, 2, NY-1-idx);
+            model.csswm[3].up[idx][model.ny-2] = model.Cube2Cube_BV2AU(model, 3, 4, idx, model.ny-1, 2, model.ny-1-idx);
+            model.csswm[3].vp[idx][model.ny-2] = model.Cube2Cube_BU2AV(model, 3, 4, idx, model.ny-1, 2, model.ny-1-idx);
 
             model.csswm[3].up[idx][1] = model.Cube2Cube_BV2AU(model, 3, 5, idx, 0, 2, idx);
             model.csswm[3].vp[idx][1] = model.Cube2Cube_BU2AV(model, 3, 5, idx, 0, 2, idx);
 
             // patch4 (Left, Right, Up, Down)
-            model.csswm[4].up[0][idx] = model.Cube2Cube_BV2AU(model, 4, 3, 0, idx, NX-1-idx, NY-4);
-            model.csswm[4].vp[0][idx] = model.Cube2Cube_BU2AV(model, 4, 3, 0, idx, NX-1-idx, NY-4);
+            model.csswm[4].up[0][idx] = model.Cube2Cube_BV2AU(model, 4, 3, 0, idx, model.nx-1-idx, model.ny-4);
+            model.csswm[4].vp[0][idx] = model.Cube2Cube_BU2AV(model, 4, 3, 0, idx, model.nx-1-idx, model.ny-4);
 
-            model.csswm[4].up[NX-1][idx] = model.Cube2Cube_BV2AU(model, 4, 1, NX-1, idx, idx, NY-4);
-            model.csswm[4].vp[NX-1][idx] = model.Cube2Cube_BU2AV(model, 4, 1, NX-1, idx, idx, NY-4);
+            model.csswm[4].up[model.nx-1][idx] = model.Cube2Cube_BV2AU(model, 4, 1, model.nx-1, idx, idx, model.ny-4);
+            model.csswm[4].vp[model.nx-1][idx] = model.Cube2Cube_BU2AV(model, 4, 1, model.nx-1, idx, idx, model.ny-4);
 
-            model.csswm[4].up[idx][NY-1] = model.Cube2Cube_U(model, 4, 2, idx, NY-1, NX-1-idx, NY-4);
-            model.csswm[4].vp[idx][NY-1] = model.Cube2Cube_V(model, 4, 2, idx, NY-1, NX-1-idx, NY-4);
+            model.csswm[4].up[idx][model.ny-1] = model.Cube2Cube_U(model, 4, 2, idx, model.ny-1, model.nx-1-idx, model.ny-4);
+            model.csswm[4].vp[idx][model.ny-1] = model.Cube2Cube_V(model, 4, 2, idx, model.ny-1, model.nx-1-idx, model.ny-4);
 
-            model.csswm[4].up[idx][0] = model.Cube2Cube_U(model, 4, 0, idx, 0, idx, NY-4);
-            model.csswm[4].vp[idx][0] = model.Cube2Cube_V(model, 4, 0, idx, 0, idx, NY-4);
+            model.csswm[4].up[idx][0] = model.Cube2Cube_U(model, 4, 0, idx, 0, idx, model.ny-4);
+            model.csswm[4].vp[idx][0] = model.Cube2Cube_V(model, 4, 0, idx, 0, idx, model.ny-4);
 
-            model.csswm[4].up[1][idx] = model.Cube2Cube_BV2AU(model, 4, 3, 0, idx, NX-1-idx, NY-3);
-            model.csswm[4].vp[1][idx] = model.Cube2Cube_BU2AV(model, 4, 3, 0, idx, NX-1-idx, NY-3);
+            model.csswm[4].up[1][idx] = model.Cube2Cube_BV2AU(model, 4, 3, 0, idx, model.nx-1-idx, model.ny-3);
+            model.csswm[4].vp[1][idx] = model.Cube2Cube_BU2AV(model, 4, 3, 0, idx, model.nx-1-idx, model.ny-3);
 
-            model.csswm[4].up[NX-2][idx] = model.Cube2Cube_BV2AU(model, 4, 1, NX-1, idx, idx, NY-3);
-            model.csswm[4].vp[NX-2][idx] = model.Cube2Cube_BU2AV(model, 4, 1, NX-1, idx, idx, NY-3);
+            model.csswm[4].up[model.nx-2][idx] = model.Cube2Cube_BV2AU(model, 4, 1, model.nx-1, idx, idx, model.ny-3);
+            model.csswm[4].vp[model.nx-2][idx] = model.Cube2Cube_BU2AV(model, 4, 1, model.nx-1, idx, idx, model.ny-3);
 
-            model.csswm[4].up[idx][NY-2] = model.Cube2Cube_U(model, 4, 2, idx, NY-1, NX-1-idx, NY-3);
-            model.csswm[4].vp[idx][NY-2] = model.Cube2Cube_V(model, 4, 2, idx, NY-1, NX-1-idx, NY-3);
+            model.csswm[4].up[idx][model.ny-2] = model.Cube2Cube_U(model, 4, 2, idx, model.ny-1, model.nx-1-idx, model.ny-3);
+            model.csswm[4].vp[idx][model.ny-2] = model.Cube2Cube_V(model, 4, 2, idx, model.ny-1, model.nx-1-idx, model.ny-3);
 
-            model.csswm[4].up[idx][1] = model.Cube2Cube_U(model, 4, 0, idx, 0, idx, NY-3);
-            model.csswm[4].vp[idx][1] = model.Cube2Cube_V(model, 4, 0, idx, 0, idx, NY-3);
+            model.csswm[4].up[idx][1] = model.Cube2Cube_U(model, 4, 0, idx, 0, idx, model.ny-3);
+            model.csswm[4].vp[idx][1] = model.Cube2Cube_V(model, 4, 0, idx, 0, idx, model.ny-3);
 
             // patch5 (Left, Right, Up, Down)
             model.csswm[5].up[0][idx] = model.Cube2Cube_BV2AU(model, 5, 3, 0, idx, idx, 3);
             model.csswm[5].vp[0][idx] = model.Cube2Cube_BU2AV(model, 5, 3, 0, idx, idx, 3);
 
-            model.csswm[5].up[NX-1][idx] = model.Cube2Cube_BV2AU(model, 5, 1, NX-1, idx, NX-1-idx, 3);
-            model.csswm[5].vp[NX-1][idx] = model.Cube2Cube_BU2AV(model, 5, 1, NX-1, idx, NX-1-idx, 3);
+            model.csswm[5].up[model.nx-1][idx] = model.Cube2Cube_BV2AU(model, 5, 1, model.nx-1, idx, model.nx-1-idx, 3);
+            model.csswm[5].vp[model.nx-1][idx] = model.Cube2Cube_BU2AV(model, 5, 1, model.nx-1, idx, model.nx-1-idx, 3);
 
-            model.csswm[5].up[idx][NY-1] = model.Cube2Cube_U(model, 5, 0, idx, NY-1, idx, 3);
-            model.csswm[5].vp[idx][NY-1] = model.Cube2Cube_V(model, 5, 0, idx, NY-1, idx, 3);
+            model.csswm[5].up[idx][model.ny-1] = model.Cube2Cube_U(model, 5, 0, idx, model.ny-1, idx, 3);
+            model.csswm[5].vp[idx][model.ny-1] = model.Cube2Cube_V(model, 5, 0, idx, model.ny-1, idx, 3);
 
-            model.csswm[5].up[idx][0] = model.Cube2Cube_U(model, 5, 2, idx, 0, NX-1-idx, 3);
-            model.csswm[5].vp[idx][0] = model.Cube2Cube_V(model, 5, 2, idx, 0, NX-1-idx, 3);
+            model.csswm[5].up[idx][0] = model.Cube2Cube_U(model, 5, 2, idx, 0, model.nx-1-idx, 3);
+            model.csswm[5].vp[idx][0] = model.Cube2Cube_V(model, 5, 2, idx, 0, model.nx-1-idx, 3);
 
             model.csswm[5].up[1][idx] = model.Cube2Cube_BV2AU(model, 5, 3, 0, idx, idx, 2);
             model.csswm[5].vp[1][idx] = model.Cube2Cube_BU2AV(model, 5, 3, 0, idx, idx, 2);
 
-            model.csswm[5].up[NX-2][idx] = model.Cube2Cube_BV2AU(model, 5, 1, NX-1, idx, NX-1-idx, 2);
-            model.csswm[5].vp[NX-2][idx] = model.Cube2Cube_BU2AV(model, 5, 1, NX-1, idx, NX-1-idx, 2);
+            model.csswm[5].up[model.nx-2][idx] = model.Cube2Cube_BV2AU(model, 5, 1, model.nx-1, idx, model.nx-1-idx, 2);
+            model.csswm[5].vp[model.nx-2][idx] = model.Cube2Cube_BU2AV(model, 5, 1, model.nx-1, idx, model.nx-1-idx, 2);
 
-            model.csswm[5].up[idx][NY-2] = model.Cube2Cube_U(model, 5, 0, idx, NY-1, idx, 2);
-            model.csswm[5].vp[idx][NY-2] = model.Cube2Cube_V(model, 5, 0, idx, NY-1, idx, 2);
+            model.csswm[5].up[idx][model.ny-2] = model.Cube2Cube_U(model, 5, 0, idx, model.ny-1, idx, 2);
+            model.csswm[5].vp[idx][model.ny-2] = model.Cube2Cube_V(model, 5, 0, idx, model.ny-1, idx, 2);
 
-            model.csswm[5].up[idx][1] = model.Cube2Cube_U(model, 5, 2, idx, 0, NX-1-idx, 2);
-            model.csswm[5].vp[idx][1] = model.Cube2Cube_V(model, 5, 2, idx, 0, NX-1-idx, 2);
+            model.csswm[5].up[idx][1] = model.Cube2Cube_U(model, 5, 2, idx, 0, model.nx-1-idx, 2);
+            model.csswm[5].vp[idx][1] = model.Cube2Cube_V(model, 5, 2, idx, 0, model.nx-1-idx, 2);
         #endif
     }
 }
@@ -251,14 +251,14 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
         #elif defined(FourthOrderSpace)
             p1 = model.match_ouTTer[pp][0], p2 = model.match_ouTTer[pp][1], i1 = model.match_ouTTer[pp][2], j1 = model.match_ouTTer[pp][3], i2 = model.match_ouTTer[pp][4], j2 = model.match_ouTTer[pp][5], reversed = model.match_ouTTer[pp][6], lonlat = model.match_ouTTer[pp][7];
         #endif
-        for (int idx = 0; idx < NX; idx++) {
+        for (int idx = 0; idx < model.nx; idx++) {
             int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
             #if defined(SecondOrderSpace)
-                int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
-                int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
+                int I2_1 = i2 == -1 ? reversed ? model.checkIP[model.nx-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[model.ny-1-idx][0] : model.checkIP[idx][0] : j2;
+                int I2_2 = i2 == -1 ? reversed ? model.checkIP[model.nx-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[model.ny-1-idx][1] : model.checkIP[idx][1] : j2;
             #elif defined(FourthOrderSpace)
-                int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
-                int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
+                int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[model.nx-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[model.ny-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
+                int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[model.nx-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[model.ny-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
             #endif
             if (lonlat == 0) {
                 B = model.csswm[p1].lat[I1][J1];
@@ -314,10 +314,10 @@ void CSSWM::BP_wind_interpolation(CSSWM &model) {
         for (int pp = 0; pp < 24; pp++) {
             p1 = model.match_ouTer[pp][0], p2 = model.match_ouTer[pp][1], i1 = model.match_ouTer[pp][2], j1 = model.match_ouTer[pp][3], i2 = model.match_ouTer[pp][4], j2 = model.match_ouTer[pp][5], reversed = model.match_ouTer[pp][6], lonlat = model.match_ouTer[pp][7];
 
-            for (int idx = 0; idx < NX; idx++) {
+            for (int idx = 0; idx < model.nx; idx++) {
                 int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
-                int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
+                int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
+                int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
                 if (lonlat == 0) {
                     B = model.csswm[p1].lat[I1][J1];
                     A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
@@ -379,16 +379,16 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
         #if defined(SecondOrderSpace)
             p1 = match[pp][0], p2 = match[pp][1], i1 = match[pp][2], j1 = match[pp][3], i2 = match[pp][4], j2 = match[pp][5], reversed = match[pp][6], lonlat = match[pp][7];
         #elif defined(FourthOrderSpace)
-            p1 = match_ouTTer[pp][0], p2 = match_ouTTer[pp][1], i1 = match_ouTTer[pp][2], j1 = match_ouTTer[pp][3], i2 = match_ouTTer[pp][4], j2 = match_ouTTer[pp][5], reversed = match_ouTTer[pp][6], lonlat = match_ouTTer[pp][7];
+            p1 = model.match_ouTTer[pp][0], p2 = model.match_ouTTer[pp][1], i1 = model.match_ouTTer[pp][2], j1 = model.match_ouTTer[pp][3], i2 = model.match_ouTTer[pp][4], j2 = model.match_ouTTer[pp][5], reversed = model.match_ouTTer[pp][6], lonlat = model.match_ouTTer[pp][7];
         #endif
-        for (int idx = 0; idx < NX; idx++) {
+        for (int idx = 0; idx < model.nx; idx++) {
             I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
             #if defined(SecondOrderSpace)
-                I2_1 = i2 == -1 ? reversed ? checkIP[NX-1-idx][0] : checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP[NY-1-idx][0] : checkIP[idx][0] : j2;
-                I2_2 = i2 == -1 ? reversed ? checkIP[NX-1-idx][1] : checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP[NY-1-idx][1] : checkIP[idx][1] : j2;
+                I2_1 = i2 == -1 ? reversed ? checkIP[model.nx-1-idx][0] : checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP[model.ny-1-idx][0] : checkIP[idx][0] : j2;
+                I2_2 = i2 == -1 ? reversed ? checkIP[model.nx-1-idx][1] : checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP[model.ny-1-idx][1] : checkIP[idx][1] : j2;
             #elif defined(FourthOrderSpace)
-                I2_1 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][0] : checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][0] : checkIP_ouTTer[idx][0] : j2;
-                I2_2 = i2 == -1 ? reversed ? checkIP_ouTTer[NX-1-idx][1] : checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTTer[NY-1-idx][1] : checkIP_ouTTer[idx][1] : j2;
+                I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[model.nx-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[model.ny-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
+                I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[model.nx-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[model.ny-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
             #endif
             if (lonlat == 0) {
                 B = model.csswm[p1].lat[I1][J1];
@@ -419,7 +419,7 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTTer_D[I1][2] * uIP + model.csswm[p1].IP_ouTTer_D[I1][3] * vIP;
                     #endif
                 }
-                else if (j1 == NY-1) {
+                else if (j1 == model.ny-1) {
                     #if defined(SecondOrderSpace)
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP1_U[I1][0] * uIP + model.csswm[p1].IP1_U[I1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP1_U[I1][2] * uIP + model.csswm[p1].IP1_U[I1][3] * vIP;
@@ -439,7 +439,7 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTTer_L[J1][2] * uIP + model.csswm[p1].IP_ouTTer_L[J1][3] * vIP;
                     #endif
                 }
-                else if (i1 == NX-1) {
+                else if (i1 == model.nx-1) {
                     #if defined(SecondOrderSpace)
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP1_R[J1][0] * uIP + model.csswm[p1].IP1_R[J1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP1_R[J1][2] * uIP + model.csswm[p1].IP1_R[J1][3] * vIP;
@@ -454,12 +454,12 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
 
     #if defined(FourthOrderSpace)
         for (int pp = 0; pp < 24; pp++) {
-            p1 = match_ouTer[pp][0], p2 = match_ouTer[pp][1], i1 = match_ouTer[pp][2], j1 = match_ouTer[pp][3], i2 = match_ouTer[pp][4], j2 = match_ouTer[pp][5], reversed = match_ouTer[pp][6], lonlat = match_ouTer[pp][7];
-            for (int idx = 0; idx < NX; idx++) {
+            p1 = model.match_ouTer[pp][0], p2 = model.match_ouTer[pp][1], i1 = model.match_ouTer[pp][2], j1 = model.match_ouTer[pp][3], i2 = model.match_ouTer[pp][4], j2 = model.match_ouTer[pp][5], reversed = model.match_ouTer[pp][6], lonlat = model.match_ouTer[pp][7];
+            for (int idx = 0; idx < model.nx; idx++) {
                 if (lonlat == 0) {
                     I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                    I2_1 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][0] : checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][0] : checkIP_ouTer[idx][0] : j2;
-                    I2_2 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][1] : checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][1] : checkIP_ouTer[idx][1] : j2;
+                    I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
+                    I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
 
                     B = model.csswm[p1].lat[I1][J1];
                     A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
@@ -468,8 +468,8 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
                 }
                 else {
                     I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
-                    I2_1 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][0] : checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][0] : checkIP_ouTer[idx][0] : j2;
-                    I2_2 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][1] : checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][1] : checkIP_ouTer[idx][1] : j2;
+                    I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
+                    I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[model.nx-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[model.ny-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
 
                     B = model.csswm[p1].lon[I1][J1];
                     A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
@@ -488,7 +488,7 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_D[I1][0] * uIP + model.csswm[p1].IP_ouTer_D[I1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_D[I1][2] * uIP + model.csswm[p1].IP_ouTer_D[I1][3] * vIP;
                     }
-                    else if (j1 == NY-2) {
+                    else if (j1 == model.ny-2) {
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_U[I1][0] * uIP + model.csswm[p1].IP_ouTer_U[I1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_U[I1][2] * uIP + model.csswm[p1].IP_ouTer_U[I1][3] * vIP;
                     }
@@ -498,7 +498,7 @@ void CSSWM::BP_wind_interpolation2(CSSWM &model) {
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_L[J1][0] * uIP + model.csswm[p1].IP_ouTer_L[J1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_L[J1][2] * uIP + model.csswm[p1].IP_ouTer_L[J1][3] * vIP;
                     }
-                    else if (i1 == NX-2) {
+                    else if (i1 == model.nx-2) {
                         model.csswm[p1].up[I1][J1] = model.csswm[p1].IP_ouTer_R[J1][0] * uIP + model.csswm[p1].IP_ouTer_R[J1][1] * vIP;
                         model.csswm[p1].vp[I1][J1] = model.csswm[p1].IP_ouTer_R[J1][2] * uIP + model.csswm[p1].IP_ouTer_R[J1][3] * vIP;
                     }

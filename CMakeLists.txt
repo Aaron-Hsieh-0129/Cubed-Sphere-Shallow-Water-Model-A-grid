@@ -24,8 +24,9 @@ include_directories(
 file(GLOB_RECURSE SRC src/*.cpp src/*.hpp)
 add_executable(csswm ${SRC})
 
+find_library(libncPath netcdf "/home/Aaron/local/lib")
 find_library(libncxxPath netcdf_c++4 "/home/Aaron/local/lib")
-target_link_libraries(csswm ${libncxxPath})
+target_link_libraries(csswm ${libncPath} ${libncxxPath})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
