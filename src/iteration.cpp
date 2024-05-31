@@ -212,6 +212,8 @@ void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
                     double f0 = 0;
                     double beta = 2.5 * 10E-11;
                     f = f0 + beta * model.csswm[p].lat[i][j] * 180. / M_PI * (111000.);
+                #elif defined(Uniform)
+                    f = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #else
                     f = 0;
                 #endif
