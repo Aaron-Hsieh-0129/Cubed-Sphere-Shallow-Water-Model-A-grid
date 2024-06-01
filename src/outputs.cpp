@@ -1,4 +1,7 @@
-#include "outputs.hpp"
+#include "construction.hpp"
+#include <vector>
+#include <netcdf>
+#include <fstream>
 
 using std::fstream;
 using std::ios;
@@ -6,7 +9,7 @@ using std::string;
 using std::vector;
 using namespace netCDF;
 
-void Outputs::create_directory(string directory_name) {
+void CSSWM::Outputs::create_directory(string directory_name) {
     string str = "mkdir -p " + directory_name;
     const char *command = str.c_str();
     const int dir_err = system(command);
@@ -17,7 +20,7 @@ void Outputs::create_directory(string directory_name) {
     return;
 }
 
-void Outputs::grid(CSSWM &model) {
+void CSSWM::Outputs::grid(CSSWM &model) {
     fstream fout[4];
     string dir = OUTPUTPATH + (string) "grids/";
     string grid[4] = {"lon.txt", "lat.txt", "x.txt", "y.txt"};
@@ -39,7 +42,7 @@ void Outputs::grid(CSSWM &model) {
     }
 }
 
-void Outputs::h(int n, CSSWM &model) {
+void CSSWM::Outputs::h(int n, CSSWM &model) {
     fstream fouth;
     string hname = OUTPUTPATH + (string) "h/h_" + std::to_string(n) + ".txt";
     fouth.open(hname, std::ios::out);
@@ -53,7 +56,7 @@ void Outputs::h(int n, CSSWM &model) {
     return;
 }
 
-void Outputs::u(int n, CSSWM &model) {
+void CSSWM::Outputs::u(int n, CSSWM &model) {
     fstream foutu;
     string uname = OUTPUTPATH + (string) "u/u_" + std::to_string(n) + ".txt";
     foutu.open(uname, std::ios::out);
@@ -72,7 +75,7 @@ void Outputs::u(int n, CSSWM &model) {
     return;
 }
 
-void Outputs::v(int n, CSSWM &model) {
+void CSSWM::Outputs::v(int n, CSSWM &model) {
     fstream foutv;
     string vname = OUTPUTPATH + (string) "v/v_" + std::to_string(n) + ".txt";
     foutv.open(vname, std::ios::out);
@@ -91,7 +94,7 @@ void Outputs::v(int n, CSSWM &model) {
     return;
 }
 
-void Outputs::grid_nc(CSSWM &model) {
+void CSSWM::Outputs::grid_nc(CSSWM &model) {
     string dir = OUTPUTPATH + (string) "nc/";
 
     NcFile dataFile(dir + "grid.nc", NcFile::replace);       
@@ -150,7 +153,7 @@ void Outputs::grid_nc(CSSWM &model) {
     }
 }
 
-void Outputs::huv_nc(int n, CSSWM &model) {
+void CSSWM::Outputs::huv_nc(int n, CSSWM &model) {
     string dir = OUTPUTPATH + (string) "nc/";
 
     NcFile dataFile(dir + std::to_string(n) + ".nc", NcFile::replace);       
@@ -205,7 +208,7 @@ void Outputs::huv_nc(int n, CSSWM &model) {
     }
 }
 
-void Outputs::create_all_directory() {
+void CSSWM::Outputs::create_all_directory() {
     // data directory
     #ifdef TXTOUTPUT
         create_directory(OUTPUTPATH + (string) "grids");
