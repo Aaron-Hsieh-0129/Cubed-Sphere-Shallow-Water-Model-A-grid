@@ -184,8 +184,6 @@ void CSSWM::Iteration::ph_pt_4(CSSWM &model) {
                 #else
                     model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
                 #endif
-
-                if (p == 0 && i == NX/2 && j == NY/2) model.csswm[p].hp[i][j] += 5.;
             }
         }
     }

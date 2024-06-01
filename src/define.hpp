@@ -12,7 +12,7 @@
 #define DY (1)
 #define DT (40.)
 #define TIMEEND (86400 * 3 * 24)
-#define OUTPUTPATH "/data/Aaron/0601/csswm_test/"
+#define OUTPUTPATH "/data/Aaron/TMIF/0601/csswm/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace
