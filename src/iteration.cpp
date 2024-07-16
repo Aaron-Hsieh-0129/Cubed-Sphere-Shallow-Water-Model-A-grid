@@ -184,6 +184,7 @@ void CSSWM::Iteration::ph_pt_4(CSSWM &model) {
                 #else
                     model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
                 #endif
+                // if (p == 0 && i == NX/2+1 && j == NY/2+1) model.csswm[p].hp[i][j] += 5.;
             }
         }
     }
@@ -208,7 +209,7 @@ void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
                     f = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #elif defined(Barotropic) || defined(RossbyHaurwitz)
                     f = 2 * OMEGA * sin(model.csswm[p].lat[i][j]);
-                #elif defined(EquatorialWave)
+                #elif defined(EquatorialWave) || defined(Uniform_f)
                     double f0 = 0;
                     double beta = 2.5 * 10E-11;
                     f = f0 + beta * model.csswm[p].lat[i][j] * 180. / M_PI * (111000.);
@@ -272,7 +273,7 @@ void CSSWM::Iteration::pv_pt_4(CSSWM &model) {
                     f = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #elif defined(Barotropic) || defined(RossbyHaurwitz)
                     f = 2 * OMEGA * sin(model.csswm[p].lat[i][j]);
-                #elif defined(EquatorialWave)
+                #elif defined(EquatorialWave) || defined(Uniform_f)
                     double f0 = 0;
                     double beta = 2.5 * 10E-11;
                     f = f0 + beta * model.csswm[p].lat[i][j] * 180. / M_PI * (111000.);

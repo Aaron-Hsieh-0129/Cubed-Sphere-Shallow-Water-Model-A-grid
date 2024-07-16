@@ -10,9 +10,9 @@
 
 #define DX (1)
 #define DY (1)
-#define DT (40.)
+#define DT (30.)
 #define TIMEEND (86400 * 3 * 24)
-#define OUTPUTPATH "/data/Aaron/TMIF/0601/csswm/"
+#define OUTPUTPATH "/data/Aaron/TMIF/newTur_dt_4.55_cloud_2_csswm_1E6diff_60p1/csswm/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace
@@ -39,12 +39,13 @@
 // #define RossbyHaurwitz
 // #define EquatorialWave
 #define Uniform
+// #define Uniform_f
 
 // #define TrueSol
 #define DIFFUSION
 #define TIMEFILTER
-#define KX (2E5)
-#define KY (2E5)
+#define KX (1E6)
+#define KY (1E6)
 #define TIMETS (0.06)
 
 #define ADDFORCINGTIME (1200. * 60.)

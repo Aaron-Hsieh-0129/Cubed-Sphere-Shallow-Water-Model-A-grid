@@ -88,8 +88,8 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                     model.csswm[p].vp[i][j] = 0.;
                 #endif
 
-                #ifdef Uniform
-                    model.csswm[p].hp[i][j] = 10000.;
+                #if defined(Uniform) || defined(Uniform_f)
+                    model.csswm[p].hp[i][j] = 10454.608791605699;
                     model.csswm[p].up[i][j] = 0.;
                     model.csswm[p].vp[i][j] = 0.;
                 #endif
