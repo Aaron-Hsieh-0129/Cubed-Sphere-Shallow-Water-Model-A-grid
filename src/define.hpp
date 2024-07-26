@@ -12,7 +12,7 @@
 #define DY (1)
 #define DT (30.)
 #define TIMEEND (86400 * 3 * 24)
-#define OUTPUTPATH "/data/Aaron/TMIF/newTur_dt_4.55_cloud_2_csswm_1E6diff_60p1/csswm/"
+#define OUTPUTPATH "/data/Aaron/CSSWM_test/modified/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace
@@ -32,13 +32,13 @@
 // Jung
 #define ALPHA0 (0)
 // #define Advection
-// #define GravityWave
+#define GravityWave
 // #define SteadyGeostrophy
 // #define Barotropic
 // #define Mountain
 // #define RossbyHaurwitz
 // #define EquatorialWave
-#define Uniform
+// #define Uniform
 // #define Uniform_f
 
 // #define TrueSol

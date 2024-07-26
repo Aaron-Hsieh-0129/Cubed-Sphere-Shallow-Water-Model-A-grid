@@ -1,9 +1,11 @@
 #include "construction.hpp"
 
-CSSWM model;
 int main(void) {
     clock_t start, stop;
     start = clock();
+
+    Config_CSSWM config(30., 1., 1.);
+    CSSWM model(config);
 
     CSSWM::Init::Init2d(model);
     CSSWM::Iteration::TimeMarching(model);

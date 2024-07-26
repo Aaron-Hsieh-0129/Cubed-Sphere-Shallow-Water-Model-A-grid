@@ -26,26 +26,26 @@ void CSSWM::matrixMul(double firstMatrix[4], double secondMatrix[4], double mult
 
 double CSSWM::Cube2Sphere_U(CSSWM &model, int p, int i, int j) {
     double mult[2][2];
-    model.matrixMul(model.csswm[p].A[i][j], model.gUpper[i][j], mult);
-    return mult[0][0] * model.csswm[p].u[i][j] + mult[0][1] * model.csswm[p].v[i][j];
+    model.matrixMul(model.A[p][i][j], model.gUpper[i][j], mult);
+    return mult[0][0] * model.u[p][i][j] + mult[0][1] * model.v[p][i][j];
 }
 
 double CSSWM::Cube2Sphere_V(CSSWM &model, int p, int i, int j) {
     double mult[2][2];
-    matrixMul(model.csswm[p].A[i][j], model.gUpper[i][j], mult);
-    return mult[1][0] * model.csswm[p].u[i][j] + mult[1][1] * model.csswm[p].v[i][j];
+    matrixMul(model.A[p][i][j], model.gUpper[i][j], mult);
+    return mult[1][0] * model.u[p][i][j] + mult[1][1] * model.v[p][i][j];
 }
 
 double CSSWM::Sphere2Cube_U(CSSWM &model, int p, int i, int j) {
     double mult[2][2];
-    matrixMul(model.gLower[i][j], model.csswm[p].IA[i][j], mult);
-    return mult[0][0] * model.csswm[p].u[i][j] + mult[0][1] * model.csswm[p].v[i][j];
+    matrixMul(model.gLower[i][j], model.IA[p][i][j], mult);
+    return mult[0][0] * model.u[p][i][j] + mult[0][1] * model.v[p][i][j];
 }
 
 double CSSWM::Sphere2Cube_V(CSSWM &model, int p, int i, int j) {
     double mult[2][2];
-    matrixMul(model.gLower[i][j], model.csswm[p].IA[i][j], mult);
-    return mult[1][0] * model.csswm[p].u[i][j] + mult[1][1] * model.csswm[p].v[i][j];
+    matrixMul(model.gLower[i][j], model.IA[p][i][j], mult);
+    return mult[1][0] * model.u[p][i][j] + mult[1][1] * model.v[p][i][j];
 }
 
 double CSSWM::Cube2Cube_U(CSSWM &model, int p1, int p2, int i1, int j1, int i2, int j2) {
@@ -58,9 +58,9 @@ double CSSWM::Cube2Cube_U(CSSWM &model, int p1, int p2, int i1, int j1, int i2, 
         }
     }
 
-    matrixMul(model.gLower[i1][j1], model.csswm[p1].IA[i1][j1], A);
+    matrixMul(model.gLower[i1][j1], model.IA[p1][i1][j1], A);
 
-    matrixMul(model.csswm[p2].A[i2][j2], model.gUpper[i2][j2], B);
+    matrixMul(model.A[p2][i2][j2], model.gUpper[i2][j2], B);
     
 
     // multiply A & B
@@ -72,7 +72,7 @@ double CSSWM::Cube2Cube_U(CSSWM &model, int p1, int p2, int i1, int j1, int i2, 
 		}
 	}
     
-    return mult[0][0] * model.csswm[p2].up[i2][j2] + mult[0][1] * model.csswm[p2].vp[i2][j2];
+    return mult[0][0] * model.up[p2][i2][j2] + mult[0][1] * model.vp[p2][i2][j2];
 }
 
 double CSSWM::Cube2Cube_V(CSSWM &model, int p1, int p2, int i1, int j1, int i2, int j2) {
@@ -85,9 +85,9 @@ double CSSWM::Cube2Cube_V(CSSWM &model, int p1, int p2, int i1, int j1, int i2, 
         }
     }
 
-    matrixMul(model.gLower[i1][j1], model.csswm[p1].IA[i1][j1], A);
+    matrixMul(model.gLower[i1][j1], model.IA[p1][i1][j1], A);
 
-    matrixMul(model.csswm[p2].A[i2][j2], model.gUpper[i2][j2], B);
+    matrixMul(model.A[p2][i2][j2], model.gUpper[i2][j2], B);
     
 
     // multiply A & B
@@ -99,7 +99,7 @@ double CSSWM::Cube2Cube_V(CSSWM &model, int p1, int p2, int i1, int j1, int i2, 
 		}
 	}
 
-    return mult[1][0] * model.csswm[p2].up[i2][j2] + mult[1][1] * model.csswm[p2].vp[i2][j2];
+    return mult[1][0] * model.up[p2][i2][j2] + mult[1][1] * model.vp[p2][i2][j2];
 }
 
 double CSSWM::Cube2Cube_BV2AU(CSSWM &model, int p1, int p2, int i1, int j1, int i2, int j2) {
@@ -112,9 +112,9 @@ double CSSWM::Cube2Cube_BV2AU(CSSWM &model, int p1, int p2, int i1, int j1, int 
         }
     }
 
-    matrixMul(model.gLower[i1][j1], model.csswm[p1].IA[i1][j1], A);
+    matrixMul(model.gLower[i1][j1], model.IA[p1][i1][j1], A);
 
-    matrixMul(model.csswm[p2].A[i2][j2], model.gUpper[i2][j2], B);
+    matrixMul(model.A[p2][i2][j2], model.gUpper[i2][j2], B);
     
 
     // multiply A & B
@@ -126,7 +126,7 @@ double CSSWM::Cube2Cube_BV2AU(CSSWM &model, int p1, int p2, int i1, int j1, int 
 		}
 	}
 
-    return mult[0][0] * model.csswm[p2].up[i2][j2] + mult[0][1] * model.csswm[p2].vp[i2][j2];
+    return mult[0][0] * model.up[p2][i2][j2] + mult[0][1] * model.vp[p2][i2][j2];
 }
 
 double CSSWM::Cube2Cube_BU2AV(CSSWM &model, int p1, int p2, int i1, int j1, int i2, int j2) {
@@ -139,9 +139,9 @@ double CSSWM::Cube2Cube_BU2AV(CSSWM &model, int p1, int p2, int i1, int j1, int 
         }
     }
 
-    matrixMul(model.gLower[i1][j1], model.csswm[p1].IA[i1][j1], A);
+    matrixMul(model.gLower[i1][j1], model.IA[p1][i1][j1], A);
 
-    matrixMul(model.csswm[p2].A[i2][j2], model.gUpper[i2][j2], B);
+    matrixMul(model.A[p2][i2][j2], model.gUpper[i2][j2], B);
     
 
     // multiply A & B
@@ -154,12 +154,12 @@ double CSSWM::Cube2Cube_BU2AV(CSSWM &model, int p1, int p2, int i1, int j1, int 
 	}
 
     // test
-    // model.csswm[p2].up[i2][j2] = -10.;
-    // model.csswm[p2].vp[i2][j2] = 0.;
-    // std::cout << "u: " << mult[0][0] * model.csswm[p2].up[i2][j2] + mult[0][1] * model.csswm[p2].vp[i2][j2] << std::endl;
-    // std::cout << "v: " << mult[1][0] * model.csswm[p2].up[i2][j2] + mult[1][1] * model.csswm[p2].vp[i2][j2] << std::endl;
+    // model.up[p2][i2][j2] = -10.;
+    // model.vp[p2][i2][j2] = 0.;
+    // std::cout << "u: " << mult[0][0] * model.up[p2][i2][j2] + mult[0][1] * model.vp[p2][i2][j2] << std::endl;
+    // std::cout << "v: " << mult[1][0] * model.up[p2][i2][j2] + mult[1][1] * model.vp[p2][i2][j2] << std::endl;
 
-    return mult[1][0] * model.csswm[p2].up[i2][j2] + mult[1][1] * model.csswm[p2].vp[i2][j2];
+    return mult[1][0] * model.up[p2][i2][j2] + mult[1][1] * model.vp[p2][i2][j2];
 }
 
 double CSSWM::Cube2Cube_U_2(double gLower[4], double IA[4], double A[4], double gUpper[4], double u, double v) {
@@ -239,12 +239,12 @@ void CSSWM::Cube2Cube_matrix() {
             #endif
 
             if (lonlat == 0) {
-                B = csswm[p1].lat[I1][J1];
-                A1 = csswm[p2].lat[I2_1][J2_1], A2 = csswm[p2].lat[I2_2][J2_2];
+                B = lat[p1][I1][J1];
+                A1 = lat[p2][I2_1][J2_1], A2 = lat[p2][I2_2][J2_2];
             }
             else {
-                B = csswm[p1].lon[I1][J1];
-                A1 = csswm[p2].lon[I2_1][J2_1], A2 = csswm[p2].lon[I2_2][J2_2];
+                B = lon[p1][I1][J1];
+                A1 = lon[p2][I2_1][J2_1], A2 = lon[p2][I2_2][J2_2];
 
                 if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
                 if (A1 > B && B < A2) B += 2 * M_PI;
@@ -282,7 +282,7 @@ void CSSWM::Cube2Cube_matrix() {
                             #if defined(SecondOrderSpace)
                                 csswm[p1].IP1_D[I1][count] = mult[i][j];
                             #elif defined(FourthOrderSpace)
-                                csswm[p1].IP_ouTTer_D[I1][count] = mult[i][j];
+                                IP_ouTTer_D[p1][I1][count] = mult[i][j];
                             #endif
                             count++;
                         }
@@ -295,7 +295,7 @@ void CSSWM::Cube2Cube_matrix() {
                             #if defined(SecondOrderSpace)
                                 csswm[p1].IP1_U[I1][count] = mult[i][j];
                             #elif defined(FourthOrderSpace)
-                                csswm[p1].IP_ouTTer_U[I1][count] = mult[i][j];
+                                IP_ouTTer_U[p1][I1][count] = mult[i][j];
                             #endif
                             count++;
                         }
@@ -310,7 +310,7 @@ void CSSWM::Cube2Cube_matrix() {
                             #if defined(SecondOrderSpace)
                                 csswm[p1].IP1_L[J1][count] = mult[i][j];
                             #elif defined(FourthOrderSpace)
-                                csswm[p1].IP_ouTTer_L[J1][count] = mult[i][j];
+                                IP_ouTTer_L[p1][J1][count] = mult[i][j];
                             #endif
                             count++;
                         }
@@ -323,7 +323,7 @@ void CSSWM::Cube2Cube_matrix() {
                             #if defined(SecondOrderSpace)
                                 csswm[p1].IP1_R[J1][count] = mult[i][j];
                             #elif defined(FourthOrderSpace)
-                                csswm[p1].IP_ouTTer_R[J1][count] = mult[i][j];
+                                IP_ouTTer_R[p1][J1][count] = mult[i][j];
                             #endif
                             count++;
                         }
@@ -344,12 +344,12 @@ void CSSWM::Cube2Cube_matrix() {
                 int I2_1 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][0] : checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][0] : checkIP_ouTer[idx][0] : j2;
                 int I2_2 = i2 == -1 ? reversed ? checkIP_ouTer[NX-1-idx][1] : checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? checkIP_ouTer[NY-1-idx][1] : checkIP_ouTer[idx][1] : j2;
                 if (lonlat == 0) {
-                    B = csswm[p1].lat[I1][J1];
-                    A1 = csswm[p2].lat[I2_1][J2_1], A2 = csswm[p2].lat[I2_2][J2_2];
+                    B = lat[p1][I1][J1];
+                    A1 = lat[p2][I2_1][J2_1], A2 = lat[p2][I2_2][J2_2];
                 }
                 else {
-                    B = csswm[p1].lon[I1][J1];
-                    A1 = csswm[p2].lon[I2_1][J2_1], A2 = csswm[p2].lon[I2_2][J2_2];
+                    B = lon[p1][I1][J1];
+                    A1 = lon[p2][I2_1][J2_1], A2 = lon[p2][I2_2][J2_2];
 
                     if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
                     if (A1 > B && B < A2) B += 2 * M_PI;
@@ -384,7 +384,7 @@ void CSSWM::Cube2Cube_matrix() {
                         count = 0;
                         for (int i = 0; i < 2; i++) {
                             for (int j = 0; j < 2; j++) {
-                                csswm[p1].IP_ouTer_D[I1][count] = mult[i][j];
+                                IP_ouTer_D[p1][I1][count] = mult[i][j];
                                 count++;
                             }
                         }
@@ -393,7 +393,7 @@ void CSSWM::Cube2Cube_matrix() {
                         count = 0;
                         for (int i = 0; i < 2; i++) {
                             for (int j = 0; j < 2; j++) {
-                                csswm[p1].IP_ouTer_U[I1][count] = mult[i][j];
+                                IP_ouTer_U[p1][I1][count] = mult[i][j];
                                 count++;
                             }
                         }
@@ -404,7 +404,7 @@ void CSSWM::Cube2Cube_matrix() {
                         count = 0;
                         for (int i = 0; i < 2; i++) {
                             for (int j = 0; j < 2; j++) {
-                                csswm[p1].IP_ouTer_L[J1][count] = mult[i][j];
+                                IP_ouTer_L[p1][J1][count] = mult[i][j];
                                 count++;
                             }
                         }
@@ -413,7 +413,7 @@ void CSSWM::Cube2Cube_matrix() {
                         count = 0;
                         for (int i = 0; i < 2; i++) {
                             for (int j = 0; j < 2; j++) {
-                                csswm[p1].IP_ouTer_R[J1][count] = mult[i][j];
+                                IP_ouTer_R[p1][J1][count] = mult[i][j];
                                 count++;
                             }
                         }

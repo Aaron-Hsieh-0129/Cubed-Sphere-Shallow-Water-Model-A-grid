@@ -13,26 +13,26 @@ void CSSWM::BP_h(CSSWM &model) {
                 int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
                 int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
 
-                B = model.csswm[p1].lat[I1][J1];
-                A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
-                V1 = model.csswm[p2].hp[I2_1][J2_1], V2 = model.csswm[p2].hp[I2_2][J2_2];
+                B = model.lat[p1][I1][J1];
+                A1 = model.lat[p2][I2_1][J2_1], A2 = model.lat[p2][I2_2][J2_2];
+                V1 = model.hp[p2][I2_1][J2_1], V2 = model.hp[p2][I2_2][J2_2];
                 
-                model.csswm[p1].hp[I1][J1] = interpolate(A1, A2, V1, V2, B);
+                model.hp[p1][I1][J1] = interpolate(A1, A2, V1, V2, B);
             }
             else {
                 int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
                 int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
                 int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
 
-                B = model.csswm[p1].lon[I1][J1];
-                A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
-                V1 = model.csswm[p2].hp[I2_1][J2_1], V2 = model.csswm[p2].hp[I2_2][J2_2];
+                B = model.lon[p1][I1][J1];
+                A1 = model.lon[p2][I2_1][J2_1], A2 = model.lon[p2][I2_2][J2_2];
+                V1 = model.hp[p2][I2_1][J2_1], V2 = model.hp[p2][I2_2][J2_2];
 
                 if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
                 if (A1 > B && B < A2) B += 2 * M_PI;
                 // std::cout << p1 << " " << p2 << " " << I1 << " " << J1 << " " << A1 << " " << A2 << std::endl;
                 
-                model.csswm[p1].hp[I1][J1] = interpolate(A1, A2, V1, V2, B);
+                model.hp[p1][I1][J1] = interpolate(A1, A2, V1, V2, B);
             }
         }
     }
@@ -50,26 +50,26 @@ void CSSWM::BP_h(CSSWM &model) {
                     int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
                     int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
 
-                    B = model.csswm[p1].lat[I1][J1];
-                    A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
-                    V1 = model.csswm[p2].hp[I2_1][J2_1], V2 = model.csswm[p2].hp[I2_2][J2_2];
+                    B = model.lat[p1][I1][J1];
+                    A1 = model.lat[p2][I2_1][J2_1], A2 = model.lat[p2][I2_2][J2_2];
+                    V1 = model.hp[p2][I2_1][J2_1], V2 = model.hp[p2][I2_2][J2_2];
                     
-                    model.csswm[p1].hp[I1][J1] = interpolate(A1, A2, V1, V2, B);
+                    model.hp[p1][I1][J1] = interpolate(A1, A2, V1, V2, B);
                 }
                 else {
                     int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
                     int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
                     int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
 
-                    B = model.csswm[p1].lon[I1][J1];
-                    A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
-                    V1 = model.csswm[p2].hp[I2_1][J2_1], V2 = model.csswm[p2].hp[I2_2][J2_2];
+                    B = model.lon[p1][I1][J1];
+                    A1 = model.lon[p2][I2_1][J2_1], A2 = model.lon[p2][I2_2][J2_2];
+                    V1 = model.hp[p2][I2_1][J2_1], V2 = model.hp[p2][I2_2][J2_2];
 
                     if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
                     if (A1 > B && B < A2) B += 2 * M_PI;
                     // std::cout << p1 << " " << p2 << " " << I1 << " " << J1 << " " << A1 << " " << A2 << std::endl;
                     
-                    model.csswm[p1].hp[I1][J1] = interpolate(A1, A2, V1, V2, B);
+                    model.hp[p1][I1][J1] = interpolate(A1, A2, V1, V2, B);
                 }
             }
         }
@@ -83,26 +83,26 @@ void CSSWM::BP_h(CSSWM &model) {
                     int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
                     int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
 
-                    B = model.csswm[p1].lat[I1][J1];
-                    A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
-                    V1 = model.csswm[p2].hp[I2_1][J2_1], V2 = model.csswm[p2].hp[I2_2][J2_2];
+                    B = model.lat[p1][I1][J1];
+                    A1 = model.lat[p2][I2_1][J2_1], A2 = model.lat[p2][I2_2][J2_2];
+                    V1 = model.hp[p2][I2_1][J2_1], V2 = model.hp[p2][I2_2][J2_2];
                     
-                    model.csswm[p1].hp[I1][J1] = interpolate(A1, A2, V1, V2, B);
+                    model.hp[p1][I1][J1] = interpolate(A1, A2, V1, V2, B);
                 }
                 else {
                     int I1 = i1 == -1 ? idx : i1, J1 = j1 == -1 ? idx : j1;
                     int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
                     int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
 
-                    B = model.csswm[p1].lon[I1][J1];
-                    A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
-                    V1 = model.csswm[p2].hp[I2_1][J2_1], V2 = model.csswm[p2].hp[I2_2][J2_2];
+                    B = model.lon[p1][I1][J1];
+                    A1 = model.lon[p2][I2_1][J2_1], A2 = model.lon[p2][I2_2][J2_2];
+                    V1 = model.hp[p2][I2_1][J2_1], V2 = model.hp[p2][I2_2][J2_2];
 
                     if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
                     if (A1 > B && B < A2) B += 2 * M_PI;
                     // std::cout << p1 << " " << p2 << " " << I1 << " " << J1 << " " << A1 << " " << A2 << std::endl;
                     
-                    model.csswm[p1].hp[I1][J1] = interpolate(A1, A2, V1, V2, B);
+                    model.hp[p1][I1][J1] = interpolate(A1, A2, V1, V2, B);
                 }
             }
         }
@@ -123,8 +123,8 @@ void CSSWM::BP_hs(CSSWM &model) {
                 int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
                 int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
 
-                B = model.csswm[p1].lat[I1][J1];
-                A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
+                B = model.lat[p1][I1][J1];
+                A1 = model.lat[p2][I2_1][J2_1], A2 = model.lat[p2][I2_2][J2_2];
                 V1 = model.csswm[p2].hs[I2_1][J2_1], V2 = model.csswm[p2].hs[I2_2][J2_2];
                 
                 model.csswm[p1].hs[I1][J1] = interpolate(A1, A2, V1, V2, B);
@@ -134,8 +134,8 @@ void CSSWM::BP_hs(CSSWM &model) {
                 int I2_1 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][0] : model.checkIP[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][0] : model.checkIP[idx][0] : j2;
                 int I2_2 = i2 == -1 ? reversed ? model.checkIP[NX-1-idx][1] : model.checkIP[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP[NY-1-idx][1] : model.checkIP[idx][1] : j2;
 
-                B = model.csswm[p1].lon[I1][J1];
-                A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
+                B = model.lon[p1][I1][J1];
+                A1 = model.lon[p2][I2_1][J2_1], A2 = model.lon[p2][I2_2][J2_2];
                 V1 = model.csswm[p2].hs[I2_1][J2_1], V2 = model.csswm[p2].hs[I2_2][J2_2];
 
                 if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
@@ -160,8 +160,8 @@ void CSSWM::BP_hs(CSSWM &model) {
                     int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
                     int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
 
-                    B = model.csswm[p1].lat[I1][J1];
-                    A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
+                    B = model.lat[p1][I1][J1];
+                    A1 = model.lat[p2][I2_1][J2_1], A2 = model.lat[p2][I2_2][J2_2];
                     V1 = model.csswm[p2].hs[I2_1][J2_1], V2 = model.csswm[p2].hs[I2_2][J2_2];
                     
                     model.csswm[p1].hs[I1][J1] = interpolate(A1, A2, V1, V2, B);
@@ -171,8 +171,8 @@ void CSSWM::BP_hs(CSSWM &model) {
                     int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][0] : model.checkIP_ouTTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][0] : model.checkIP_ouTTer[idx][0] : j2;
                     int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTTer[NX-1-idx][1] : model.checkIP_ouTTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTTer[NY-1-idx][1] : model.checkIP_ouTTer[idx][1] : j2;
 
-                    B = model.csswm[p1].lon[I1][J1];
-                    A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
+                    B = model.lon[p1][I1][J1];
+                    A1 = model.lon[p2][I2_1][J2_1], A2 = model.lon[p2][I2_2][J2_2];
                     V1 = model.csswm[p2].hs[I2_1][J2_1], V2 = model.csswm[p2].hs[I2_2][J2_2];
 
                     if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
@@ -193,8 +193,8 @@ void CSSWM::BP_hs(CSSWM &model) {
                     int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
                     int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
 
-                    B = model.csswm[p1].lat[I1][J1];
-                    A1 = model.csswm[p2].lat[I2_1][J2_1], A2 = model.csswm[p2].lat[I2_2][J2_2];
+                    B = model.lat[p1][I1][J1];
+                    A1 = model.lat[p2][I2_1][J2_1], A2 = model.lat[p2][I2_2][J2_2];
                     V1 = model.csswm[p2].hs[I2_1][J2_1], V2 = model.csswm[p2].hs[I2_2][J2_2];
                     
                     model.csswm[p1].hs[I1][J1] = interpolate(A1, A2, V1, V2, B);
@@ -204,8 +204,8 @@ void CSSWM::BP_hs(CSSWM &model) {
                     int I2_1 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][0] : model.checkIP_ouTer[idx][0] : i2, J2_1 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][0] : model.checkIP_ouTer[idx][0] : j2;
                     int I2_2 = i2 == -1 ? reversed ? model.checkIP_ouTer[NX-1-idx][1] : model.checkIP_ouTer[idx][1] : i2, J2_2 = j2 == -1 ? reversed ? model.checkIP_ouTer[NY-1-idx][1] : model.checkIP_ouTer[idx][1] : j2;
 
-                    B = model.csswm[p1].lon[I1][J1];
-                    A1 = model.csswm[p2].lon[I2_1][J2_1], A2 = model.csswm[p2].lon[I2_2][J2_2];
+                    B = model.lon[p1][I1][J1];
+                    A1 = model.lon[p2][I2_1][J2_1], A2 = model.lon[p2][I2_2][J2_2];
                     V1 = model.csswm[p2].hs[I2_1][J2_1], V2 = model.csswm[p2].hs[I2_2][J2_2];
 
                     if (A1 > A2 && (p1 == 0 || p2 == 0))  A2 += 2 * M_PI;
