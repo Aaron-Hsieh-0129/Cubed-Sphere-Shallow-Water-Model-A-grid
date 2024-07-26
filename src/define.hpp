@@ -4,40 +4,30 @@
 #define FILLVALUE (-99999999999999);
 
 #define RADIUS (6371220.)
-#define GRAVITY (0.1)
+#define GRAVITY (9.80665)
 #define OMEGA (7.292E-5)
 #define BETA (2.5E-11)
 
-#define DX (1)
-#define DY (1)
-#define DT (30.)
 #define TIMEEND (86400 * 3 * 24)
-#define OUTPUTPATH "/data/Aaron/CSSWM_test/modified/"
+#define OUTPUTPATH "/data/Aaron/CSSWM_test/EquatorialWave/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace
 #define NCOUTPUT
 // #define TXTOUTPUT
 
-#if defined(SecondOrderSpace)
-    #define NX ((int) (90/DX + 2))
-    #define NY ((int) (90/DY + 2))
-#elif defined(FourthOrderSpace) 
-    #define NX ((int) (90/DX + 4))
-    #define NY ((int) (90/DY + 4))
-#endif
 
 #define D2T (2. * DT)
 
 // Jung
 #define ALPHA0 (0)
 // #define Advection
-#define GravityWave
+// #define GravityWave
 // #define SteadyGeostrophy
 // #define Barotropic
 // #define Mountain
 // #define RossbyHaurwitz
-// #define EquatorialWave
+#define EquatorialWave
 // #define Uniform
 // #define Uniform_f
 

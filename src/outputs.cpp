@@ -1,12 +1,10 @@
 #include "construction.hpp"
-#include <vector>
 #include <netcdf>
 #include <fstream>
 
 using std::fstream;
 using std::ios;
 using std::string;
-using std::vector;
 using namespace netCDF;
 
 void CSSWM::Outputs::create_directory(string directory_name) {
@@ -30,8 +28,8 @@ void CSSWM::Outputs::grid(CSSWM &model) {
     }
 
     for (int p = 0; p < 6; p++) {
-        for (int j = 1; j < NY-1; j++) {
-            for (int i = 1; i < NX-1; i++) {
+        for (int j = 1; j < model.ny-1; j++) {
+            for (int i = 1; i < model.nx-1; i++) {
                 fout[0] << model.lon[p][i][j] << " ";
                 fout[1] << model.lat[p][i][j] << " ";
         
@@ -47,8 +45,8 @@ void CSSWM::Outputs::h(int n, CSSWM &model) {
     string hname = OUTPUTPATH + (string) "h/h_" + std::to_string(n) + ".txt";
     fouth.open(hname, std::ios::out);
     for (int p = 0; p < 6; p++) {
-        for (int j = 1; j < NY-1; j++) {
-            for (int i = 1; i < NX-1; i++) {
+        for (int j = 1; j < model.ny-1; j++) {
+            for (int i = 1; i < model.nx-1; i++) {
                 fouth << model.h[p][i][j] << " ";
             }
         }
@@ -65,8 +63,8 @@ void CSSWM::Outputs::u(int n, CSSWM &model) {
     string u_lon_latname = "../outputs/u_lon_lat/u_lon_lat_" + std::to_string(n) + ".txt";
     foutu_lon_lat.open(u_lon_latname, std::ios::out);
     for (int p = 0; p < 6; p++) {
-        for (int j = 1; j < NY-1; j++) {
-            for (int i = 1; i < NX-1; i++) {
+        for (int j = 1; j < model.ny-1; j++) {
+            for (int i = 1; i < model.nx-1; i++) {
                 foutu << model.u[p][i][j] << " ";
                 foutu_lon_lat << model.Cube2Sphere_U(model, p, i, j) << " ";
             }
@@ -84,8 +82,8 @@ void CSSWM::Outputs::v(int n, CSSWM &model) {
     string v_lon_latname = "../outputs/v_lon_lat/v_lon_lat_" + std::to_string(n) + ".txt";
     foutv_lon_lat.open(v_lon_latname, std::ios::out);
     for (int p = 0; p < 6; p++) {
-        for (int j = 1; j < NY-1; j++) {
-            for (int i = 1; i < NX-1; i++) {
+        for (int j = 1; j < model.ny-1; j++) {
+            for (int i = 1; i < model.nx-1; i++) {
                 foutv << model.v[p][i][j] << " ";
                 foutv_lon_lat << model.Cube2Sphere_V(model, p, i, j) << " ";
             }
@@ -94,64 +92,7 @@ void CSSWM::Outputs::v(int n, CSSWM &model) {
     return;
 }
 
-// void CSSWM::Outputs::grid_nc(CSSWM &model) {
-//     string dir = OUTPUTPATH + (string) "nc/";
 
-//     NcFile dataFile(dir + "grid.nc", NcFile::replace);       
-//     // Create netCDF dimensions
-//     NcDim p = dataFile.addDim("p", 6);
-//     NcDim xDim = dataFile.addDim("x", NX);
-//     NcDim yDim = dataFile.addDim("y", NY);
-//     NcDim lonDim = dataFile.addDim("lon", NX);
-//     NcDim latDim = dataFile.addDim("lat", NY);
-
-//     vector<NcDim> xyDim, lonlatDim;
-//     xyDim.push_back(p);
-//     xyDim.push_back(xDim);
-//     xyDim.push_back(yDim);
-
-//     lonlatDim.push_back(p);
-//     lonlatDim.push_back(lonDim);
-//     lonlatDim.push_back(latDim);
-
-//     NcVar x = dataFile.addVar("x_local", ncDouble, xyDim);
-//     NcVar y = dataFile.addVar("y_local", ncDouble, xyDim);
-//     NcVar lon = dataFile.addVar("lon_sphere", ncDouble, lonlatDim);
-//     NcVar lat = dataFile.addVar("lat_sphere", ncDouble, lonlatDim);
-//     NcVar A = dataFile.addVar("area_sphere_coeff", ncDouble, lonlatDim);
-//     #if defined(Mountain)
-//         NcVar hs = dataFile.addVar("hs", ncDouble, xyDim);
-//     #endif
-
-//     double area[6][NX][NY];
-//     for (int p = 0; p < 6; p++) {
-//         for (int i = 0; i < NX; i++) {
-//             for (int j = 0; j < NY; j++) {
-//                 area[p][i][j] = model.sqrtG[i][j];
-//             }
-//         }
-//     }
-    
-//     vector<size_t> startp, countp;
-//     startp.push_back(0);
-//     startp.push_back(0);
-//     startp.push_back(0);
-//     countp.push_back(1);
-//     countp.push_back(NX);
-//     countp.push_back(NY);
-
-//     for (int p = 0; p < 6; p++) {
-//         startp[0] = p;
-//         x.putVar(startp, countp, model.x[p]);
-//         y.putVar(startp, countp, model.y[p]);
-//         lon.putVar(startp, countp, model.lon[p]);
-//         lat.putVar(startp, countp, model.lat[p]);
-//         A.putVar(startp, countp, area);
-//         #if defined(Mountain)
-//             hs.putVar(startp, countp, model.csswm[p].hs);
-//         #endif
-//     }
-// }
 void checkErr(int status, int line) {
     if (status != NC_NOERR) {
         std::cerr << "NetCDF error at line " << line << ": " << nc_strerror(status) << std::endl;
@@ -192,61 +133,6 @@ void CSSWM::Outputs::grid_nc(CSSWM &model) {
     if ((retval = nc_close(ncid))) checkErr(retval, __LINE__);
 }
 
-// void CSSWM::Outputs::huv_nc(int n, CSSWM &model) {
-//     string dir = OUTPUTPATH + (string) "nc/";
-
-//     NcFile dataFile(dir + std::to_string(n) + ".nc", NcFile::replace);       
-//     // Create netCDF dimensions
-//     NcDim p = dataFile.addDim("p", 6);
-//     NcDim xDim = dataFile.addDim("x", NX);
-//     NcDim yDim = dataFile.addDim("y", NY);
-//     NcDim lonDim = dataFile.addDim("lon", NX);
-//     NcDim latDim = dataFile.addDim("lat", NY);
-
-//     vector<NcDim> xyDim, lonlatDim;
-//     xyDim.push_back(p);
-//     xyDim.push_back(xDim);
-//     xyDim.push_back(yDim);
-
-//     lonlatDim.push_back(p);
-//     lonlatDim.push_back(lonDim);
-//     lonlatDim.push_back(latDim);
-
-//     NcVar h = dataFile.addVar("h", ncDouble, xyDim);
-//     NcVar u = dataFile.addVar("u", ncDouble, xyDim);
-//     NcVar v = dataFile.addVar("v", ncDouble, xyDim);
-
-//     NcVar ulonlat = dataFile.addVar("u_lonlat", ncDouble, lonlatDim);
-//     NcVar vlonlat = dataFile.addVar("v_lonlat", ncDouble, lonlatDim);
-//     double u_lon_lat[6][NX][NY], v_lon_lat[6][NX][NY];
-//     for (int p = 0; p < 6; p++) {
-//         for (int j = 0; j < NY; j++) {
-//             for (int i = 0; i < NX; i++) {
-//                 u_lon_lat[p][i][j] = model.Cube2Sphere_U(model, p, i, j);
-//                 v_lon_lat[p][i][j] = model.Cube2Sphere_V(model, p, i, j);
-//             }
-//         }
-//     }
-
-//     vector<size_t> startp, countp;
-//     startp.push_back(0);
-//     startp.push_back(0);
-//     startp.push_back(0);
-//     countp.push_back(1);
-//     countp.push_back(NX);
-//     countp.push_back(NY);
-
-//     for (int p = 0; p < 6; p++) {
-//         startp[0] = p;
-//         h.putVar(startp, countp, model.h[p]);
-//         u.putVar(startp, countp, model.u[p]);
-//         v.putVar(startp, countp, model.v[p]);
-
-//         ulonlat.putVar(startp, countp, u_lon_lat[p]);
-//         vlonlat.putVar(startp, countp, v_lon_lat[p]);
-//     }
-// }
-
 
 void CSSWM::Outputs::huv_nc(int n, CSSWM &model) {
     string ncName = OUTPUTPATH + (string) "nc/" + std::to_string(n) + ".nc";
@@ -254,7 +140,8 @@ void CSSWM::Outputs::huv_nc(int n, CSSWM &model) {
     int ncid, p_dimid, x_dimid, y_dimid;
     int retval;
 
-    int hid, uid, vid, ulonlatid, vlonlatid;
+    int hid, uid, vid;
+    // int ulonlatid, vlonlatid;
 
     if ((retval = nc_create(ncName.c_str(), NC_CLOBBER, &ncid))) checkErr(retval, __LINE__);
 

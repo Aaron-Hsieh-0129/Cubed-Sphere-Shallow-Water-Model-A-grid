@@ -24,8 +24,9 @@ public:
             ny((int) (90/config.dy + 2))
         #elif defined(FourthOrderSpace) 
             nx((int) (90/config.dx + 4)),
-            ny((int) (90/config.dy + 4))
+            ny((int) (90/config.dy + 4)),
         #endif
+        d2t(2. * config.dt)
     {
         allocateMemory();
         initialize();
@@ -330,6 +331,7 @@ public:
     double dy;
     int nx;
     int ny;
+    double d2t;
     #if defined(EquatorialWave)
         bool status_add_forcing = true;
     #endif
@@ -456,6 +458,6 @@ public:
 private:
     void Construct_gamma_sqrtG_GUpper(double **alpha2D, double **beta2D, double **gamma, double **sqrtG, double ***gUpper, double ***gLower);
     void Construct_p0123_lonlat_xy_AIA(int p, double **alpha2D, double **beta2D, double **gamma, double **lon, double **lat, double **lon_original, double **x, double **y, double ***A, double ***IA);
-    void Construct_p4_lonlat_xy_AIA(int p, double **alpha2D, double **beta2D, double **gamma, double **lon, double **lat, double **lon_original, double **x, double **y, double ***A, double ***IA);
-    void Construct_p5_lonlat_xy_AIA(int p, double **alpha2D, double **beta2D, double **gamma, double **lon, double **lat, double **lon_original, double **x, double **y, double ***A, double ***IA);
+    void Construct_p4_lonlat_xy_AIA(double **alpha2D, double **beta2D, double **gamma, double **lon, double **lat, double **lon_original, double **x, double **y, double ***A, double ***IA);
+    void Construct_p5_lonlat_xy_AIA(double **alpha2D, double **beta2D, double **gamma, double **lon, double **lat, double **lon_original, double **x, double **y, double ***A, double ***IA);
 };

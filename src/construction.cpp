@@ -1,8 +1,8 @@
 #include "construction.hpp"
 
 void CSSWM::Construct_gamma_sqrtG_GUpper(double **alpha2D, double **beta2D, double **gamma, double **sqrtG, double ***gUpper, double ***gLower) {
-    for (int i = 0; i < NX; i++) {
-        for (int j = 0; j < NY; j++) {
+    for (int i = 0; i < nx; i++) {
+        for (int j = 0; j < ny; j++) {
             gamma[i][j] = sqrt(1 + pow(tan(alpha2D[i][j]), 2) + pow(tan(beta2D[i][j]), 2));
             sqrtG[i][j] = 1. / (pow(gamma[i][j], 3) * pow(cos(alpha2D[i][j]), 2) * pow(cos(beta2D[i][j]), 2));
 
@@ -21,8 +21,8 @@ void CSSWM::Construct_gamma_sqrtG_GUpper(double **alpha2D, double **beta2D, doub
 }
 
 void CSSWM::Construct_p0123_lonlat_xy_AIA(int p, double **alpha2D, double **beta2D, double **gamma, double **lon, double **lat, double **lon_original, double **x, double **y, double ***A, double ***IA) {
-    for (int i = 0; i < NX; i++) {
-        for (int j = 0; j < NY; j++) {
+    for (int i = 0; i < nx; i++) {
+        for (int j = 0; j < ny; j++) {
             // lon/lat
             lon[i][j] = alpha2D[i][j] + p * M_PI/2.;
             lat[i][j] = atan(tan(beta2D[i][j]) * cos(alpha2D[i][j]));
@@ -49,9 +49,9 @@ void CSSWM::Construct_p0123_lonlat_xy_AIA(int p, double **alpha2D, double **beta
     }
 }
 
-void CSSWM::Construct_p4_lonlat_xy_AIA(int p, double **alpha2D, double **beta2D, double **gamma, double **lon, double **lat, double **lon_original, double **x, double **y, double ***A, double ***IA) {
-    for (int i = 0; i < NX; i++) {
-        for (int j = 0; j < NY; j++) {
+void CSSWM::Construct_p4_lonlat_xy_AIA(double **alpha2D, double **beta2D, double **gamma, double **lon, double **lat, double **lon_original, double **x, double **y, double ***A, double ***IA) {
+    for (int i = 0; i < nx; i++) {
+        for (int j = 0; j < ny; j++) {
             // lon/lat
             lon[i][j] = atan2(tan(alpha2D[i][j]), -tan(beta2D[i][j]));
             lat[i][j] = atan(1 / sqrt(pow(tan(alpha2D[i][j]), 2)+pow(tan(beta2D[i][j]), 2)));
@@ -78,9 +78,9 @@ void CSSWM::Construct_p4_lonlat_xy_AIA(int p, double **alpha2D, double **beta2D,
     }
 }
 
-void CSSWM::Construct_p5_lonlat_xy_AIA(int p, double **alpha2D, double **beta2D, double **gamma, double **lon, double **lat, double **lon_original, double **x, double **y, double ***A, double ***IA) {
-    for (int i = 0; i < NX; i++) {
-        for (int j = 0; j < NY; j++) {
+void CSSWM::Construct_p5_lonlat_xy_AIA(double **alpha2D, double **beta2D, double **gamma, double **lon, double **lat, double **lon_original, double **x, double **y, double ***A, double ***IA) {
+    for (int i = 0; i < nx; i++) {
+        for (int j = 0; j < ny; j++) {
             // lon/lat
             lon[i][j] = atan2(tan(alpha2D[i][j]), tan(beta2D[i][j]));
             lat[i][j] = -atan(1 / sqrt(pow(tan(alpha2D[i][j]), 2)+pow(tan(beta2D[i][j]), 2)));
@@ -113,12 +113,12 @@ void initMatch_1point(int match[24][8]) {
     // (p1, p2, i1, j1, i2, j2, reversed, LonLat: 1/0) 
     // Left, Right, Up, Down
     int tmp[24][8] = {
-        {0, 3, 0, -1, NX-2, -1, 0, 0},  {0, 1, NX-1, -1, 1, -1, 0, 0},    {0, 4, -1, NY-1, -1, 1, 0, 1},     {0, 5, -1, 0, -1, NY-2, 0, 1},
-        {1, 0, 0, -1, NX-2, -1, 0, 0},  {1, 2, NX-1, -1, 1, -1, 0, 0},    {1, 4, -1, NY-1, NX-2, -1, 0, 1},  {1, 5, -1, 0, NX-2, -1, 1, 1},
-        {2, 1, 0, -1, NX-2, -1, 0, 0},  {2, 3, NX-1, -1, 1, -1, 0, 0},    {2, 4, -1, NY-1, -1, NY-2, 1, 1},  {2, 5, -1, 0, -1, 1, 1, 1},
-        {3, 2, 0, -1, NX-2, -1, 0, 0},  {3, 0, NX-1, -1, 1, -1, 0, 0},    {3, 4, -1, NY-1, 1, -1, 1, 1},     {3, 5, -1, 0, 1, -1, 0, 1},
-        {4, 3, 0, -1, -1, NY-2, 1, 1},  {4, 1, NX-1, -1, -1, NY-2, 0, 1}, {4, 2, -1, NY-1, -1, NY-2, 1, 1},  {4, 0, -1, 0, -1, NY-2, 0, 1},
-        {5, 3, 0, -1, -1, 1, 0, 1},     {5, 1, NX-1, -1, -1, 1, 1, 1},    {5, 0, -1, NY-1, -1, 1, 0, 1},     {5, 2, -1, 0, -1, 1, 1, 1}
+        {0, 3, 0, -1, model.nx-2, -1, 0, 0},  {0, 1, model.nx-1, -1, 1, -1, 0, 0},    {0, 4, -1, model.ny-1, -1, 1, 0, 1},     {0, 5, -1, 0, -1, model.ny-2, 0, 1},
+        {1, 0, 0, -1, model.nx-2, -1, 0, 0},  {1, 2, model.nx-1, -1, 1, -1, 0, 0},    {1, 4, -1, model.ny-1, model.nx-2, -1, 0, 1},  {1, 5, -1, 0, model.nx-2, -1, 1, 1},
+        {2, 1, 0, -1, model.nx-2, -1, 0, 0},  {2, 3, model.nx-1, -1, 1, -1, 0, 0},    {2, 4, -1, model.ny-1, -1, model.ny-2, 1, 1},  {2, 5, -1, 0, -1, 1, 1, 1},
+        {3, 2, 0, -1, model.nx-2, -1, 0, 0},  {3, 0, model.nx-1, -1, 1, -1, 0, 0},    {3, 4, -1, model.ny-1, 1, -1, 1, 1},     {3, 5, -1, 0, 1, -1, 0, 1},
+        {4, 3, 0, -1, -1, model.ny-2, 1, 1},  {4, 1, model.nx-1, -1, -1, model.ny-2, 0, 1}, {4, 2, -1, model.ny-1, -1, model.ny-2, 1, 1},  {4, 0, -1, 0, -1, model.ny-2, 0, 1},
+        {5, 3, 0, -1, -1, 1, 0, 1},     {5, 1, model.nx-1, -1, -1, 1, 1, 1},    {5, 0, -1, model.ny-1, -1, 1, 0, 1},     {5, 2, -1, 0, -1, 1, 1, 1}
     };
     for (int i = 0; i < 24; i++) {
         for (int j = 0; j < 8; j++) {
@@ -128,26 +128,26 @@ void initMatch_1point(int match[24][8]) {
     return;
 }
 #elif defined(FourthOrderSpace)
-void initMatch_2point(int **match_ouTer, int **match_ouTTer) {
+void initMatch_2point(int **match_ouTer, int **match_ouTTer, int nx, int ny) {
     // Construct a array for dealing with interpolation between all patch
     // (p1, p2, i1, j1, i2, j2, reversed, LonLat: 1/0) 
     // Left, Right, Up, Down
     int tmp_ouTTer[24][8] = {
-        {0, 3, 0, -1, NX-4, -1, 0, 0},  {0, 1, NX-1, -1, 3, -1, 0, 0},    {0, 4, -1, NY-1, -1, 3, 0, 1},     {0, 5, -1, 0, -1, NY-4, 0, 1},
-        {1, 0, 0, -1, NX-4, -1, 0, 0},  {1, 2, NX-1, -1, 3, -1, 0, 0},    {1, 4, -1, NY-1, NX-4, -1, 0, 1},  {1, 5, -1, 0, NX-4, -1, 1, 1},
-        {2, 1, 0, -1, NX-4, -1, 0, 0},  {2, 3, NX-1, -1, 3, -1, 0, 0},    {2, 4, -1, NY-1, -1, NY-4, 1, 1},  {2, 5, -1, 0, -1, 3, 1, 1},
-        {3, 2, 0, -1, NX-4, -1, 0, 0},  {3, 0, NX-1, -1, 3, -1, 0, 0},    {3, 4, -1, NY-1, 3, -1, 1, 1},     {3, 5, -1, 0, 3, -1, 0, 1},
-        {4, 3, 0, -1, -1, NY-4, 1, 1},  {4, 1, NX-1, -1, -1, NY-4, 0, 1}, {4, 2, -1, NY-1, -1, NY-4, 1, 1},  {4, 0, -1, 0, -1, NY-4, 0, 1},
-        {5, 3, 0, -1, -1, 3, 0, 1},     {5, 1, NX-1, -1, -1, 3, 1, 1},    {5, 0, -1, NY-1, -1, 3, 0, 1},     {5, 2, -1, 0, -1, 3, 1, 1}
+        {0, 3, 0, -1, nx-4, -1, 0, 0},  {0, 1, nx-1, -1, 3, -1, 0, 0},    {0, 4, -1, ny-1, -1, 3, 0, 1},     {0, 5, -1, 0, -1, ny-4, 0, 1},
+        {1, 0, 0, -1, nx-4, -1, 0, 0},  {1, 2, nx-1, -1, 3, -1, 0, 0},    {1, 4, -1, ny-1, nx-4, -1, 0, 1},  {1, 5, -1, 0, nx-4, -1, 1, 1},
+        {2, 1, 0, -1, nx-4, -1, 0, 0},  {2, 3, nx-1, -1, 3, -1, 0, 0},    {2, 4, -1, ny-1, -1, ny-4, 1, 1},  {2, 5, -1, 0, -1, 3, 1, 1},
+        {3, 2, 0, -1, nx-4, -1, 0, 0},  {3, 0, nx-1, -1, 3, -1, 0, 0},    {3, 4, -1, ny-1, 3, -1, 1, 1},     {3, 5, -1, 0, 3, -1, 0, 1},
+        {4, 3, 0, -1, -1, ny-4, 1, 1},  {4, 1, nx-1, -1, -1, ny-4, 0, 1}, {4, 2, -1, ny-1, -1, ny-4, 1, 1},  {4, 0, -1, 0, -1, ny-4, 0, 1},
+        {5, 3, 0, -1, -1, 3, 0, 1},     {5, 1, nx-1, -1, -1, 3, 1, 1},    {5, 0, -1, ny-1, -1, 3, 0, 1},     {5, 2, -1, 0, -1, 3, 1, 1}
     };
 
     int tmp_ouTer[24][8] = {
-        {0, 3, 1, -1, NX-3, -1, 0, 0},  {0, 1, NX-2, -1, 2, -1, 0, 0},    {0, 4, -1, NY-2, -1, 2, 0, 1},     {0, 5, -1, 1, -1, NY-3, 0, 1},
-        {1, 0, 1, -1, NX-3, -1, 0, 0},  {1, 2, NX-2, -1, 2, -1, 0, 0},    {1, 4, -1, NY-2, NX-3, -1, 0, 1},  {1, 5, -1, 1, NX-3, -1, 1, 1},
-        {2, 1, 1, -1, NX-3, -1, 0, 0},  {2, 3, NX-2, -1, 2, -1, 0, 0},    {2, 4, -1, NY-2, -1, NY-3, 1, 1},  {2, 5, -1, 1, -1, 2, 1, 1},
-        {3, 2, 1, -1, NX-3, -1, 0, 0},  {3, 0, NX-2, -1, 2, -1, 0, 0},    {3, 4, -1, NY-2, 2, -1, 1, 1},     {3, 5, -1, 1, 2, -1, 0, 1},
-        {4, 3, 1, -1, -1, NY-3, 1, 1},  {4, 1, NX-2, -1, -1, NY-3, 0, 1}, {4, 2, -1, NY-2, -1, NY-3, 1, 1},  {4, 0, -1, 1, -1, NY-3, 0, 1},
-        {5, 3, 1, -1, -1, 2, 0, 1},     {5, 1, NX-2, -1, -1, 2, 1, 1},    {5, 0, -1, NY-2, -1, 2, 0, 1},     {5, 2, -1, 1, -1, 2, 1, 1}
+        {0, 3, 1, -1, nx-3, -1, 0, 0},  {0, 1, nx-2, -1, 2, -1, 0, 0},    {0, 4, -1, ny-2, -1, 2, 0, 1},     {0, 5, -1, 1, -1, ny-3, 0, 1},
+        {1, 0, 1, -1, nx-3, -1, 0, 0},  {1, 2, nx-2, -1, 2, -1, 0, 0},    {1, 4, -1, ny-2, nx-3, -1, 0, 1},  {1, 5, -1, 1, nx-3, -1, 1, 1},
+        {2, 1, 1, -1, nx-3, -1, 0, 0},  {2, 3, nx-2, -1, 2, -1, 0, 0},    {2, 4, -1, ny-2, -1, ny-3, 1, 1},  {2, 5, -1, 1, -1, 2, 1, 1},
+        {3, 2, 1, -1, nx-3, -1, 0, 0},  {3, 0, nx-2, -1, 2, -1, 0, 0},    {3, 4, -1, ny-2, 2, -1, 1, 1},     {3, 5, -1, 1, 2, -1, 0, 1},
+        {4, 3, 1, -1, -1, ny-3, 1, 1},  {4, 1, nx-2, -1, -1, ny-3, 0, 1}, {4, 2, -1, ny-2, -1, ny-3, 1, 1},  {4, 0, -1, 1, -1, ny-3, 0, 1},
+        {5, 3, 1, -1, -1, 2, 0, 1},     {5, 1, nx-2, -1, -1, 2, 1, 1},    {5, 0, -1, ny-2, -1, 2, 0, 1},     {5, 2, -1, 1, -1, 2, 1, 1}
     };
 
     for (int i = 0; i < 24; i++) {
@@ -162,26 +162,26 @@ void initMatch_2point(int **match_ouTer, int **match_ouTTer) {
 
 void CSSWM::initialize() {
     // Init new 1D array
-    double *alpha = new double[NX], *beta = new double[NY];
+    double *alpha = new double[nx], *beta = new double[ny];
 
-    for (int i = 0; i < NX; i++) {
+    for (int i = 0; i < nx; i++) {
         #if defined(SecondOrderSpace)
-            alpha[i] = -M_PI/4. + (M_PI/2.) / (NX-2) * (i-0.5);
+            alpha[i] = -M_PI/4. + (M_PI/2.) / (nx-2) * (i-0.5);
         #elif defined(FourthOrderSpace)
-            alpha[i] = -M_PI/4. + (M_PI/2.) / (NX-4) * (i-1.5);
+            alpha[i] = -M_PI/4. + (M_PI/2.) / (nx-4) * (i-1.5);
         #endif
     }
-    for (int j = 0; j < NY; j++) {
+    for (int j = 0; j < ny; j++) {
         #if defined(SecondOrderSpace)
-            beta[j] = -M_PI/4. + (M_PI/2.) / (NX-2) * (j-0.5);
+            beta[j] = -M_PI/4. + (M_PI/2.) / (nx-2) * (j-0.5);
         #elif defined(FourthOrderSpace)
-            beta[j] = -M_PI/4. + (M_PI/2.) / (NX-4) * (j-1.5);
+            beta[j] = -M_PI/4. + (M_PI/2.) / (nx-4) * (j-1.5);
         #endif
     }
 
 
-    for (int i = 0; i < NX; i++) {
-        for (int j = 0; j < NY; j++) {
+    for (int i = 0; i < nx; i++) {
+        for (int j = 0; j < ny; j++) {
             alpha2D[i][j] = alpha[i];
             beta2D[i][j] = beta[j];
         }
@@ -191,11 +191,11 @@ void CSSWM::initialize() {
 
     for (int p = 0; p < 6; p++) {
         if (p == 4) {
-            Construct_p4_lonlat_xy_AIA(p, alpha2D, beta2D, gamma, lon[p], lat[p], lon_original[p], x[p], y[p], A[p], IA[p]);
+            Construct_p4_lonlat_xy_AIA(alpha2D, beta2D, gamma, lon[p], lat[p], lon_original[p], x[p], y[p], A[p], IA[p]);
             continue;
         }
         if (p == 5) {
-            Construct_p5_lonlat_xy_AIA(p, alpha2D, beta2D, gamma, lon[p], lat[p], lon_original[p], x[p], y[p], A[p], IA[p]);
+            Construct_p5_lonlat_xy_AIA(alpha2D, beta2D, gamma, lon[p], lat[p], lon_original[p], x[p], y[p], A[p], IA[p]);
             continue;
         }
         Construct_p0123_lonlat_xy_AIA(p, alpha2D, beta2D, gamma, lon[p], lat[p], lon_original[p], x[p], y[p], A[p], IA[p]);
@@ -207,8 +207,8 @@ void CSSWM::initialize() {
         double A1, A2, B;
 
         // Construct Interpolation 2D array filled with index (Note that all interpolation relation between every boundary is same)
-        while (idx < NX && ipIdx < NX - 1) {
-            B = csswm[0].lat[NX-1][idx];
+        while (idx < nx && ipIdx < nx - 1) {
+            B = csswm[0].lat[nx-1][idx];
             A1 = csswm[1].lat[1][ipIdx], A2 = csswm[1].lat[1][ipIdx+1];
 
             if (A1 < B && B < A2) {
@@ -236,8 +236,8 @@ void CSSWM::initialize() {
         int idx = 0, ipIdx = 0;
         double A1, A2, B;
         // Construct Interpolation 2D array filled with index (Note that all interpolation relation between every boundary is same)
-        while (idx < NX && ipIdx < NX - 1) {
-            B = lat[0][NX-1][idx];
+        while (idx < nx && ipIdx < nx - 1) {
+            B = lat[0][nx-1][idx];
             A1 = lat[1][3][ipIdx], A2 = lat[1][3][ipIdx+1];
 
             if (A1 < B && B < A2) {
@@ -265,8 +265,8 @@ void CSSWM::initialize() {
         idx = 0, ipIdx = 0;
         A1 = 0, A2 = 0, B = 0;
         // Construct Interpolation 2D array filled with index (Note that all interpolation relation between every boundary is same)
-        while (idx < NX && ipIdx < NX - 1) {
-            B = lat[0][NX-2][idx];
+        while (idx < nx && ipIdx < nx - 1) {
+            B = lat[0][nx-2][idx];
             A1 = lat[1][2][ipIdx], A2 = lat[1][2][ipIdx+1];
 
             if (A1 < B && B < A2) {
@@ -296,7 +296,7 @@ void CSSWM::initialize() {
     #if defined(SecondOrderSpace)
         initMatch_1point(match);
     #elif defined(FourthOrderSpace)
-        initMatch_2point(match_ouTer, match_ouTTer);
+        initMatch_2point(match_ouTer, match_ouTTer, nx, ny);
     #endif
 
     // Construct patch to patch transformation matrix (Declare at transform.cpp)
@@ -309,14 +309,14 @@ void CSSWM::initialize() {
     // define mountain
     #ifdef Mountain
         for (int p = 0; p < 6; p++) {
-            for (int i = 0; i < NX; i++) {
-                for (int j = 0; j < NY; j++) {
+            for (int i = 0; i < model.nx; i++) {
+                for (int j = 0; j < model.ny; j++) {
                     double r0 = M_PI / 9.;
                     double lonC = 3. * M_PI / 2., latC = M_PI / 6.;
                     double where = sqrt(pow(lon[p][i][j] - lonC, 2) + pow(lat[p][i][j] - latC, 2));
                     double r = r0 >  where ? where : r0;
                     double hs0 = 2000.;
-                    csswm[p].hs[i][j] = hs0 * (1 - r / r0);
+                    hs[p][i][j] = hs0 * (1 - r / r0);
                 }
             }
         }

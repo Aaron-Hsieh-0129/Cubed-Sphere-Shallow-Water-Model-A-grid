@@ -2,8 +2,8 @@
 
 void CSSWM::Init::Init2d(CSSWM & model) {
     for (int p = 0; p < 6; p++) {
-        for (int j = 0; j < NY; j++) {
-            for (int i = 0; i < NX; i++) {
+        for (int j = 0; j < model.ny; j++) {
+            for (int i = 0; i < model.nx; i++) {
                 #ifdef ConvergenceRate
                     model.hp[p][i][j] = ConvergenceRateH(model.lon[p][i][j], model.lat[p][i][j]);
                     model.up[p][i][j] = (model.gLower[i][j][0] * model.IA[p][i][j][0] + model.gLower[i][j][1] * model.IA[p][i][j][2]) * SteadyGeostrophyU(model.lon[p][i][j], model.lat[p][i][j]) + 
@@ -77,13 +77,13 @@ void CSSWM::Init::Init2d(CSSWM & model) {
 
                 #ifdef EquatorialWave
                     if (p == 0) {
-                        model.csswm[p].h_forcing[i][j] = EquatorialWaveH(model.x[p][i][j], model.y[p][i][j]);
+                        model.h_forcing[p][i][j] = EquatorialWaveH(model.x[p][i][j], model.y[p][i][j]);
                     }
                     else {
-                        model.csswm[p].h_forcing[i][j] = 0.;
+                        model.h_forcing[p][i][j] = 0.;
                     }
 
-                    model.hp[p][i][j] = 10000. + model.csswm[p].h_forcing[i][j];
+                    model.hp[p][i][j] = 10000. + model.h_forcing[p][i][j];
                     model.up[p][i][j] = 0.;
                     model.vp[p][i][j] = 0.;
                 #endif
@@ -110,8 +110,8 @@ void CSSWM::Init::Init2d(CSSWM & model) {
     #endif
     
     for (int p = 0; p < 6; p++) {
-        for (int i = 0; i < NX; i++) {
-            for (int j = 0; j < NY; j++) {
+        for (int i = 0; i < model.nx; i++) {
+            for (int j = 0; j < model.ny; j++) {
                 model.hm[p][i][j] = model.hp[p][i][j]; 
                 model.um[p][i][j] = model.up[p][i][j]; 
                 model.vm[p][i][j] = model.vp[p][i][j];   
