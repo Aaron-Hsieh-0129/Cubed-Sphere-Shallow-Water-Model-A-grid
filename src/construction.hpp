@@ -66,6 +66,11 @@ public:
         #if defined(EquatorialWave)
             h_forcing = allocate3DContinuousArray(6, nx, ny, h_forcing_cont);
         #endif
+        #if defined(AB2Time)
+            dh = allocate4DContinuousArray(6, nx, ny, 2, dh_advect_cont);
+            du = allocate4DContinuousArray(6, nx, ny, 2, du_advect_cont);
+            dv = allocate4DContinuousArray(6, nx, ny, 2, dv_advect_cont);
+        #endif
 
         lon = allocate3DContinuousArray(6, nx, ny, lon_cont);
         lat = allocate3DContinuousArray(6, nx, ny, lat_cont);
@@ -124,6 +129,11 @@ public:
         #endif
         #if defined(EquatorialWave)
             deallocate3DContinuousArray(h_forcing, h_forcing_cont, 6);
+        #endif
+        #if defined(AB2Time)
+            deallocate4DContinuousArray(dh, dh_advect_cont, 6, nx);
+            deallocate4DContinuousArray(du, du_advect_cont, 6, nx);
+            deallocate4DContinuousArray(dv, dv_advect_cont, 6, nx);
         #endif
 
         deallocate3DContinuousArray(lon, lon_cont, 6);
@@ -286,6 +296,12 @@ public:
     double **alpha2D;
     double **beta2D;
 
+    #if defined(AB2Time)
+        double ****dh;
+        double ****du;
+        double ****dv;
+    #endif
+
 
     double *hp_cont;
     double *h_cont;
@@ -338,6 +354,11 @@ public:
     double *gUpper_cont;
     double *alpha2D_cont;
     double *beta2D_cont;
+    #if defined(AB2Time)
+        double *dh_advect_cont;
+        double *du_advect_cont;
+        double *dv_advect_cont;
+    #endif
 
 
     double dt;
@@ -357,8 +378,7 @@ public:
     #if defined(EquatorialWave)
         bool status_add_forcing = true;
     #endif
-
-
+    int step = 0;
 
     // ***********************************************************************************
     // In construction.cpp
@@ -400,7 +420,6 @@ public:
     void BP_wind_interpolation(CSSWM &);
     void BP_wind_interpolation2(CSSWM &);
     // ***********************************************************************************
-
 
     class Init {
     public:

@@ -178,13 +178,21 @@ void CSSWM::Iteration::ph_pt_4(CSSWM &model) {
                                -8.*(model.sqrtG[i][j-1] * model.h[p][i][j-1] * (model.gUpper[i][j-1][2] * model.u[p][i][j-1] + model.gUpper[i][j-1][3] * model.v[p][i][j-1]))
                                +1.*(model.sqrtG[i][j-2] * model.h[p][i][j-2] * (model.gUpper[i][j-2][2] * model.u[p][i][j-2] + model.gUpper[i][j-2][3] * model.v[p][i][j-2])));
             
-                #if defined(EquatorialWave)
-                    if (model.status_add_forcing == true) model.hp[p][i][j] = model.hm[p][i][j] + model.d2t * (-psqrtGHU_px - psqrtGHU_py + model.h_forcing[p][i][j]);
-                    else model.hp[p][i][j] = model.hm[p][i][j] + model.d2t * (-psqrtGHU_px - psqrtGHU_py);
+                #if defined(AB2Time)
+                    model.dh[p][i][j][(model.step+1)%2] = (-psqrtGHU_px - psqrtGHU_py);
+                    #if defined(EquatorialWave)
+                        if (model.status_add_forcing == true) model.dh[p][i][j][(model.step+1)%2] += model.h_forcing[p][i][j];
+                    #endif
+                    if (model.step == 0) model.dh[p][i][j][0] = model.dh[p][i][j][1];
+                    model.hp[p][i][j] = model.h[p][i][j] + 1.5*model.dt*model.dh[p][i][j][(model.step+1)%2] - 0.5*model.dt*model.dh[p][i][j][model.step%2];
                 #else
-                    model.hp[p][i][j] = model.hm[p][i][j] + model.d2t * (-psqrtGHU_px - psqrtGHU_py);
+                    #if defined(EquatorialWave)
+                        if (model.status_add_forcing == true) model.hp[p][i][j] = model.hm[p][i][j] + model.d2t * (-psqrtGHU_px - psqrtGHU_py + model.h_forcing[p][i][j]);
+                        else model.hp[p][i][j] = model.hm[p][i][j] + model.d2t * (-psqrtGHU_px - psqrtGHU_py);
+                    #else
+                        model.hp[p][i][j] = model.hm[p][i][j] + model.d2t * (-psqrtGHU_px - psqrtGHU_py);
+                    #endif
                 #endif
-                // if (p == 0 && i == NX/2+1 && j == NY/2+1) model.hp[p][i][j] += 5.;
             }
         }
     }
@@ -242,12 +250,21 @@ void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
                              + model.sqrtG[i][j] * f) 
                              * (model.gUpper[i][j][2] * model.u[p][i][j] + model.gUpper[i][j][3] * model.v[p][i][j]);
             
-
-                #ifdef Mountain
-                    pgHs_px = model.gravity / (12.*dx_for_u) * (-1.*model.hs[p][i+2][j] + 8.*model.hs[p][i+1][j] - 8.*model.hs[p][i-1][j] + 1.*model.hs[p][i-2][j]);
-                    model.up[p][i][j] = model.um[p][i][j] + model.d2t * (-pgH_px - pgHs_px - pU2_px - pUV_px - pV2_px + rotationU);
+                #if defined(AB2Time)
+                    model.du[p][i][j][(model.step+1)%2] = (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);
+                    #if defined(Mountain)
+                        pgHs_px = model.gravity / (12.*dx_for_u) * (-1.*model.hs[p][i+2][j] + 8.*model.hs[p][i+1][j] - 8.*model.hs[p][i-1][j] + 1.*model.hs[p][i-2][j]);
+                        model.du[p][i][j][(model.step+1)%2] += -pgHs_px;
+                    #endif
+                    if (model.step == 0) model.du[p][i][j][0] = model.du[p][i][j][1];
+                    model.up[p][i][j] = model.u[p][i][j] + 1.5*model.dt*model.du[p][i][j][(model.step+1)%2] - 0.5*model.dt*model.du[p][i][j][model.step%2];
                 #else
-                    model.up[p][i][j] = model.um[p][i][j] + model.d2t * (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);
+                    #if defined(Mountain)
+                        pgHs_px = model.gravity / (12.*dx_for_u) * (-1.*model.hs[p][i+2][j] + 8.*model.hs[p][i+1][j] - 8.*model.hs[p][i-1][j] + 1.*model.hs[p][i-2][j]);
+                        model.up[p][i][j] = model.um[p][i][j] + model.d2t * (-pgH_px - pgHs_px - pU2_px - pUV_px - pV2_px + rotationU);
+                    #else
+                        model.up[p][i][j] = model.um[p][i][j] + model.d2t * (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);
+                    #endif
                 #endif
             }
         }
@@ -306,12 +323,21 @@ void CSSWM::Iteration::pv_pt_4(CSSWM &model) {
                              + model.sqrtG[i][j] * f) * 
                             (model.gUpper[i][j][0] * model.u[p][i][j] + model.gUpper[i][j][1] * model.v[p][i][j]);
 
-                
-                #ifdef Mountain
-                    pgHs_py = model.gravity / (12.*dy_for_v) * (-1.*model.hs[p][i][j+2] + 8.*model.hs[p][i][j+1] - 8.*model.hs[p][i][j-1] + 1.*model.hs[p][i][j-2]);
-                    model.vp[p][i][j] = model.vm[p][i][j] + model.d2t * (-pgH_py - pgHs_py - pU2_py - pUV_py - pV2_py - rotationV);
+                #if defined(AB2Time)
+                    model.dv[p][i][j][(model.step+1)%2] = (-pgH_py - pU2_py - pUV_py - pV2_py - rotationV);
+                    #if defined(Mountain)
+                        pgHs_py = model.gravity / (12.*dy_for_u) * (-1.*model.hs[p][i+2][j] + 8.*model.hs[p][i+1][j] - 8.*model.hs[p][i-1][j] + 1.*model.hs[p][i-2][j]);
+                        model.dv[p][i][j][(model.step+1)%2] += -pgHs_py;
+                    #endif
+                    if (model.step == 0) model.dv[p][i][j][0] = model.dv[p][i][j][1];
+                    model.vp[p][i][j] = model.v[p][i][j] + 1.5*model.dt*model.dv[p][i][j][(model.step+1)%2] - 0.5*model.dt*model.dv[p][i][j][model.step%2];
                 #else
-                    model.vp[p][i][j] = model.vm[p][i][j] + model.d2t * (-pgH_py - pU2_py - pUV_py - pV2_py - rotationV);
+                    #if defined(Mountain)
+                        pgHs_py = model.gravity / (12.*dy_for_v) * (-1.*model.hs[p][i][j+2] + 8.*model.hs[p][i][j+1] - 8.*model.hs[p][i][j-1] + 1.*model.hs[p][i][j-2]);
+                        model.vp[p][i][j] = model.vm[p][i][j] + model.d2t * (-pgH_py - pgHs_py - pU2_py - pUV_py - pV2_py - rotationV);
+                    #else
+                        model.vp[p][i][j] = model.vm[p][i][j] + model.d2t * (-pgH_py - pU2_py - pUV_py - pV2_py - rotationV);
+                    #endif
                 #endif
             }
         }
@@ -346,15 +372,15 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
     #ifdef TXTOUTPUT
         CSSWM::Outputs::grid(model);
     #endif
-    int n = 0;
+    model.step = 0;
     // double timenow = 0.;
     double temp = model.timeend / model.dt;
     int nmax = (int) temp;
 
-    while (n < nmax) {
-        std::cout << n << std::endl;
+    while (model.step < nmax) {
+        std::cout << model.step << std::endl;
 
-        if (n % model.outputstep == 0) {
+        if (model.step % model.outputstep == 0) {
             #ifdef TXTOUTPUT
                 CSSWM::Outputs::h(n, model);
                 CSSWM::Outputs::u(n, model);
@@ -362,13 +388,12 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
             #endif
 
             #ifdef NCOUTPUT
-                CSSWM::Outputs::huv_nc(n, model);
+                CSSWM::Outputs::huv_nc(model.step, model);
             #endif
         }
 
-        n++;
         #if defined(EquatorialWave)
-            if (n * model.dt >= model.ADDFORCINGTIME) model.status_add_forcing = false;
+            if (model.step * model.dt >= model.ADDFORCINGTIME) model.status_add_forcing = false;
             else model.status_add_forcing = true;
         #endif
 
@@ -408,12 +433,14 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
             CSSWM::NumericalProcess::DiffusionAll(model);
         #endif
         
-        #if defined(TIMEFILTER)
+        #if defined(TIMEFILTER) && !defined(AB2Time)
             CSSWM::NumericalProcess::timeFilterAll(model);
         #endif
 
         // next step
         CSSWM::Iteration::nextTimeStep(model);
+
+        model.step++;
     }
     return;
 }

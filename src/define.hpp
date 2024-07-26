@@ -9,6 +9,7 @@
 
 // #define SecondOrderSpace
 #define FourthOrderSpace
+#define AB2Time
 #define NCOUTPUT
 // #define TXTOUTPUT
 // #define TrueSol
@@ -17,13 +18,13 @@
 
 // Jung
 #define ALPHA0 (0)
-// #define Advection
+#define Advection
 // #define GravityWave
 // #define SteadyGeostrophy
 // #define Barotropic
 // #define Mountain
 // #define RossbyHaurwitz
-#define EquatorialWave
+// #define EquatorialWave
 // #define Uniform
 // #define Uniform_f
 
