@@ -60,7 +60,7 @@ void CSSWM::Iteration::pu_pt_2(CSSWM &model) {
                     f = 0;
                 #endif
                 
-                pgH_px = GRAVITY / dx_for_u * (model.h[p][i+1][j] - model.h[p][i-1][j]);
+                pgH_px = model.gravity / dx_for_u * (model.h[p][i+1][j] - model.h[p][i-1][j]);
 
                 pU2_px = 0.5 / dx_for_u * 
                         (model.gUpper[i+1][j][0] * pow(model..u[p][i+1][j], 2) - 
@@ -80,7 +80,7 @@ void CSSWM::Iteration::pu_pt_2(CSSWM &model) {
             
 
                 #ifdef Mountain
-                    pgHs_px = GRAVITY / dx_for_u * (model.hs[p][i+1][j] - model.csswm[p].hs[i-1][j]);
+                    pgHs_px = model.gravity / dx_for_u * (model.hs[p][i+1][j] - model.csswm[p].hs[i-1][j]);
                     model.up[p][i][j] = model.um[p][i][j] + model.d2t * (-pgH_px - pgHs_px - pU2_px - pUV_px - pV2_px + rotationU);
                 #else
                     model.up[p][i][j] = model.um[p][i][j] + model.d2t * (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);
@@ -122,7 +122,7 @@ void CSSWM::Iteration::pv_pt_2(CSSWM &model) {
                     f = 0;
                 #endif
 
-                pgH_py = GRAVITY / dy_for_v * (model.h[p][i][j+1] - model.h[p][i][j-1]);
+                pgH_py = model.gravity / dy_for_v * (model.h[p][i][j+1] - model.h[p][i][j-1]);
 
                 pU2_py = 0.5 / dy_for_v * 
                         (model.gUpper[i][j+1][0] * pow(model.u[p][i][j+1], 2) - 
@@ -142,7 +142,7 @@ void CSSWM::Iteration::pv_pt_2(CSSWM &model) {
 
                 
                 #ifdef Mountain
-                    pgHs_py = GRAVITY / dy_for_v * (model.csswm[p].hs[i][j+1] - model.csswm[p].hs[i][j-1]);;
+                    pgHs_py = model.gravity / dy_for_v * (model.csswm[p].hs[i][j+1] - model.csswm[p].hs[i][j-1]);;
                     model.vp[p][i][j] = model.vm[p][i][j] + model.d2t * (-pgH_py - pgHs_py - pU2_py - pUV_py - pV2_py - rotationV);
                 #else
                     model.vp[p][i][j] = model.vm[p][i][j] + model.d2t * (-pgH_py - pU2_py - pUV_py - pV2_py - rotationV);
@@ -217,7 +217,7 @@ void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
                     f = 0;
                 #endif
                 
-                pgH_px = GRAVITY / (12.*dx_for_u) * (-1*model.h[p][i+2][j] + 8*model.h[p][i+1][j] - 8*model.h[p][i-1][j] + 1*model.h[p][i-2][j]);
+                pgH_px = model.gravity / (12.*dx_for_u) * (-1*model.h[p][i+2][j] + 8*model.h[p][i+1][j] - 8*model.h[p][i-1][j] + 1*model.h[p][i-2][j]);
 
                 pU2_px = 0.5 / (12.*dx_for_u) * 
                         (-1.*(model.gUpper[i+2][j][0] * pow(model.u[p][i+2][j], 2))
@@ -244,7 +244,7 @@ void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
             
 
                 #ifdef Mountain
-                    pgHs_px = GRAVITY / (12.*dx_for_u) * (-1.*model.hs[p][i+2][j] + 8.*model.hs[p][i+1][j] - 8.*model.hs[p][i-1][j] + 1.*model.hs[p][i-2][j]);
+                    pgHs_px = model.gravity / (12.*dx_for_u) * (-1.*model.hs[p][i+2][j] + 8.*model.hs[p][i+1][j] - 8.*model.hs[p][i-1][j] + 1.*model.hs[p][i-2][j]);
                     model.up[p][i][j] = model.um[p][i][j] + model.d2t * (-pgH_px - pgHs_px - pU2_px - pUV_px - pV2_px + rotationU);
                 #else
                     model.up[p][i][j] = model.um[p][i][j] + model.d2t * (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);
@@ -281,7 +281,7 @@ void CSSWM::Iteration::pv_pt_4(CSSWM &model) {
                     f = 0;
                 #endif
 
-                pgH_py = GRAVITY / (12.*dy_for_v) * (-1.*model.h[p][i][j+2] + 8.*model.h[p][i][j+1] - 8.*model.h[p][i][j-1] + 1.*model.h[p][i][j-2]);
+                pgH_py = model.gravity / (12.*dy_for_v) * (-1.*model.h[p][i][j+2] + 8.*model.h[p][i][j+1] - 8.*model.h[p][i][j-1] + 1.*model.h[p][i][j-2]);
 
                 pU2_py = 0.5 /(12.*dy_for_v) * 
                         (-1.*(model.gUpper[i][j+2][0] * pow(model.u[p][i][j+2], 2))
@@ -308,7 +308,7 @@ void CSSWM::Iteration::pv_pt_4(CSSWM &model) {
 
                 
                 #ifdef Mountain
-                    pgHs_py = GRAVITY / (12.*dy_for_v) * (-1.*model.hs[p][i][j+2] + 8.*model.hs[p][i][j+1] - 8.*model.hs[p][i][j-1] + 1.*model.hs[p][i][j-2]);
+                    pgHs_py = model.gravity / (12.*dy_for_v) * (-1.*model.hs[p][i][j+2] + 8.*model.hs[p][i][j+1] - 8.*model.hs[p][i][j-1] + 1.*model.hs[p][i][j-2]);
                     model.vp[p][i][j] = model.vm[p][i][j] + model.d2t * (-pgH_py - pgHs_py - pU2_py - pUV_py - pV2_py - rotationV);
                 #else
                     model.vp[p][i][j] = model.vm[p][i][j] + model.d2t * (-pgH_py - pU2_py - pUV_py - pV2_py - rotationV);
@@ -339,7 +339,7 @@ void CSSWM::Iteration::nextTimeStep(CSSWM &model) {
 }
 
 void CSSWM::Iteration::TimeMarching(CSSWM &model) {
-    CSSWM::Outputs::create_all_directory();
+    CSSWM::Outputs::create_all_directory(model.outputpath);
     #ifdef NCOUTPUT
         CSSWM::Outputs::grid_nc(model);
     #endif
@@ -348,13 +348,13 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
     #endif
     int n = 0;
     // double timenow = 0.;
-    double temp = TIMEEND / model.dt;
+    double temp = model.timeend / model.dt;
     int nmax = (int) temp;
 
     while (n < nmax) {
         std::cout << n << std::endl;
 
-        if (n % OUTPUTINTERVAL == 0) {
+        if (n % model.outputstep == 0) {
             #ifdef TXTOUTPUT
                 CSSWM::Outputs::h(n, model);
                 CSSWM::Outputs::u(n, model);
@@ -368,7 +368,7 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
 
         n++;
         #if defined(EquatorialWave)
-            if (n * model.dt >= ADDFORCINGTIME) model.status_add_forcing = false;
+            if (n * model.dt >= model.ADDFORCINGTIME) model.status_add_forcing = false;
             else model.status_add_forcing = true;
         #endif
 

@@ -6,19 +6,32 @@
 
 class Config_CSSWM {
 public:
-    Config_CSSWM(double dt, double dx, double dy)
-        : dt(dt), dx(dx), dy(dy) {}
+    Config_CSSWM(double dt, double dx, double dy, double gravity, double timeend, std::string outputpath, int outputstep, 
+                 double Kx, double Ky, double TIMETS, double ADDFORCINGTIME)
+        : dt(dt), dx(dx), dy(dy), gravity(gravity), timeend(timeend), outputpath(outputpath), outputstep(outputstep), 
+          Kx(Kx), Ky(Ky), TIMETS(TIMETS), ADDFORCINGTIME(ADDFORCINGTIME) {}
     ~Config_CSSWM() {}
 
     double dt;
     double dx;
     double dy;
+    double gravity;
+    double timeend;
+    std::string outputpath;
+    int outputstep;
+    double Kx;
+    double Ky;
+    double TIMETS;
+    double ADDFORCINGTIME;
 };
 
 class CSSWM {
 public:
     CSSWM(const Config_CSSWM &config)
       : dt(config.dt), dx(config.dx), dy(config.dy), 
+        gravity(config.gravity), timeend(config.timeend),
+        outputpath(config.outputpath), outputstep(config.outputstep), 
+        Kx(config.Kx), Ky(config.Ky), TIMETS(config.TIMETS), ADDFORCINGTIME(config.ADDFORCINGTIME),
         #if defined(SecondOrderSpace)
             nx((int) (90/config.dx + 2))
             ny((int) (90/config.dy + 2))
@@ -26,7 +39,8 @@ public:
             nx((int) (90/config.dx + 4)),
             ny((int) (90/config.dy + 4)),
         #endif
-        d2t(2. * config.dt)
+        d2t(2. * dt)
+        
     {
         allocateMemory();
         initialize();
@@ -329,6 +343,14 @@ public:
     double dt;
     double dx;
     double dy;
+    double gravity;
+    double timeend;
+    std::string outputpath;
+    int outputstep;
+    double Kx;
+    double Ky;
+    double TIMETS;
+    double ADDFORCINGTIME;
     int nx;
     int ny;
     double d2t;
@@ -396,19 +418,19 @@ public:
         static double AdvectionV(double);
 
         static double Gravity(double, double);
-        static double SteadyGeostrophyH(double, double);
+        static double SteadyGeostrophyH(double, double, double);
         static double SteadyGeostrophyU(double, double);
         static double SteadyGeostrophyV(double);
         static double ConvergenceRateH(double, double);
         static double DeformationalFlowH(double, double);
-        static double BarotropicH(double);
+        static double BarotropicH(double, double);
         static double BarotropicHPrime(double, double);
 
-        static double MountainH(double, double);
+        static double MountainH(double, double, double);
         static double MountainU(double, double);
         static double MountainV(double);
 
-        static double RossbyHaurwitzH(double, double);
+        static double RossbyHaurwitzH(double, double, double);
         static double RossbyHaurwitzU(double, double);
         static double RossbyHaurwitzV(double, double);
 
@@ -428,7 +450,7 @@ public:
         static void grid_nc(CSSWM &);
         static void huv_nc(int, CSSWM &);
 
-        static void create_all_directory();
+        static void create_all_directory(std::string);
 
         static void create_directory(std::string);
     };

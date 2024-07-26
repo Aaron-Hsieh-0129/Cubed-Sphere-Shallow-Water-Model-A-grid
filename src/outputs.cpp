@@ -20,7 +20,7 @@ void CSSWM::Outputs::create_directory(string directory_name) {
 
 void CSSWM::Outputs::grid(CSSWM &model) {
     fstream fout[4];
-    string dir = OUTPUTPATH + (string) "grids/";
+    string dir = model.outputpath + (string) "grids/";
     string grid[4] = {"lon.txt", "lat.txt", "x.txt", "y.txt"};
 
     for (int i = 0; i < 4; i++) {
@@ -42,7 +42,7 @@ void CSSWM::Outputs::grid(CSSWM &model) {
 
 void CSSWM::Outputs::h(int n, CSSWM &model) {
     fstream fouth;
-    string hname = OUTPUTPATH + (string) "h/h_" + std::to_string(n) + ".txt";
+    string hname = model.outputpath + (string) "h/h_" + std::to_string(n) + ".txt";
     fouth.open(hname, std::ios::out);
     for (int p = 0; p < 6; p++) {
         for (int j = 1; j < model.ny-1; j++) {
@@ -56,7 +56,7 @@ void CSSWM::Outputs::h(int n, CSSWM &model) {
 
 void CSSWM::Outputs::u(int n, CSSWM &model) {
     fstream foutu;
-    string uname = OUTPUTPATH + (string) "u/u_" + std::to_string(n) + ".txt";
+    string uname = model.outputpath + (string) "u/u_" + std::to_string(n) + ".txt";
     foutu.open(uname, std::ios::out);
 
     fstream foutu_lon_lat;
@@ -75,7 +75,7 @@ void CSSWM::Outputs::u(int n, CSSWM &model) {
 
 void CSSWM::Outputs::v(int n, CSSWM &model) {
     fstream foutv;
-    string vname = OUTPUTPATH + (string) "v/v_" + std::to_string(n) + ".txt";
+    string vname = model.outputpath + (string) "v/v_" + std::to_string(n) + ".txt";
     foutv.open(vname, std::ios::out);
 
     fstream foutv_lon_lat;
@@ -101,7 +101,7 @@ void checkErr(int status, int line) {
 }
 
 void CSSWM::Outputs::grid_nc(CSSWM &model) {
-    string ncName = OUTPUTPATH + (string) "nc/" + "grid.nc";
+    string ncName = model.outputpath + (string) "nc/" + "grid.nc";
 
     int ncid, p_dimid, x_dimid, y_dimid;
     int retval;
@@ -135,7 +135,7 @@ void CSSWM::Outputs::grid_nc(CSSWM &model) {
 
 
 void CSSWM::Outputs::huv_nc(int n, CSSWM &model) {
-    string ncName = OUTPUTPATH + (string) "nc/" + std::to_string(n) + ".nc";
+    string ncName = model.outputpath + (string) "nc/" + std::to_string(n) + ".nc";
 
     int ncid, p_dimid, x_dimid, y_dimid;
     int retval;
@@ -168,17 +168,17 @@ void CSSWM::Outputs::huv_nc(int n, CSSWM &model) {
     if ((retval = nc_close(ncid))) checkErr(retval, __LINE__);
 }
 
-void CSSWM::Outputs::create_all_directory() {
+void CSSWM::Outputs::create_all_directory(std::string outputpath) {
     // data directory
     #ifdef TXTOUTPUT
-        create_directory(OUTPUTPATH + (string) "grids");
-        create_directory(OUTPUTPATH + (string) "h");
-        create_directory(OUTPUTPATH + (string) "u");
-        create_directory(OUTPUTPATH + (string) "u_lon_lat");
-        create_directory(OUTPUTPATH + (string) "v");
-        create_directory(OUTPUTPATH + (string) "v_lon_lat");
+        create_directory(model.outputpath + (string) "grids");
+        create_directory(model.outputpath + (string) "h");
+        create_directory(model.outputpath + (string) "u");
+        create_directory(model.outputpath + (string) "u_lon_lat");
+        create_directory(model.outputpath + (string) "v");
+        create_directory(model.outputpath + (string) "v_lon_lat");
     #endif
     #ifdef NCOUTPUT
-        create_directory(OUTPUTPATH + (string) "nc");
+        create_directory(outputpath + (string) "nc");
     #endif
 }
