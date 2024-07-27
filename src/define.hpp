@@ -18,14 +18,14 @@
 
 // Jung
 #define ALPHA0 (0)
-#define Advection
+// #define Advection
 // #define GravityWave
 // #define SteadyGeostrophy
 // #define Barotropic
 // #define Mountain
 // #define RossbyHaurwitz
 // #define EquatorialWave
-// #define Uniform
+#define Uniform
 // #define Uniform_f
 
 #endif
