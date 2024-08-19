@@ -128,7 +128,7 @@ double CSSWM::Init::ConvergenceRateH(double lon, double lat) {
 }
 
 double CSSWM::Init::DeformationalFlowH(double lon, double lat) {
-    int rho0 = 3, gamma = 5;
+    double rho0 = 3, gamma = 5;
     double lonP = atan((cos(lat) * sin(lon)) / (cos(lat)*cos(lon)*cos(ALPHA0) + sin(lat)*sin(ALPHA0)));
     return 1 - tanh(rho0 / gamma * sin(lonP));
 
@@ -252,7 +252,7 @@ double CSSWM::Init::simpson(double a, double b) {
 	double T2n = h * (func(a) + func(b)) / 2.;
 	double In = T2n;
 	double Tn;
-	for (int n = 1; abs(I2n-In) > 1e-5; n+=n, h/=2.0) {
+	for (int n = 1; std::fabs(I2n-In) > 1e-5; n+=n, h/=2.0) {
 		In = I2n;
 		Tn = T2n;
 		double sigma = 0.;
