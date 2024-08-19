@@ -12,7 +12,7 @@
 #define DY (1)
 #define DT (1800.)
 #define TIMEEND (86400 * 3 * 24)
-#define OUTPUTPATH "/data/Aaron/TMIF/SP_old_CSSWM/prof_RKM_dt1800_1_csswm_1_vvm_2E5diff_line_3B/csswm/"
+#define OUTPUTPATH "/data/Aaron/TMIF/SP_old_CSSWM/AB2_prof_RKM_dt1800_1_csswm_1_vvm_2E5diff_1B/csswm/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace

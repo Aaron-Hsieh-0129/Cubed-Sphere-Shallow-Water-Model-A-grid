@@ -376,29 +376,29 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
     #ifdef TXTOUTPUT
         Outputs::grid(model);
     #endif
-    int n = 0;
+    model.step = 0;
     // double timenow = 0.;
     double temp = TIMEEND / DT;
     int nmax = (int) temp;
 
-    while (n < nmax) {
-        std::cout << n << std::endl;
+    while (model.step < nmax) {
+        std::cout << model.step << std::endl;
 
-        if (n % OUTPUTINTERVAL == 0) {
+        if (model.step % OUTPUTINTERVAL == 0) {
             #ifdef TXTOUTPUT
-                Outputs::h(n, model);
-                Outputs::u(n, model);
-                Outputs::v(n, model);
+                Outputs::h(model.step, model);
+                Outputs::u(model.step, model);
+                Outputs::v(model.step, model);
             #endif
 
             #ifdef NCOUTPUT
-                Outputs::huv_nc(n, model);
+                Outputs::huv_nc(model.step, model);
             #endif
         }
 
-        n++;
+        model.step++;
         #if defined(EquatorialWave)
-            if (n * DT >= ADDFORCINGTIME) model.status_add_forcing = false;
+            if (model.step * DT >= ADDFORCINGTIME) model.status_add_forcing = false;
             else model.status_add_forcing = true;
         #endif
 
