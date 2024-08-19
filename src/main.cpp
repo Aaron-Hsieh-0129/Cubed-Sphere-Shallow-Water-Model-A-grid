@@ -1,12 +1,12 @@
-#include "iteration.hpp"
+#include "construction.hpp"
 
 CSSWM model;
 int main(void) {
     clock_t start, stop;
     start = clock();
 
-    Init::Init2d(model);
-    Iteration::leap_frog(model);
+    CSSWM::Init::Init2d(model);
+    CSSWM::Iteration::TimeMarching(model);
 
     stop = clock();
     std::cout << double(stop - start) / CLOCKS_PER_SEC << " s" << std::endl;

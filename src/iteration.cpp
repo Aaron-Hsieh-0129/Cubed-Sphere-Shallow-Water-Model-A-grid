@@ -1,7 +1,7 @@
-#include "iteration.hpp"
+#include "construction.hpp"
 
 #if defined(SecondOrderSpace)
-void Iteration::ph_pt_2(CSSWM &model) {
+void CSSWM::Iteration::ph_pt_2(CSSWM &model) {
     for (int p = 0; p < 6; p++) {
         double psqrtGHU_px = 0, psqrtGHU_py = 0, dx_for_h = 0, dy_for_h = 0;
         for (int i = 1; i < NX-1; i++) {
@@ -34,7 +34,7 @@ void Iteration::ph_pt_2(CSSWM &model) {
     return;
 }
 
-void Iteration::pu_pt_2(CSSWM &model) {
+void CSSWM::Iteration::pu_pt_2(CSSWM &model) {
     double dx_for_u = 0, dy_for_u = 0;
     double pgH_px = 0, pU2_px = 0, pUV_px = 0, pV2_px = 0, rotationU = 0;
     double f;
@@ -96,7 +96,7 @@ void Iteration::pu_pt_2(CSSWM &model) {
     return;
 }
 
-void Iteration::pv_pt_2(CSSWM &model) {
+void CSSWM::Iteration::pv_pt_2(CSSWM &model) {
     double dx_for_v = 0, dy_for_v = 0;
     double pgH_py = 0, pU2_py = 0, pUV_py = 0, pV2_py = 0, rotationV = 0;
     double f;
@@ -158,7 +158,7 @@ void Iteration::pv_pt_2(CSSWM &model) {
     return;
 }
 #elif defined(FourthOrderSpace)
-void Iteration::ph_pt_4(CSSWM &model) {
+void CSSWM::Iteration::ph_pt_4(CSSWM &model) {
     for (int p = 0; p < 6; p++) {
         double psqrtGHU_px = 0, psqrtGHU_py = 0, dx_for_h = 0, dy_for_h = 0;
         for (int i = 2; i < NX-2; i++) {
@@ -184,18 +184,13 @@ void Iteration::ph_pt_4(CSSWM &model) {
                 #else
                     model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
                 #endif
-                
-                #ifdef DIFFUSION
-                    model.csswm[p].hp[i][j] += D2T * KX * (model.csswm[p].hm[i+1][j] - 2. * model.csswm[p].hm[i][j] + model.csswm[p].hm[i-1][j]) / pow(dx_for_h, 2) + 
-                                               D2T * KY * (model.csswm[p].hm[i][j+1] - 2. * model.csswm[p].hm[i][j] + model.csswm[p].hm[i][j-1]) / pow(dy_for_h, 2);
-                #endif
             }
         }
     }
     return;
 }
 
-void Iteration::pu_pt_4(CSSWM &model) {
+void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
     double dx_for_u = 0, dy_for_u = 0;
     double pgH_px = 0, pU2_px = 0, pUV_px = 0, pV2_px = 0, rotationU = 0;
     double f;
@@ -253,18 +248,13 @@ void Iteration::pu_pt_4(CSSWM &model) {
                 #else
                     model.csswm[p].up[i][j] = model.csswm[p].um[i][j] + D2T * (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);
                 #endif
-
-                #ifdef DIFFUSION
-                    model.csswm[p].up[i][j] += D2T * KX * (model.csswm[p].um[i+1][j] - 2. * model.csswm[p].um[i][j] + model.csswm[p].um[i-1][j]) / pow(dx_for_u, 2) + 
-                                               D2T * KY * (model.csswm[p].um[i][j+1] - 2. * model.csswm[p].um[i][j] + model.csswm[p].um[i][j-1]) / pow(dy_for_u, 2);
-                #endif
             }
         }
     }
     return;
 }
 
-void Iteration::pv_pt_4(CSSWM &model) {
+void CSSWM::Iteration::pv_pt_4(CSSWM &model) {
     double dx_for_v = 0, dy_for_v = 0;
     double pgH_py = 0, pU2_py = 0, pUV_py = 0, pV2_py = 0, rotationV = 0;
     double f;
@@ -322,11 +312,6 @@ void Iteration::pv_pt_4(CSSWM &model) {
                 #else
                     model.csswm[p].vp[i][j] = model.csswm[p].vm[i][j] + D2T * (-pgH_py - pU2_py - pUV_py - pV2_py - rotationV);
                 #endif
-
-                #ifdef DIFFUSION
-                    model.csswm[p].vp[i][j] += D2T * KX * (model.csswm[p].vm[i+1][j] - 2. * model.csswm[p].vm[i][j] + model.csswm[p].vm[i-1][j]) / pow(dx_for_v, 2) + 
-                                               D2T * KY * (model.csswm[p].vm[i][j+1] - 2. * model.csswm[p].vm[i][j] + model.csswm[p].vm[i][j-1]) / pow(dy_for_v, 2);
-                #endif
             }
         }
     }
@@ -335,7 +320,25 @@ void Iteration::pv_pt_4(CSSWM &model) {
 
 #endif
 
-void Iteration::leap_frog(CSSWM &model) {
+void CSSWM::Iteration::nextTimeStep(CSSWM &model) {
+    for (int p = 0; p < 6; p++) {
+        for (int i = 0; i < NX; i++) {
+            for (int j = 0; j < NY; j++) {
+                model.csswm[p].hm[i][j] = model.csswm[p].h[i][j];
+                model.csswm[p].h[i][j] = model.csswm[p].hp[i][j];
+
+                model.csswm[p].um[i][j] = model.csswm[p].u[i][j];
+                model.csswm[p].u[i][j] = model.csswm[p].up[i][j];
+
+                model.csswm[p].vm[i][j] = model.csswm[p].v[i][j];
+                model.csswm[p].v[i][j] = model.csswm[p].vp[i][j];
+            }
+        }
+    }
+    return;
+}
+
+void CSSWM::Iteration::TimeMarching(CSSWM &model) {
     Outputs::create_all_directory();
     #ifdef NCOUTPUT
         Outputs::grid_nc(model);
@@ -401,36 +404,17 @@ void Iteration::leap_frog(CSSWM &model) {
             #endif
         #endif
 
-        
+        #if defined(DIFFUSION)
+            CSSWM::NumericalProcess::DiffusionAll(model);
+        #endif
 
         // Time filter
         #ifdef TIMEFILTER
-            for (int p = 0; p < 6; p++) {
-                for (int i = 0; i < NX; i++) {
-                    for (int j = 0; j < NY; j++) {
-                        model.csswm[p].h[i][j] += TIMETS * (model.csswm[p].hp[i][j] - 2 * model.csswm[p].h[i][j] + model.csswm[p].hm[i][j]);
-                        model.csswm[p].u[i][j] += TIMETS * (model.csswm[p].up[i][j] - 2 * model.csswm[p].u[i][j] + model.csswm[p].um[i][j]);
-                        model.csswm[p].v[i][j] += TIMETS * (model.csswm[p].vp[i][j] - 2 * model.csswm[p].v[i][j] + model.csswm[p].vm[i][j]);
-                    }
-                }
-            }
+            CSSWM::NumericalProcess::timeFilterAll(model);
         #endif
 
         // next step
-        for (int p = 0; p < 6; p++) {
-            for (int i = 0; i < NX; i++) {
-                for (int j = 0; j < NY; j++) {
-                    model.csswm[p].hm[i][j] = model.csswm[p].h[i][j];
-                    model.csswm[p].h[i][j] = model.csswm[p].hp[i][j];
-
-                    model.csswm[p].um[i][j] = model.csswm[p].u[i][j];
-                    model.csswm[p].u[i][j] = model.csswm[p].up[i][j];
-
-                    model.csswm[p].vm[i][j] = model.csswm[p].v[i][j];
-                    model.csswm[p].v[i][j] = model.csswm[p].vp[i][j];
-                }
-            }
-        }
+        CSSWM::Iteration::nextTimeStep(model);
     }
     
     return;
