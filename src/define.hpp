@@ -8,14 +8,15 @@
 #define OMEGA (7.292E-5)
 #define BETA (2.5E-11)
 
-#define DX (2)
-#define DY (2)
-#define DT (180.)
+#define DX (1)
+#define DY (1)
+#define DT (1800.)
 #define TIMEEND (86400 * 3 * 24)
-#define OUTPUTPATH "/data/Aaron/CSSWM-A-grid/Leapfrog_4th/0512/EquatorialWave/45_2000min/"
+#define OUTPUTPATH "/data/Aaron/TMIF/SP_old_CSSWM/prof_RKM_dt1800_1_csswm_1_vvm_2E5diff_line_3B/csswm/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace
+#define AB2Time
 #define NCOUTPUT
 // #define TXTOUTPUT
 
@@ -37,13 +38,14 @@
 // #define Barotropic
 // #define Mountain
 // #define RossbyHaurwitz
-#define EquatorialWave
+// #define EquatorialWave
+#define Uniform
 
 // #define TrueSol
 #define DIFFUSION
 #define TIMEFILTER
-#define KX (200000.)
-#define KY (200000.)
+#define KX (2E5)
+#define KY (2E5)
 #define TIMETS (0.06)
 
 #define ADDFORCINGTIME (1200. * 60.)

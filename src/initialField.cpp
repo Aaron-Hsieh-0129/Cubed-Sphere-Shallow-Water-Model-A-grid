@@ -87,6 +87,18 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                     model.csswm[p].up[i][j] = 0.;
                     model.csswm[p].vp[i][j] = 0.;
                 #endif
+
+                #if defined(Uniform)
+                    // if (p == 1 && j == 47) {
+                    //     model.csswm[p].hp[i][j] = 50. * std::sin(i * M_PI / 3.);
+                    // }
+                    // else {
+                    //     model.csswm[p].hp[i][j] = 0.;
+                    // }
+                    model.csswm[p].hp[i][j] = 10454.608791605699;
+                    model.csswm[p].up[i][j] = 0.;
+                    model.csswm[p].vp[i][j] = 0.;
+                #endif
             }
         }
     }

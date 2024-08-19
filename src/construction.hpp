@@ -35,6 +35,12 @@ public:
         #if defined(EquatorialWave)
             double h_forcing[NX][NY];
         #endif
+
+        #if defined(AB2Time)
+            double dh[NX][NY][2];
+            double du[NX][NY][2];
+            double dv[NX][NY][2];
+        #endif
     };
 
     CSSWM();
@@ -56,6 +62,8 @@ public:
         int checkIP_ouTTer[NX][2];
         int checkIP_ouTer[NX][2];
     #endif
+
+    int step = 0;
 
     // ***********************************************************************************
     // In construction.cpp

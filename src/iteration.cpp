@@ -178,11 +178,20 @@ void CSSWM::Iteration::ph_pt_4(CSSWM &model) {
                                -8.*(model.sqrtG[i][j-1] * model.csswm[p].h[i][j-1] * (model.gUpper[i][j-1][2] * model.csswm[p].u[i][j-1] + model.gUpper[i][j-1][3] * model.csswm[p].v[i][j-1]))
                                +1.*(model.sqrtG[i][j-2] * model.csswm[p].h[i][j-2] * (model.gUpper[i][j-2][2] * model.csswm[p].u[i][j-2] + model.gUpper[i][j-2][3] * model.csswm[p].v[i][j-2])));
             
-                #if defined(EquatorialWave)
-                    if (model.status_add_forcing == true) model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py + model.csswm[p].h_forcing[i][j]);
-                    else model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
+                #if defined(AB2Time)
+                    model.csswm[p].dh[i][j][(model.step+1)%2] = (-psqrtGHU_px - psqrtGHU_py);
+                    #if defined(EquatorialWave)
+                        if (model.status_add_forcing == true) model.csswm[p].dh[i][j][(model.step+1)%2] += model.h_forcing[p][i][j];
+                    #endif
+                    if (model.step == 0) model.csswm[p].dh[i][j][0] = model.csswm[p].dh[i][j][1];
+                    model.csswm[p].hp[i][j] = model.csswm[p].h[i][j] + 1.5*DT*model.csswm[p].dh[i][j][(model.step+1)%2] - 0.5*DT*model.csswm[p].dh[i][j][model.step%2];
                 #else
-                    model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
+                    #if defined(EquatorialWave)
+                        if (model.status_add_forcing == true) model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py + model.csswm[p].h_forcing[i][j]);
+                        else model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
+                    #else
+                        model.csswm[p].hp[i][j] = model.csswm[p].hm][i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
+                    #endif
                 #endif
             }
         }
@@ -242,11 +251,21 @@ void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
                              * (model.gUpper[i][j][2] * model.csswm[p].u[i][j] + model.gUpper[i][j][3] * model.csswm[p].v[i][j]);
             
 
-                #ifdef Mountain
-                    pgHs_px = GRAVITY / (12.*dx_for_u) * (-1.*model.csswm[p].hs[i+2][j] + 8.*model.csswm[p].hs[i+1][j] - 8.*model.csswm[p].hs[i-1][j] + 1.*model.csswm[p].hs[i-2][j]);
-                    model.csswm[p].up[i][j] = model.csswm[p].um[i][j] + D2T * (-pgH_px - pgHs_px - pU2_px - pUV_px - pV2_px + rotationU);
+                #if defined(AB2Time)
+                    model.csswm[p].du[i][j][(model.step+1)%2] = (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);
+                    #if defined(Mountain)
+                        pgHs_px = model.gravity / (12.*dx_for_u) * (-1.*model.hs[p][i+2][j] + 8.*model.hs[p][i+1][j] - 8.*model.hs[p][i-1][j] + 1.*model.hs[p][i-2][j]);
+                        model.csswm[p].du[i][j][(model.step+1)%2] += -pgHs_px;
+                    #endif
+                    if (model.step == 0) model.csswm[p].du[i][j][0] = model.csswm[p].du[i][j][1];
+                    model.csswm[p].up[i][j] = model.csswm[p].u[i][j] + 1.5*DT*model.csswm[p].du[i][j][(model.step+1)%2] - 0.5*DT*model.csswm[p].du[i][j][model.step%2];
                 #else
-                    model.csswm[p].up[i][j] = model.csswm[p].um[i][j] + D2T * (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);
+                    #if defined(Mountain)
+                        pgHs_px = model.gravity / (12.*dx_for_u) * (-1.*model.hs[p][i+2][j] + 8.*model.hs[p][i+1][j] - 8.*model.hs[p][i-1][j] + 1.*model.hs[p][i-2][j]);
+                        model.csswm[p].up[i][j] = model.um[p][i][j] + D2T * (-pgH_px - pgHs_px - pU2_px - pUV_px - pV2_px + rotationU);
+                    #else
+                        model.csswm[p].up[i][j] = model.um[p][i][j] + D2T * (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);
+                    #endif
                 #endif
             }
         }
@@ -306,11 +325,22 @@ void CSSWM::Iteration::pv_pt_4(CSSWM &model) {
                             (model.gUpper[i][j][0] * model.csswm[p].u[i][j] + model.gUpper[i][j][1] * model.csswm[p].v[i][j]);
 
                 
-                #ifdef Mountain
-                    pgHs_py = GRAVITY / (12.*dy_for_v) * (-1.*model.csswm[p].hs[i][j+2] + 8.*model.csswm[p].hs[i][j+1] - 8.*model.csswm[p].hs[i][j-1] + 1.*model.csswm[p].hs[i][j-2]);
-                    model.csswm[p].vp[i][j] = model.csswm[p].vm[i][j] + D2T * (-pgH_py - pgHs_py - pU2_py - pUV_py - pV2_py - rotationV);
+
+                #if defined(AB2Time)
+                    model.csswm[p].dv[i][j][(model.step+1)%2] = (-pgH_py - pU2_py - pUV_py - pV2_py - rotationV);
+                    #if defined(Mountain)
+                        pgHs_py = model.gravity / (12.*dy_for_u) * (-1.*model.hs[p][i+2][j] + 8.*model.hs[p][i+1][j] - 8.*model.hs[p][i-1][j] + 1.*model.hs[p][i-2][j]);
+                        model.csswm[p].dv[i][j][(model.step+1)%2] += -pgHs_py;
+                    #endif
+                    if (model.step == 0) model.csswm[p].dv[i][j][0] = model.csswm[p].dv[i][j][1];
+                    model.csswm[p].vp[i][j] = model.csswm[p].v[i][j] + 1.5*DT*model.csswm[p].dv[i][j][(model.step+1)%2] - 0.5*DT*model.csswm[p].dv[i][j][model.step%2];
                 #else
-                    model.csswm[p].vp[i][j] = model.csswm[p].vm[i][j] + D2T * (-pgH_py - pU2_py - pUV_py - pV2_py - rotationV);
+                    #if defined(Mountain)
+                        pgHs_py = model.gravity / (12.*dy_for_v) * (-1.*model.hs[p][i][j+2] + 8.*model.hs[p][i][j+1] - 8.*model.hs[p][i][j-1] + 1.*model.hs[p][i][j-2]);
+                        model.csswm[p].vp[i][j] = model.vm[p][i][j] + D2T * (-pgH_py - pgHs_py - pU2_py - pUV_py - pV2_py - rotationV);
+                    #else
+                        model.csswm[p].vp[i][j] = model.vm[p][i][j] + D2T * (-pgH_py - pU2_py - pUV_py - pV2_py - rotationV);
+                    #endif
                 #endif
             }
         }
