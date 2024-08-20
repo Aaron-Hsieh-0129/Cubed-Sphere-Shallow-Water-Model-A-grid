@@ -190,9 +190,13 @@ void CSSWM::Iteration::ph_pt_4(CSSWM &model) {
                         if (model.status_add_forcing == true) model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py + model.csswm[p].h_forcing[i][j]);
                         else model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
                     #else
-                        model.csswm[p].hp[i][j] = model.csswm[p].hm][i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
+                        model.csswm[p].hp[i][j] = model.csswm[p].hm[i][j] + D2T * (-psqrtGHU_px - psqrtGHU_py);
                     #endif
                 #endif
+
+                // if ((p == 1 || p == 0) && j == 2) {
+                //     model.csswm[p].hp[i][j] += 10. * -std::sin(i * M_PI / 2.);
+                // }
             }
         }
     }
@@ -264,7 +268,7 @@ void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
                         pgHs_px = model.gravity / (12.*dx_for_u) * (-1.*model.hs[p][i+2][j] + 8.*model.hs[p][i+1][j] - 8.*model.hs[p][i-1][j] + 1.*model.hs[p][i-2][j]);
                         model.csswm[p].up[i][j] = model.um[p][i][j] + D2T * (-pgH_px - pgHs_px - pU2_px - pUV_px - pV2_px + rotationU);
                     #else
-                        model.csswm[p].up[i][j] = model.um[p][i][j] + D2T * (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);
+                        model.csswm[p].up[i][j] = model.csswm[p].um[i][j] + D2T * (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);
                     #endif
                 #endif
             }
@@ -339,7 +343,7 @@ void CSSWM::Iteration::pv_pt_4(CSSWM &model) {
                         pgHs_py = model.gravity / (12.*dy_for_v) * (-1.*model.hs[p][i][j+2] + 8.*model.hs[p][i][j+1] - 8.*model.hs[p][i][j-1] + 1.*model.hs[p][i][j-2]);
                         model.csswm[p].vp[i][j] = model.vm[p][i][j] + D2T * (-pgH_py - pgHs_py - pU2_py - pUV_py - pV2_py - rotationV);
                     #else
-                        model.csswm[p].vp[i][j] = model.vm[p][i][j] + D2T * (-pgH_py - pU2_py - pUV_py - pV2_py - rotationV);
+                        model.csswm[p].vp[i][j] = model.csswm[p].vm[i][j] + D2T * (-pgH_py - pU2_py - pUV_py - pV2_py - rotationV);
                     #endif
                 #endif
             }
@@ -438,8 +442,8 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
             CSSWM::NumericalProcess::DiffusionAll(model);
         #endif
 
-        // Time filter
-        #ifdef TIMEFILTER
+        // // Time filter
+        #if defined(TIMEFILTER) && !defined(AB2Time)
             CSSWM::NumericalProcess::timeFilterAll(model);
         #endif
 

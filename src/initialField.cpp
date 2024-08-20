@@ -16,7 +16,7 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                     model.csswm[p].hp[i][j] = AdvectionH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
                     model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * AdvectionU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * AdvectionV(model.csswm[p].lon[i][j]);
-                    model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.cßsswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * AdvectionU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
+                    model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * AdvectionU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * AdvectionV(model.csswm[p].lon[i][j]);
                 #endif
 
@@ -89,8 +89,8 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                 #endif
 
                 #if defined(Uniform)
-                    // if (p == 1 && j == 47) {
-                    //     model.csswm[p].hp[i][j] = 50. * std::sin(i * M_PI / 3.);
+                    // if ((p == 1 || p == 0) && j == 2 && (i >= 2 && i <= NX-3)) {
+                    //     model.csswm[p].hp[i][j] = -50. * std::sin(i * M_PI / 2.);
                     // }
                     // else {
                     //     model.csswm[p].hp[i][j] = 0.;
