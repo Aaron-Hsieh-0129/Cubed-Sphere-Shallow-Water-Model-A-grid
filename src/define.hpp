@@ -10,10 +10,9 @@
 
 #define DX (1)
 #define DY (1)
-#define DT (600.)
+#define DT (200.)
 #define TIMEEND (86400 * 3 * 24)
-#define OUTPUTPATH "/data/Aaron/TMIF/0901_stable_version/dt600_1_csswm_1_vvm_2E5diff_7vvm_3B_4non_12kmcouple_new_exchange/csswm/"
-// #define OUTPUTPATH "/data/Aaron/TMIF_CSSWM/sine2/csswm/"
+#define OUTPUTPATH "/data/Aaron/TMIF/0904_couple_time/200_600_7vvm_3B_4non/csswm/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace
