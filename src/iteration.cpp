@@ -447,6 +447,115 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
             CSSWM::NumericalProcess::timeFilterAll(model);
         #endif
 
+        // Add forcing
+        // Coupling time: 600
+        // if (model.step == 3) {
+        //     model.csswm[1].hp[46][47] += 6.518550756778495;
+        //     model.csswm[1].hp[47][47] += 6.518550756778495;
+        //     model.csswm[1].hp[48][47] += 6.518550756778495;
+        // }
+        // if (model.step == 6) {
+        //     model.csswm[1].hp[46][47] += 13.576829193507365;
+        //     model.csswm[1].hp[47][47] += 13.594794503515004;
+        //     model.csswm[1].hp[48][47] += 13.576805050761322;
+        // }
+        // if (model.step == 9) {
+        //     model.csswm[1].hp[46][47] += 5.630701927977498;
+        //     model.csswm[1].hp[47][47] += 5.655678397986776;
+        //     model.csswm[1].hp[48][47] += 5.630617705381155;
+        // }
+        // if (model.step == 12) {
+        //     model.csswm[1].hp[46][47] += 4.4994444012518215;
+        //     model.csswm[1].hp[47][47] += 4.468312874076219;
+        //     model.csswm[1].hp[48][47] += 4.499312003414161;
+        // }
+        // if (model.step == 15) {
+        //     model.csswm[1].hp[46][47] += -1.179906883449803;
+        //     model.csswm[1].hp[47][47] += -1.2728558726466872;
+        //     model.csswm[1].hp[48][47] += -1.18004420300349;
+        // }
+        // if (model.step == 18) {
+        //     model.csswm[1].hp[46][47] += 1.0899403250605246;
+        //     model.csswm[1].hp[47][47] += 0.8626470096041885;
+        //     model.csswm[1].hp[48][47] += 1.0902238598555414;
+        // }
+        // if (model.step == 21) {
+        //     model.csswm[1].hp[46][47] += 1.7982856258804532;
+        //     model.csswm[1].hp[47][47] += 1.3580435658677743;
+        //     model.csswm[1].hp[48][47] += 1.7986760395087913;
+        // }
+
+        // Coupling time: 1200s
+        // if (model.step == 6) {
+        //     model.csswm[1].hp[46][47] += 20.31932687189692;
+        //     model.csswm[1].hp[47][47] += 20.31932687189692;
+        //     model.csswm[1].hp[48][47] += 20.31932687189692;
+        // }
+        // if (model.step == 12) {
+        //     model.csswm[1].hp[46][47] += 10.944539267993605;
+        //     model.csswm[1].hp[47][47] += 10.911059770220163;
+        //     model.csswm[1].hp[48][47] += 10.944441891570023;
+        // }
+        // if (model.step == 18) {
+        //     model.csswm[1].hp[46][47] += 1.028993711599469;
+        //     model.csswm[1].hp[47][47] += 0.8432120151355775;
+        //     model.csswm[1].hp[48][47] += 1.0291502518593916;
+        // }
+        // if (model.step == 24) {
+        //     model.csswm[1].hp[46][47] += 3.272221580031328;
+        //     model.csswm[1].hp[47][47] += 2.342710919521778;
+        //     model.csswm[1].hp[48][47] += 3.27377919268838;
+        // }
+
+        // Coupling time: 1800s
+        // if (model.step == 9) {
+        //     model.csswm[1].hp[46][47] += 26.55747411457378;
+        //     model.csswm[1].hp[47][47] += 26.55747411457378;
+        //     model.csswm[1].hp[48][47] += 26.55747411457378;
+        // }
+        // if (model.step == 18) {
+        //     model.csswm[1].hp[46][47] += 7.4260124174943485;
+        //     model.csswm[1].hp[47][47] += 7.32227240750035;
+        //     model.csswm[1].hp[48][47] += 7.426011678808209;
+        // }
+        // if (model.step == 27) {
+        //     model.csswm[1].hp[46][47] += 1.342739204685131;
+        //     model.csswm[1].hp[47][47] += 1.2110326880829234;
+        //     model.csswm[1].hp[48][47] += 1.3429452419659356;
+        // }
+
+        // Coupling time: 2400s
+        // if (model.step == 12) {
+        //     model.csswm[1].hp[46][47] += 31.86735402;
+        //     model.csswm[1].hp[47][47] += 31.86735402;
+        //     model.csswm[1].hp[48][47] += 31.86735402;
+        // }
+        // if (model.step == 24) {
+        //     model.csswm[1].hp[46][47] += 3.65462477;
+        //     model.csswm[1].hp[47][47] += 3.51916444;
+        //     model.csswm[1].hp[48][47] += 3.65460265;
+        // }
+
+        // Coupling time: 3000s
+        // if (model.step == 15) {
+        //     model.csswm[1].hp[46][47] += 31.813260145421737;
+        //     model.csswm[1].hp[47][47] += 31.813260145421737;
+        //     model.csswm[1].hp[48][47] += 31.813260145421737;
+        // }
+        // if (model.step == 30) {
+        //     model.csswm[1].hp[46][47] += 2.7420342661043833;
+        //     model.csswm[1].hp[47][47] += 2.6085480010151514;
+        //     model.csswm[1].hp[48][47] += 2.742061058903346;
+        // }
+
+        // Coupling time: 3600s
+        // if (model.step == 18) {
+        //     model.csswm[1].hp[46][47] += 33.489597494404734;
+        //     model.csswm[1].hp[47][47] += 33.489597494404734;
+        //     model.csswm[1].hp[48][47] += 33.489597494404734;
+        // }
+
+
         // next step
         CSSWM::Iteration::nextTimeStep(model);
     }
