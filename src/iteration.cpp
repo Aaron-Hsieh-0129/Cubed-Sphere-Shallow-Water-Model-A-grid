@@ -373,7 +373,7 @@ void CSSWM::Iteration::nextTimeStep(CSSWM &model) {
 }
 
 void CSSWM::Iteration::TimeMarching(CSSWM &model) {
-    Outputs::create_all_directory();
+    Outputs::create_all_directory(model);
     #ifdef NCOUTPUT
         Outputs::grid_nc(model);
     #endif

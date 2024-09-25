@@ -64,6 +64,7 @@ public:
     #endif
 
     int step = 0;
+    std::string output_path = OUTPUTPATH;
 
     // ***********************************************************************************
     // In construction.cpp
@@ -154,7 +155,7 @@ public:
         static void grid_nc(CSSWM &);
         static void huv_nc(int, CSSWM &);
 
-        static void create_all_directory();
+        static void create_all_directory(CSSWM &);
 
         static void create_directory(std::string);
     };
