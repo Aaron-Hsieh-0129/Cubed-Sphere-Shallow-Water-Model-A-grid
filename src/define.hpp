@@ -4,7 +4,7 @@
 #define FILLVALUE (-99999999999999);
 
 #define RADIUS (6371220.)
-#define GRAVITY (0.1)
+#define GRAVITY (0.4)
 #define OMEGA (7.292E-5)
 #define BETA (2.5E-11)
 
@@ -12,7 +12,7 @@
 #define DY (1)
 #define DT (200.)
 #define TIMEEND (86400 * 3 * 24)
-#define OUTPUTPATH "/data/Aaron/TMIF/0912_ensemble_smaller_perturb/200_3600_7vvm_3B_random1s_seed60_4non/csswm/"
+#define OUTPUTPATH "/data/Aaron/TMIF_CSSWM/no_couple_2speed/csswm/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace

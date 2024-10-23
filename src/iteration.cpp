@@ -447,7 +447,7 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
             CSSWM::NumericalProcess::timeFilterAll(model);
         #endif
 
-        // Add forcing
+        // Add forcing (1 speed)
         // Coupling time: 600
         // if (model.step == 3) {
         //     model.csswm[1].hp[46][47] += 6.51855076;
@@ -559,6 +559,50 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
         //     model.csswm[1].hp[47][47] += 33.48959749;
         //     model.csswm[1].hp[48][47] += 33.48959749;
         // }
+
+        // Add forcing (2 speed)
+        // Coupling time: 600
+        if (model.step == 3) {
+            model.csswm[1].hp[46][47] += 6.51419389;
+            model.csswm[1].hp[47][47] += 6.51899044;
+            model.csswm[1].hp[48][47] += 6.51419389;
+        }
+        if (model.step == 6) {
+            model.csswm[1].hp[46][47] += 13.86381738;
+            model.csswm[1].hp[47][47] += 13.78139135;
+            model.csswm[1].hp[48][47] += 13.86381792;
+        }
+        if (model.step == 9) {
+            model.csswm[1].hp[46][47] += 6.99495572;
+            model.csswm[1].hp[47][47] += 6.59181088;
+            model.csswm[1].hp[48][47] += 6.99495962;
+        }
+        if (model.step == 12) {
+            model.csswm[1].hp[46][47] += 5.77116988;
+            model.csswm[1].hp[47][47] += 5.54019997;
+            model.csswm[1].hp[48][47] += 5.77118388;
+        }
+        if (model.step == 15) {
+            model.csswm[1].hp[46][47] += 5.02504314;
+            model.csswm[1].hp[47][47] += 5.43824074;
+            model.csswm[1].hp[48][47] += 5.0250771;
+        }
+        if (model.step == 18) {
+            model.csswm[1].hp[46][47] += 3.47312246;
+            model.csswm[1].hp[47][47] += 1.96243549;
+            model.csswm[1].hp[48][47] += 3.47322435;
+        }
+        if (model.step == 21) {
+            model.csswm[1].hp[46][47] += 1.91940521;
+            model.csswm[1].hp[47][47] += 0.62633507;
+            model.csswm[1].hp[48][47] += 1.91947541;
+        }
+        if (model.step == 24) {
+            model.csswm[1].hp[46][47] += 0.66178176;
+            model.csswm[1].hp[47][47] += -0.12994878;
+            model.csswm[1].hp[48][47] += 0.66213816;
+        }
+
 
 
         // next step
