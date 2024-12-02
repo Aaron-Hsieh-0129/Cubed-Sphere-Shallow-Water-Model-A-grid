@@ -43,7 +43,7 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                 #endif
 
                 #ifdef SteadyGeostrophy
-                    model.csswm[p].hp[i][j] = SteadyGeostrophyH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
+                    model.csswm[p].hp[i][j] = SteadyGeostrophyH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j], model.gravity);
                     model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * SteadyGeostrophyU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * SteadyGeostrophyV(model.csswm[p].lon[i][j]);
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * SteadyGeostrophyU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
@@ -52,7 +52,7 @@ void CSSWM::Init::Init2d(CSSWM & model) {
 
                 #ifdef Barotropic
                     // model.csswm[p].hp[i][j] = BarotropicHPrime(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
-                    model.csswm[p].hp[i][j] = BarotropicH(model.csswm[p].lat[i][j]) + BarotropicHPrime(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
+                    model.csswm[p].hp[i][j] = BarotropicH(model.csswm[p].lat[i][j], model.gravity) + BarotropicHPrime(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
                     model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * BarotropicU(model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * 0;
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * BarotropicU(model.csswm[p].lat[i][j]) + 
@@ -60,7 +60,7 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                 #endif
 
                 #ifdef Mountain
-                    model.csswm[p].hp[i][j] = MountainH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
+                    model.csswm[p].hp[i][j] = MountainH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j], model.gravity);
                     model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * MountainU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * MountainV(model.csswm[p].lon[i][j]);
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * MountainU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
@@ -68,7 +68,7 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                 #endif
 
                 #ifdef RossbyHaurwitz
-                    model.csswm[p].hp[i][j] = RossbyHaurwitzH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
+                    model.csswm[p].hp[i][j] = RossbyHaurwitzH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j], model.gravity);
                     model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * RossbyHaurwitzU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * RossbyHaurwitzV(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * RossbyHaurwitzU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
@@ -197,10 +197,10 @@ double CSSWM::Init::Gravity(double lon, double lat) {
     else return h0;
 }
 
-double CSSWM::Init::SteadyGeostrophyH(double lon, double lat) {
-    double h0 = 2.94E4 / GRAVITY;
+double CSSWM::Init::SteadyGeostrophyH(double lon, double lat, double gravity) {
+    double h0 = 2.94E4 / gravity;
     double u0 = 2 * M_PI * RADIUS / (12. * 86400);
-    return h0 - (RADIUS * OMEGA * u0 + u0 * u0 / 2.) * pow(-cos(lon) * cos(lat) * sin(ALPHA0) + sin(lat) * cos(ALPHA0), 2) / GRAVITY;
+    return h0 - (RADIUS * OMEGA * u0 + u0 * u0 / 2.) * pow(-cos(lon) * cos(lat) * sin(ALPHA0) + sin(lat) * cos(ALPHA0), 2) / gravity;
 }
 
 double CSSWM::Init::SteadyGeostrophyU(double lon, double lat) {
@@ -213,10 +213,10 @@ double CSSWM::Init::SteadyGeostrophyV(double lon) {
     return -u0 * sin(ALPHA0) * sin(lon);
 }
 
-double CSSWM::Init::MountainH(double lon, double lat) {
+double CSSWM::Init::MountainH(double lon, double lat, double gravity) {
     double h0 = 5960;
     double u0 = 20;
-    return h0 - (RADIUS * OMEGA * u0 + u0 * u0 / 2.) * pow(-cos(lon) * cos(lat) * sin(ALPHA0) + sin(lat) * cos(ALPHA0), 2) / GRAVITY;
+    return h0 - (RADIUS * OMEGA * u0 + u0 * u0 / 2.) * pow(-cos(lon) * cos(lat) * sin(ALPHA0) + sin(lat) * cos(ALPHA0), 2) / gravity;
 }
 
 double CSSWM::Init::MountainU(double lon, double lat) {
@@ -231,9 +231,9 @@ double CSSWM::Init::MountainV(double lon) {
     return v;
 }
 
-double CSSWM::Init::BarotropicH(double lat) {
+double CSSWM::Init::BarotropicH(double lat, double gravity) {
     double h0 = 10000.;
-    return h0 - simpson(-M_PI / 2, lat) / GRAVITY;
+    return h0 - simpson(-M_PI / 2, lat) / gravity;
 }
 
 
@@ -277,7 +277,7 @@ double CSSWM::Init::simpson(double a, double b) {
 	return I2n;
 }
 
-double CSSWM::Init::RossbyHaurwitzH(double lon, double lat) {
+double CSSWM::Init::RossbyHaurwitzH(double lon, double lat, double gravity) {
     double h0 = 8E3;
     double omega = 7.848E-6, K = 7.848E-6;
     double R = 4.;
@@ -288,7 +288,7 @@ double CSSWM::Init::RossbyHaurwitzH(double lon, double lat) {
     double B = (2 * (OMEGA + omega) * K) / ((R+1) * (R+2)) * pow(c, R) * ((R*R+2*R+2) - pow((R+1)*c, 2));
     double C = 1. / 4. * K*K * pow(c, 2*R) * ((R+1)*c*c - R+2);
 
-    return (h0 + (RADIUS*RADIUS*A + RADIUS*RADIUS*B*cos(R*lon) + RADIUS*RADIUS*C*cos(2*R*lon)) / GRAVITY);
+    return (h0 + (RADIUS*RADIUS*A + RADIUS*RADIUS*B*cos(R*lon) + RADIUS*RADIUS*C*cos(2*R*lon)) / gravity);
 }
 
 double CSSWM::Init::RossbyHaurwitzU(double lon, double lat) {

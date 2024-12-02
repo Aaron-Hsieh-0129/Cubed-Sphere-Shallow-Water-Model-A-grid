@@ -65,6 +65,7 @@ public:
 
     int step = 0;
     std::string output_path = OUTPUTPATH;
+    double gravity = GRAVITY;
 
     // ***********************************************************************************
     // In construction.cpp
@@ -123,19 +124,19 @@ public:
         static double AdvectionV(double);
 
         static double Gravity(double, double);
-        static double SteadyGeostrophyH(double, double);
+        static double SteadyGeostrophyH(double, double, double gravity);
         static double SteadyGeostrophyU(double, double);
         static double SteadyGeostrophyV(double);
         static double ConvergenceRateH(double, double);
         static double DeformationalFlowH(double, double);
-        static double BarotropicH(double);
+        static double BarotropicH(double, double gravity);
         static double BarotropicHPrime(double, double);
 
-        static double MountainH(double, double);
+        static double MountainH(double, double, double gravity);
         static double MountainU(double, double);
         static double MountainV(double);
 
-        static double RossbyHaurwitzH(double, double);
+        static double RossbyHaurwitzH(double, double, double gravity);
         static double RossbyHaurwitzU(double, double);
         static double RossbyHaurwitzV(double, double);
 
