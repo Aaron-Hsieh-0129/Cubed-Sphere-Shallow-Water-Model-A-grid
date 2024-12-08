@@ -11,7 +11,7 @@
 #define DX (1)
 #define DY (1)
 #define DT (200.)
-#define TIMEEND (90000.)
+#define TIMEEND (60000.)
 #define OUTPUTPATH "/data/Aaron/TMIF_CSSWM/no_couple_2speed/csswm/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
