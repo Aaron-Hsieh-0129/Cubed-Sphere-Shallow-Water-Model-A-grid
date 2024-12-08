@@ -8,8 +8,8 @@ endif()
 project(csswm VERSION 0.1.0)
 
 # Set compiler
-set(CMAKE_C_COMPILER "/home/Aaron/gcc13/bin/gcc")
-set(CMAKE_CXX_COMPILER "/home/Aaron/gcc13/bin/g++")
+set(CMAKE_C_COMPILER "/data/Aaron/gcc13/bin/gcc")
+set(CMAKE_CXX_COMPILER "/data/Aaron/gcc13/bin/g++")
 
 # Set compiler flags
 set(CMAKE_CXX_FLAGS "-Wall -Wextra")
@@ -48,7 +48,7 @@ file(GLOB_RECURSE SRC src/*.cpp src/*.hpp)
 add_executable(csswm ${SRC})
 
 # Link libraries
-find_library(libncxxPath netcdf_c++4 "/home/Aaron/local/lib")
+find_library(libncxxPath netcdf_c++4 "/data/Aaron/local/lib")
 target_link_libraries(csswm ${libncxxPath} ${LIBS})
 
 # CPack settings
