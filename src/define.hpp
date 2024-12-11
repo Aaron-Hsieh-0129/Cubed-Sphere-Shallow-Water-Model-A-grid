@@ -30,14 +30,14 @@
 
 #define D2T (2. * DT)
 
+#define ALPHA0 (0) // This is the angle of the wind direction
 // Jung
-#define ALPHA0 (0)
 // #define Advection
 // #define GravityWave
 // #define SteadyGeostrophy
 // #define Barotropic
 // #define Mountain
-// #define RossbyHaurwitz
+// #define RossbyHaurwitz // In this case, the gravity wave speed should be 9.80665
 // #define EquatorialWave
 #define Uniform
 
