@@ -12,7 +12,7 @@
 #define DY (1)
 #define DT (200.)
 #define TIMEEND (60000.)
-#define OUTPUTPATH "/data/Aaron/TMIF_CSSWM/mog_test/csswm/"
+#define OUTPUTPATH "/data/mog/TMIF_CSSWM/mog_test/csswm/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace
