@@ -23,7 +23,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS True)
 
 # Add local include directories
 include_directories(
-    /home/Aaron/local/include
+    /data/Aaron/local/include
     ./include
 )
 
