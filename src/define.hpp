@@ -4,7 +4,7 @@
 #define FILLVALUE (-99999999999999);
 
 #define RADIUS (6371220.)
-#define GRAVITY (0.4)
+#define GRAVITY (9.80665)
 #define OMEGA (7.292E-5)
 #define BETA (2.5E-11)
 
@@ -12,7 +12,7 @@
 #define DY (1)
 #define DT (200.)
 #define TIMEEND (60000.)
-#define OUTPUTPATH "/data/Aaron/TMIF_CSSWM/no_couple_2speed/csswm/"
+#define OUTPUTPATH "/data/Aaron/TMIF_CSSWM/CSSWM_test_config/csswm/"
 #define OUTPUTINTERVAL (1)
 // #define SecondOrderSpace
 #define FourthOrderSpace
@@ -37,9 +37,9 @@
 // #define SteadyGeostrophy
 // #define Barotropic
 // #define Mountain
-// #define RossbyHaurwitz
+#define RossbyHaurwitz
 // #define EquatorialWave
-#define Uniform
+// #define Uniform
 
 // #define TrueSol
 #define DIFFUSION
