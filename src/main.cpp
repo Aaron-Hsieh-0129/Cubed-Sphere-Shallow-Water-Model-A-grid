@@ -6,6 +6,7 @@ int main(void) {
     clock_t start, stop;
     start = clock();
 
+    
     std::map<std::string, std::string> configs = csswm_read_config("../csswm_config.txt");
     std::string csswm_outputpath = configs["CSSWM_OUTPUTPATH"];
     double csswm_dt = std::stod(configs["CSSWM_DT"]);
@@ -21,7 +22,7 @@ int main(void) {
 
     // int csswm_nx = (int) (90 / csswm_dx + 2);
     // int csswm_ny = (int) (90 / csswm_dy + 2);
-    double csswm_d2t = csswm_dt * csswm_dt;
+    double csswm_d2t = 2 * csswm_dt;
 
     model.output_path = csswm_outputpath;
     model.dt = csswm_dt;
