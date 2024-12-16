@@ -65,7 +65,20 @@ public:
 
     int step = 0;
     std::string output_path = OUTPUTPATH;
+    double dt = DT;
+    double d2t = D2T;
+    double dx = DX;
+    double dy = DY;
+    int nx = NX;
+    int ny = NY;
+    double timeend = TIMEEND;
+    int outputstep = OUTPUTINTERVAL;
     double gravity = GRAVITY;
+    int CASE;
+    double diffusion_kx = KX;
+    double diffusion_ky = KY;
+    double diffusion_ts = TIMETS;
+    
 
     // ***********************************************************************************
     // In construction.cpp

@@ -4,7 +4,7 @@
 #define FILLVALUE (-99999999999999);
 
 #define RADIUS (6371220.)
-#define GRAVITY (0.4)
+#define GRAVITY (9.80665)
 #define OMEGA (7.292E-5)
 #define BETA (2.5E-11)
 

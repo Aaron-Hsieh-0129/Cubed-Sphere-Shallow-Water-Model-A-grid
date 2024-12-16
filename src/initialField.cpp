@@ -282,22 +282,23 @@ double CSSWM::Init::RossbyHaurwitzH(double lon, double lat, double gravity) {
     double omega = 7.848E-6, K = 7.848E-6;
     double R = 4.;
     
-    double A = omega/2*(2*OMEGA+omega)*pow(cos(lat),2)+0.25*pow(K,2)*pow(cos(lat),2*R)*((R+1)*pow(cos(lat),2) + (2*pow(R,2)-R-2)-2*pow(R,2)*pow(cos(lat),-2));
-    double B = 2*(OMEGA+omega)*K/(R+1)/(R+2)*pow(cos(lat),R)*((pow(R,2)+2*R+2) - pow(R+1,2)*pow(cos(lat),2));
-    double C = 0.25*pow(K,2)*pow(cos(lat),2*R)*((R+1)*pow(cos(lat),2) - (R+2));
+    double A = omega / 2. * (2.*OMEGA + omega)*pow(cos(lat),2) + 
+               0.25 * pow(K,2) * pow(cos(lat), (2*R)) * ((R+1)*pow(cos(lat),2) + (2*pow(R,2)-R-2)-2*pow(R,2)*pow(cos(lat),(-2)));
+    double B = 2.*(OMEGA+omega)*K/(R+1)/(R+2)*pow(cos(lat),R)*((pow(R,2)+2*R+2) - pow((R+1),2)*pow(cos(lat),2));
+    double C = 0.25*pow(K,2)*pow(cos(lat),(2*R))*((R+1)*pow(cos(lat),2) - (R+2));
     return (h0 + (RADIUS*RADIUS*A + RADIUS*RADIUS*B*cos(R*lon) + RADIUS*RADIUS*C*cos(2*R*lon)) / gravity);
 }
 
 double CSSWM::Init::RossbyHaurwitzU(double lon, double lat) {
     double R = 4.;
     double omega = 7.848E-6, K = 7.848E-6;
-    return RADIUS*omega*cos(lat) + RADIUS*K*pow(cos(lat),(R-1))*(R*pow(sin(lat),2)-pow(cos(lat),2))*cos(R*lon);
+    return  RADIUS * omega * cos(lat) + RADIUS * K * pow(cos(lat), (R-1)) * (R*pow(sin(lat), 2)-pow(cos(lat), 2))*cos(R*lon);
 }
 
 double CSSWM::Init::RossbyHaurwitzV(double lon, double lat) {
     double R = 4.;
     double K = 7.848E-6;
-    return -RADIUS*K*R*pow(cos(lat),(R-1))*sin(lat)*sin(R*lon);
+    return -RADIUS * K * R * pow(cos(lat), (R-1)) * sin(lat)*sin(R*lon);
 }
 
 double CSSWM::Init::EquatorialWaveH(double x, double y) {
