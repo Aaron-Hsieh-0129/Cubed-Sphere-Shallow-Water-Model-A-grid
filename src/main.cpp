@@ -5,6 +5,7 @@ CSSWM model;
 int main(void) {
     clock_t start, stop;
     start = clock();
+    CSSWM::Outputs::create_all_directory(model);
 
     
     std::map<std::string, std::string> configs = csswm_read_config("../csswm_config.txt");
