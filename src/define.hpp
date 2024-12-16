@@ -37,9 +37,9 @@
 // #define SteadyGeostrophy
 // #define Barotropic
 // #define Mountain
-#define RossbyHaurwitz
+// #define RossbyHaurwitz
 // #define EquatorialWave
-// #define Uniform
+#define Uniform
 
 // #define TrueSol
 #define DIFFUSION

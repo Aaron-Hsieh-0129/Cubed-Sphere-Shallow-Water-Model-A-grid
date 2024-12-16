@@ -40,6 +40,17 @@ int main(void) {
     model.diffusion_ts = csswm_diffusion_ts;
 
     CSSWM::Init::Init2d(model);
+
+    // Copy grads ctl file to the output directory
+    std::string source = "../scripts/csswm.ctl";
+    std::string destination = model.output_path + "nc/csswm.ctl";
+
+    // Construct the command
+    std::string command = "cp " + source + " " + destination;
+
+    // Execute the command
+    system(command.c_str());
+
     CSSWM::Iteration::TimeMarching(model);
 
     stop = clock();
