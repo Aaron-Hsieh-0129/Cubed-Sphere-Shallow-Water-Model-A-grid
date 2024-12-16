@@ -40,6 +40,7 @@ int main(void) {
     model.diffusion_ky = csswm_diffusion_ky;
     model.diffusion_ts = csswm_diffusion_ts;
 
+    CSSWM::Outputs::create_all_directory(model);
     CSSWM::Init::Init2d(model);
 
     // Copy grads ctl file to the output directory
