@@ -34,16 +34,16 @@
 #define ALPHA0 (0)
 // #define Advection
 // #define GravityWave
-// #define SteadyGeostrophy
+#define SteadyGeostrophy
 // #define Barotropic
 // #define Mountain
 // #define RossbyHaurwitz
-// #define EquatorialWave
-#define Uniform
+// #define EquatorialWave  // dt = 50 to be stable with g = 9.80665 
+// #define Uniform         // dt = 100 to be stable with g = 9.80665
 
 // #define TrueSol
 #define DIFFUSION
-#define TIMEFILTER
+// #define TIMEFILTER
 #define KX (2E5)
 #define KY (2E5)
 #define TIMETS (0.06)

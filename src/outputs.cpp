@@ -269,7 +269,7 @@ void CSSWM::Outputs::grid_nc(CSSWM &model) {
         nc_put_vara_double(ncid, A_varid, startp, countp, &area[p][0][0]);
 
         #ifdef Mountain
-            nc_put_vara_double(ncid, hs_varid, startp, countp, &model->csswm[p].hs[0][0]);
+            nc_put_vara_double(ncid, hs_varid, startp, countp, &model.csswm[p].hs[0][0]);
         #endif
     }
 
