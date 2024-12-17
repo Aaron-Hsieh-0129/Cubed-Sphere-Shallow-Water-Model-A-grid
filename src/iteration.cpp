@@ -181,7 +181,7 @@ void CSSWM::Iteration::ph_pt_4(CSSWM &model) {
                 #if defined(AB2Time)
                     model.csswm[p].dh[i][j][(model.step+1)%2] = (-psqrtGHU_px - psqrtGHU_py);
                     #if defined(EquatorialWave)
-                        if (model.status_add_forcing == true) model.csswm[p].dh[i][j][(model.step+1)%2] += model.h_forcing[p][i][j];
+                        if (model.status_add_forcing == true) model.csswm[p].dh[i][j][(model.step+1)%2] += model.csswm[p].h_forcing[i][j];
                     #endif
                     if (model.step == 0) model.csswm[p].dh[i][j][0] = model.csswm[p].dh[i][j][1];
                     model.csswm[p].hp[i][j] = model.csswm[p].h[i][j] + 1.5*model.dt*model.csswm[p].dh[i][j][(model.step+1)%2] - 0.5*model.dt*model.csswm[p].dh[i][j][model.step%2];
@@ -258,7 +258,7 @@ void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
                 #if defined(AB2Time)
                     model.csswm[p].du[i][j][(model.step+1)%2] = (-pgH_px - pU2_px - pUV_px - pV2_px + rotationU);
                     #if defined(Mountain)
-                        pgHs_px = model.gravity / (12.*dx_for_u) * (-1.*model.hs[p][i+2][j] + 8.*model.hs[p][i+1][j] - 8.*model.hs[p][i-1][j] + 1.*model.hs[p][i-2][j]);
+                        pgHs_px = model.gravity / (12.*dx_for_u) * (-1.*model.csswm[p].hs[i+2][j] + 8.*model.csswm[p].hs[i+1][j] - 8.*model.csswm[p].hs[i-1][j] + 1.*model.csswm[p].hs[i-2][j]);
                         model.csswm[p].du[i][j][(model.step+1)%2] += -pgHs_px;
                     #endif
                     if (model.step == 0) model.csswm[p].du[i][j][0] = model.csswm[p].du[i][j][1];
@@ -333,7 +333,7 @@ void CSSWM::Iteration::pv_pt_4(CSSWM &model) {
                 #if defined(AB2Time)
                     model.csswm[p].dv[i][j][(model.step+1)%2] = (-pgH_py - pU2_py - pUV_py - pV2_py - rotationV);
                     #if defined(Mountain)
-                        pgHs_py = model.gravity / (12.*dy_for_u) * (-1.*model.hs[p][i+2][j] + 8.*model.hs[p][i+1][j] - 8.*model.hs[p][i-1][j] + 1.*model.hs[p][i-2][j]);
+                        pgHs_py = model.gravity / (12.*dy_for_v) * (-1.*model.csswm[p].hs[i][j+2] + 8.*model.csswm[p].hs[i][j+1] - 8.*model.csswm[p].hs[i][j-1] + 1.*model.csswm[p].hs[i][j-2]);
                         model.csswm[p].dv[i][j][(model.step+1)%2] += -pgHs_py;
                     #endif
                     if (model.step == 0) model.csswm[p].dv[i][j][0] = model.csswm[p].dv[i][j][1];
@@ -442,9 +442,14 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
         #endif
 
         // // Time filter
-        #if defined(TIMEFILTER) && !defined(AB2Time)
+        // #if defined(TIMEFILTER) && !defined(AB2Time)
+        //     CSSWM::NumericalProcess::timeFilterAll(model);
+        // #endif
+
+        #if defined(TIMEFILTER)
             CSSWM::NumericalProcess::timeFilterAll(model);
         #endif
+
 
         // Add forcing (1 speed)
         // Coupling time: 600
@@ -561,46 +566,46 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
 
         // Add forcing (2 speed)
         // Coupling time: 600
-        if (model.step == 3) {
-            model.csswm[1].hp[46][47] += 6.51419389;
-            model.csswm[1].hp[47][47] += 6.51899044;
-            model.csswm[1].hp[48][47] += 6.51419389;
-        }
-        if (model.step == 6) {
-            model.csswm[1].hp[46][47] += 13.86381738;
-            model.csswm[1].hp[47][47] += 13.78139135;
-            model.csswm[1].hp[48][47] += 13.86381792;
-        }
-        if (model.step == 9) {
-            model.csswm[1].hp[46][47] += 6.99495572;
-            model.csswm[1].hp[47][47] += 6.59181088;
-            model.csswm[1].hp[48][47] += 6.99495962;
-        }
-        if (model.step == 12) {
-            model.csswm[1].hp[46][47] += 5.77116988;
-            model.csswm[1].hp[47][47] += 5.54019997;
-            model.csswm[1].hp[48][47] += 5.77118388;
-        }
-        if (model.step == 15) {
-            model.csswm[1].hp[46][47] += 5.02504314;
-            model.csswm[1].hp[47][47] += 5.43824074;
-            model.csswm[1].hp[48][47] += 5.0250771;
-        }
-        if (model.step == 18) {
-            model.csswm[1].hp[46][47] += 3.47312246;
-            model.csswm[1].hp[47][47] += 1.96243549;
-            model.csswm[1].hp[48][47] += 3.47322435;
-        }
-        if (model.step == 21) {
-            model.csswm[1].hp[46][47] += 1.91940521;
-            model.csswm[1].hp[47][47] += 0.62633507;
-            model.csswm[1].hp[48][47] += 1.91947541;
-        }
-        if (model.step == 24) {
-            model.csswm[1].hp[46][47] += 0.66178176;
-            model.csswm[1].hp[47][47] += -0.12994878;
-            model.csswm[1].hp[48][47] += 0.66213816;
-        }
+        // if (model.step == 3) {
+        //     model.csswm[1].hp[46][47] += 6.51419389;
+        //     model.csswm[1].hp[47][47] += 6.51899044;
+        //     model.csswm[1].hp[48][47] += 6.51419389;
+        // }
+        // if (model.step == 6) {
+        //     model.csswm[1].hp[46][47] += 13.86381738;
+        //     model.csswm[1].hp[47][47] += 13.78139135;
+        //     model.csswm[1].hp[48][47] += 13.86381792;
+        // }
+        // if (model.step == 9) {
+        //     model.csswm[1].hp[46][47] += 6.99495572;
+        //     model.csswm[1].hp[47][47] += 6.59181088;
+        //     model.csswm[1].hp[48][47] += 6.99495962;
+        // }
+        // if (model.step == 12) {
+        //     model.csswm[1].hp[46][47] += 5.77116988;
+        //     model.csswm[1].hp[47][47] += 5.54019997;
+        //     model.csswm[1].hp[48][47] += 5.77118388;
+        // }
+        // if (model.step == 15) {
+        //     model.csswm[1].hp[46][47] += 5.02504314;
+        //     model.csswm[1].hp[47][47] += 5.43824074;
+        //     model.csswm[1].hp[48][47] += 5.0250771;
+        // }
+        // if (model.step == 18) {
+        //     model.csswm[1].hp[46][47] += 3.47312246;
+        //     model.csswm[1].hp[47][47] += 1.96243549;
+        //     model.csswm[1].hp[48][47] += 3.47322435;
+        // }
+        // if (model.step == 21) {
+        //     model.csswm[1].hp[46][47] += 1.91940521;
+        //     model.csswm[1].hp[47][47] += 0.62633507;
+        //     model.csswm[1].hp[48][47] += 1.91947541;
+        // }
+        // if (model.step == 24) {
+        //     model.csswm[1].hp[46][47] += 0.66178176;
+        //     model.csswm[1].hp[47][47] += -0.12994878;
+        //     model.csswm[1].hp[48][47] += 0.66213816;
+        // }
 
 
 

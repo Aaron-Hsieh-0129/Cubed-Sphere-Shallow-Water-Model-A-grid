@@ -37,13 +37,13 @@
 // #define SteadyGeostrophy
 // #define Barotropic
 // #define Mountain
-// #define RossbyHaurwitz // In this case, the gravity wave speed should be 9.80665
-// #define EquatorialWave
-#define Uniform
+// #define RossbyHaurwitz // g = 9.80665
+// #define EquatorialWave  // dt = 50 to be stable with g = 9.80665 
+#define Uniform         // dt = 100 to be stable with g = 9.80665
 
 // #define TrueSol
 #define DIFFUSION
-#define TIMEFILTER
+// #define TIMEFILTER
 #define KX (2E5)
 #define KY (2E5)
 #define TIMETS (0.06)
