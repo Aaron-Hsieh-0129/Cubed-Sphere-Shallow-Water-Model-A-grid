@@ -8,7 +8,7 @@ int main(void) {
 
     
     std::map<std::string, std::string> configs = csswm_read_config("../csswm_config.txt");
-    std::string csswm_outputpath = configs["CSSWM_OUTPUTPATH"];
+    std::string csswm_outputpath = configs["CSSWM_OUTPUTPATH"] + "/";
     double csswm_dt = std::stod(configs["CSSWM_DT"]);
     // double csswm_dx = std::stod(configs["CSSWM_DX"]);
     // double csswm_dy = std::stod(configs["CSSWM_DY"]);
