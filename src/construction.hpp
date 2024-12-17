@@ -64,7 +64,7 @@ public:
     #endif
 
     int step = 0;
-    std::string output_path = OUTPUTPATH;
+    std::string output_path = (std::string) OUTPUTPATH + "/";
     double dt = DT;
     double d2t = D2T;
     double dx = DX;
