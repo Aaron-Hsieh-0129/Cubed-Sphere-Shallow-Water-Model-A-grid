@@ -83,7 +83,7 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                         model.csswm[p].h_forcing[i][j] = 0.;
                     }
 
-                    model.csswm[p].hp[i][j] = 10000. + model.csswm[p].h_forcing[i][j];
+                    model.csswm[p].hp[i][j] = 10454.608791605699 + model.csswm[p].h_forcing[i][j];
                     model.csswm[p].up[i][j] = 0.;
                     model.csswm[p].vp[i][j] = 0.;
                 #endif
@@ -302,7 +302,7 @@ double CSSWM::Init::RossbyHaurwitzV(double lon, double lat) {
 }
 
 double CSSWM::Init::EquatorialWaveH(double x, double y) {
-    double h0 = 0.01;
-    double a = 200000., b = 200000.;
+    double h0 = 0.08;
+    double a = 100000., b = 100000.;
     return -h0 * exp(-(x*x / (2*(a*a)) + y*y / (2*(b*b))));
 }
