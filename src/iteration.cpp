@@ -401,7 +401,7 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
 
         model.step++;
         #if defined(EquatorialWave)
-            if (model.step * model.dt >= ADDFORCINGTIME) model.status_add_forcing = false;
+            if (model.step * model.dt >= model.addforcingtime) model.status_add_forcing = false;
             else model.status_add_forcing = true;
         #endif
 

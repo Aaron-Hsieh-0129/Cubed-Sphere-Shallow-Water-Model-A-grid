@@ -78,6 +78,7 @@ public:
     double diffusion_kx = KX;
     double diffusion_ky = KY;
     double diffusion_ts = TIMETS;
+    double addforcingtime = ADDFORCINGTIME;
     
 
     // ***********************************************************************************
