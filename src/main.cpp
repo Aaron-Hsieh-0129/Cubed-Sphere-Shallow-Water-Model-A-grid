@@ -20,6 +20,7 @@ int main(void) {
     double csswm_diffusion_ky = std::stod(configs["CSSWM_DIFFUSION_KY"]);
     double csswm_diffusion_ts = std::stod(configs["CSSWM_DIFFUSION_TS"]);
     double csswm_addforcing_time = std::stod(configs["CSSWM_ADDFORCING_TIME"]);
+    double csswm_h_nudge_time = std::stod(configs["CSSWM_H_NUDGE_TIME"]);
 
     // int csswm_nx = (int) (90 / csswm_dx + 2);
     // int csswm_ny = (int) (90 / csswm_dy + 2);
@@ -40,6 +41,7 @@ int main(void) {
     model.diffusion_ky = csswm_diffusion_ky;
     model.diffusion_ts = csswm_diffusion_ts;
     model.addforcingtime = csswm_addforcing_time;
+    model.csswm_h_nudge_time = csswm_h_nudge_time;
 
     CSSWM::Outputs::create_all_directory(model);
     CSSWM::Init::Init2d(model);

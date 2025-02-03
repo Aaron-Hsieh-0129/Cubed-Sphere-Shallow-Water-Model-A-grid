@@ -31,3 +31,14 @@ void CSSWM::NumericalProcess::timeFilterAll(CSSWM &model) {
     }
     return;
 }
+
+void CSSWM::NumericalProcess::NudgeH(CSSWM &model) {
+    for (int p = 0; p < 6; p++) {
+        for (int i = 0; i < NX; i++) {
+            for (int j = 0; j < NY; j++) {
+                model.csswm[p].hp[i][j] -= model.dt / (model.csswm_h_nudge_time) * (model.csswm[p].hp[i][j]-10454.608791605699);
+            }
+        }
+    }
+    return;
+}

@@ -261,18 +261,29 @@ void CSSWM::Cube2Cube_matrix() {
             get_A(A_tmp, p2, alpha_B_tmp, beta_B_tmp);
             get_gUpper(gUpper_tmp, alpha_B_tmp, beta_B_tmp);
 
+            // matrixMul(gLower_tmp, IA_tmp, tmp1);
+            // matrixMul(A_tmp, gUpper_tmp, tmp2);
+            // double tmp1_4[4], tmp2_4[4];
+            // count = 0;
+            // for (int i = 0; i < 2; i++) {
+            //     for (int j = 0; j < 2; j++) {
+            //         tmp1_4[count] = tmp1[i][j];
+            //         tmp2_4[count] = tmp2[i][j];
+            //         count++;
+            //     }
+            // }
+            // matrixMul(tmp1_4, tmp2_4, mult);
+
             matrixMul(gLower_tmp, IA_tmp, tmp1);
-            matrixMul(A_tmp, gUpper_tmp, tmp2);
-            double tmp1_4[4], tmp2_4[4];
+            double tmp1_4[4];
             count = 0;
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < 2; j++) {
                     tmp1_4[count] = tmp1[i][j];
-                    tmp2_4[count] = tmp2[i][j];
                     count++;
                 }
             }
-            matrixMul(tmp1_4, tmp2_4, mult);
+            matrixMul(tmp1_4, A_tmp, mult);
             
             if (i1 == -1) {
                 if (j1 == 0) {
@@ -366,18 +377,29 @@ void CSSWM::Cube2Cube_matrix() {
                 get_A(A_tmp, p2, alpha_B_tmp, beta_B_tmp);
                 get_gUpper(gUpper_tmp, alpha_B_tmp, beta_B_tmp);
 
+                // matrixMul(gLower_tmp, IA_tmp, tmp1);
+                // matrixMul(A_tmp, gUpper_tmp, tmp2);
+                // double tmp1_4[4], tmp2_4[4];
+                // count = 0;
+                // for (int i = 0; i < 2; i++) {
+                //     for (int j = 0; j < 2; j++) {
+                //         tmp1_4[count] = tmp1[i][j];
+                //         tmp2_4[count] = tmp2[i][j];
+                //         count++;
+                //     }
+                // }
+                // matrixMul(tmp1_4, tmp2_4, mult);
+
                 matrixMul(gLower_tmp, IA_tmp, tmp1);
-                matrixMul(A_tmp, gUpper_tmp, tmp2);
-                double tmp1_4[4], tmp2_4[4];
+                double tmp1_4[4];
                 count = 0;
                 for (int i = 0; i < 2; i++) {
                     for (int j = 0; j < 2; j++) {
                         tmp1_4[count] = tmp1[i][j];
-                        tmp2_4[count] = tmp2[i][j];
                         count++;
                     }
                 }
-                matrixMul(tmp1_4, tmp2_4, mult);
+                matrixMul(tmp1_4, A_tmp, mult);
                 
                 if (i1 == -1) {
                     if (j1 == 1) {

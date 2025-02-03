@@ -34,6 +34,7 @@
 #define ALPHA0 (0)
 // #define Advection
 // #define GravityWave
+// #define DeformationalFlow
 // #define SteadyGeostrophy
 // #define Barotropic
 // #define Mountain
@@ -49,5 +50,6 @@
 #define TIMETS (0.06)
 
 #define ADDFORCINGTIME (100. * 60.)
+#define CSSWM_H_NUDGE_TIME (0.)
 
 #endif

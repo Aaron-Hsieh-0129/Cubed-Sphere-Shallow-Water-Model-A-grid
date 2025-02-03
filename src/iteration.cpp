@@ -206,7 +206,6 @@ void CSSWM::Iteration::ph_pt_4(CSSWM &model) {
 void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
     double dx_for_u = 0, dy_for_u = 0;
     double pgH_px = 0, pU2_px = 0, pUV_px = 0, pV2_px = 0, rotationU = 0;
-    double f;
     #ifdef Mountain
         double pgHs_px = 0.;
     #endif
@@ -216,18 +215,6 @@ void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
             for (int j = 2; j < NY-2; j++) {
                 dx_for_u = 0.5 * (model.csswm[p].x[i+1][j] - model.csswm[p].x[i-1][j]);
                 dy_for_u = 0.5 * (model.csswm[p].y[i][j+1] - model.csswm[p].y[i][j-1]);
-
-                #if defined(SteadyGeostrophy) || defined(Mountain)
-                    f = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
-                #elif defined(Barotropic) || defined(RossbyHaurwitz)
-                    f = 2 * OMEGA * sin(model.csswm[p].lat[i][j]);
-                #elif defined(EquatorialWave)
-                    double f0 = 0;
-                    double beta = 2.5 * 10E-11;
-                    f = f0 + beta * model.csswm[p].lat[i][j] * 180. / M_PI * (111000.);
-                #else
-                    f = 0;
-                #endif
                 
                 pgH_px = model.gravity / (12.*dx_for_u) * (-1*model.csswm[p].h[i+2][j] + 8*model.csswm[p].h[i+1][j] - 8*model.csswm[p].h[i-1][j] + 1*model.csswm[p].h[i-2][j]);
 
@@ -251,7 +238,7 @@ void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
 
                 rotationU = (((-1.*model.csswm[p].v[i+2][j] + 8.*model.csswm[p].v[i+1][j] - 8.*model.csswm[p].v[i-1][j] + 1.*model.csswm[p].v[i-2][j]) / (12.*dx_for_u)) - 
                              ((-1.*model.csswm[p].u[i][j+2] + 8.*model.csswm[p].u[i][j+1] - 8.*model.csswm[p].u[i][j-1] + 1.*model.csswm[p].u[i][j-2]) / (12.*dy_for_u)) 
-                             + model.sqrtG[i][j] * f) 
+                             + model.sqrtG[i][j] * model.csswm[p].f[i][j]) 
                              * (model.gUpper[i][j][2] * model.csswm[p].u[i][j] + model.gUpper[i][j][3] * model.csswm[p].v[i][j]);
             
 
@@ -280,7 +267,6 @@ void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
 void CSSWM::Iteration::pv_pt_4(CSSWM &model) {
     double dx_for_v = 0, dy_for_v = 0;
     double pgH_py = 0, pU2_py = 0, pUV_py = 0, pV2_py = 0, rotationV = 0;
-    double f;
     #ifdef Mountain
         double pgHs_py = 0.;
     #endif
@@ -290,18 +276,6 @@ void CSSWM::Iteration::pv_pt_4(CSSWM &model) {
             for (int j = 2; j < NY-2; j++) {
                 dx_for_v = 0.5 * (model.csswm[p].x[i+1][j] - model.csswm[p].x[i-1][j]);
                 dy_for_v = 0.5 * (model.csswm[p].y[i][j+1] - model.csswm[p].y[i][j-1]);
-
-                #if defined(SteadyGeostrophy) || defined(Mountain)
-                    f = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
-                #elif defined(Barotropic) || defined(RossbyHaurwitz)
-                    f = 2 * OMEGA * sin(model.csswm[p].lat[i][j]);
-                #elif defined(EquatorialWave)
-                    double f0 = 0;
-                    double beta = 2.5 * 10E-11;
-                    f = f0 + beta * model.csswm[p].lat[i][j] * 180. / M_PI * (111000.);
-                #else
-                    f = 0;
-                #endif
 
                 pgH_py = model.gravity / (12.*dy_for_v) * (-1.*model.csswm[p].h[i][j+2] + 8.*model.csswm[p].h[i][j+1] - 8.*model.csswm[p].h[i][j-1] + 1.*model.csswm[p].h[i][j-2]);
 
@@ -325,7 +299,7 @@ void CSSWM::Iteration::pv_pt_4(CSSWM &model) {
 
                 rotationV = (((-1.*model.csswm[p].v[i+2][j] + 8.*model.csswm[p].v[i+1][j] - 8.*model.csswm[p].v[i-1][j] + 1.*model.csswm[p].v[i-2][j]) / (12.*dx_for_v)) - 
                              ((-1.*model.csswm[p].u[i][j+2] + 8.*model.csswm[p].u[i][j+1] - 8.*model.csswm[p].u[i][j-1] + 1.*model.csswm[p].u[i][j-2]) / (12.*dy_for_v)) 
-                             + model.sqrtG[i][j] * f) * 
+                             + model.sqrtG[i][j] * model.csswm[p].f[i][j]) * 
                             (model.gUpper[i][j][0] * model.csswm[p].u[i][j] + model.gUpper[i][j][1] * model.csswm[p].v[i][j]);
 
                 
@@ -441,14 +415,14 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
             CSSWM::NumericalProcess::DiffusionAll(model);
         #endif
 
-        // // Time filter
-        // #if defined(TIMEFILTER) && !defined(AB2Time)
-        //     CSSWM::NumericalProcess::timeFilterAll(model);
-        // #endif
-
-        #if defined(TIMEFILTER)
+        // Time filter
+        #if defined(TIMEFILTER) && !defined(AB2Time)
             CSSWM::NumericalProcess::timeFilterAll(model);
         #endif
+
+        if (model.csswm_h_nudge_time != 0) {
+            CSSWM::NumericalProcess::NudgeH(model);
+        }
 
 
         // Add forcing (1 speed)

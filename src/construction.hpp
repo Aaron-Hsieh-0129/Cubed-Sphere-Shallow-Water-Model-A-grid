@@ -41,6 +41,8 @@ public:
             double du[NX][NY][2];
             double dv[NX][NY][2];
         #endif
+
+        double f[NX][NY];
     };
 
     CSSWM();
@@ -79,6 +81,7 @@ public:
     double diffusion_ky = KY;
     double diffusion_ts = TIMETS;
     double addforcingtime = ADDFORCINGTIME;
+    double csswm_h_nudge_time = CSSWM_H_NUDGE_TIME;
     
 
     // ***********************************************************************************
@@ -195,6 +198,7 @@ public:
     public:
         static void DiffusionAll(CSSWM &);
         static void timeFilterAll(CSSWM &);
+        static void NudgeH(CSSWM &);
     };
 
 

@@ -34,6 +34,8 @@ void CSSWM::Init::Init2d(CSSWM & model) {
 
                 #ifdef DeformationalFlow
                     model.csswm[p].hp[i][j] = DeformationalFlowH(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
+                    model.csswm[p].up[i][j] = 0.;
+                    model.csswm[p].vp[i][j] = 0.;
                 #endif
 
                 #ifdef GravityWave
@@ -48,6 +50,8 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                                               (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * SteadyGeostrophyV(model.csswm[p].lon[i][j]);
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * SteadyGeostrophyU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * SteadyGeostrophyV(model.csswm[p].lon[i][j]);
+                    
+                    model.csswm[p].f[i][j] = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #endif
 
                 #ifdef Barotropic
@@ -57,6 +61,7 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                                               (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * 0;
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * BarotropicU(model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * 0;
+                    model.csswm[p].f[i][j] = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #endif
 
                 #ifdef Mountain
@@ -65,6 +70,7 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                                               (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * MountainV(model.csswm[p].lon[i][j]);
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * MountainU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * MountainV(model.csswm[p].lon[i][j]); 
+                    model.csswm[p].f[i][j] = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #endif
 
                 #ifdef RossbyHaurwitz
@@ -73,10 +79,11 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                                               (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * RossbyHaurwitzV(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]);
                     model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * RossbyHaurwitzU(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]) + 
                                               (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * RossbyHaurwitzV(model.csswm[p].lon[i][j], model.csswm[p].lat[i][j]); 
+                    model.csswm[p].f[i][j] = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #endif
 
                 #ifdef EquatorialWave
-                    if (p == 0) {
+                    if (p == 1) {
                         model.csswm[p].h_forcing[i][j] = EquatorialWaveH(model.csswm[p].x[i][j], model.csswm[p].y[i][j]);
                     }
                     else {
@@ -86,6 +93,11 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                     model.csswm[p].hp[i][j] = 10454.608791605699 + model.csswm[p].h_forcing[i][j];
                     model.csswm[p].up[i][j] = 0.;
                     model.csswm[p].vp[i][j] = 0.;
+
+                    // double f0 = 0;
+                    // double beta = 2.5 * 10E-11;
+                    // model.csswm[p].f[i][j] = f0 + beta * model.csswm[p].lat[i][j] * 180. / M_PI * (111000.) / 11.5;
+                    model.csswm[p].f[i][j] = 2 * OMEGA * (-cos(model.csswm[p].lon[i][j]) * cos(model.csswm[p].lat[i][j]) * sin(ALPHA0) + sin(model.csswm[p].lat[i][j]) * cos(ALPHA0));
                 #endif
 
                 #if defined(Uniform)
@@ -302,7 +314,7 @@ double CSSWM::Init::RossbyHaurwitzV(double lon, double lat) {
 }
 
 double CSSWM::Init::EquatorialWaveH(double x, double y) {
-    double h0 = 0.08;
-    double a = 100000., b = 100000.;
-    return -h0 * exp(-(x*x / (2*(a*a)) + y*y / (2*(b*b))));
+    double h0 = 5E-2;
+    double a = 400. * 1E3, b = 200. * 1E3;
+    return -h0 * exp(-(x*x / ((a*a)) + y*y / ((b*b))));
 }
