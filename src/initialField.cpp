@@ -110,6 +110,8 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                     model.csswm[p].hp[i][j] = 10454.608791605699;
                     model.csswm[p].up[i][j] = 0.;
                     model.csswm[p].vp[i][j] = 0.;
+                    
+                    model.csswm[p].f[i][j] = 0.;
                 #endif
             }
         }
