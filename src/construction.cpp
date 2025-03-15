@@ -176,7 +176,7 @@ void initMatch_2point(int match_ouTer[24][8], int match_ouTTer[24][8]) {
 
 CSSWM::CSSWM() {
     // Init new 1D array
-    double *alpha = new double[NX], *beta = new double[NY];
+    double *alpha = new double[NX](), *beta = new double[NY]();
 
     for (int i = 0; i < NX; i++) {
         #if defined(SecondOrderSpace)

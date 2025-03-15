@@ -39,8 +39,8 @@
 // #define Barotropic
 // #define Mountain
 // #define RossbyHaurwitz
-#define EquatorialWave  // dt = 50 to be stable with g = 9.80665 
-// #define Uniform         // dt = 100 to be stable with g = 9.80665
+// #define EquatorialWave  // dt = 50 to be stable with g = 9.80665 
+#define Uniform         // dt = 100 to be stable with g = 9.80665
 
 // #define TrueSol
 #define DIFFUSION
