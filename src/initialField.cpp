@@ -320,3 +320,4 @@ double CSSWM::Init::EquatorialWaveH(double x, double y) {
     double a = 400. * 1E3, b = 200. * 1E3;
     return -h0 * exp(-(x*x / ((a*a)) + y*y / ((b*b))));
 }
+

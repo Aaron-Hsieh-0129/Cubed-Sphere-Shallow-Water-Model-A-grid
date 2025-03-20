@@ -231,3 +231,4 @@ double CSSWM::interpolate(double A1, double A2, double V1, double V2, double B) 
     
     return V1 + (V2-V1) * (B-A1) / (A2-A1);
 }
+

@@ -372,3 +372,4 @@ void CSSWM::Outputs::create_all_directory(CSSWM &model) {
         create_directory(model.output_path + (string) "nc");
     #endif
 }
+
