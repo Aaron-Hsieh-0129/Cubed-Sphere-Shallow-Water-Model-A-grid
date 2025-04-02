@@ -28,16 +28,15 @@ How to Use
 3. Compile the project using
    
    .. code-block:: bash
-    
+
       mkdir build && cd build
       cmake ..
       # If you want to specify your compiler
       cmake .. -DCMAKE_C_COMPILER=/your/compiler/path -DCMAKE_CXX_COMPILER=/your/compiler/path
       make
 
-  If the dependencies are not detected, they will be installed in `project root/_deps`. 
+   If the dependencies are not detected, they will be installed in `project root/_deps`. 
 
-    
 4. You are able to run the model by running the command under the project folder:
 
    .. code-block:: bash
