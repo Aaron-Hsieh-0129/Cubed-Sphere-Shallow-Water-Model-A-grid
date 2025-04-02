@@ -29,11 +29,13 @@ How to Use
    
    .. code-block:: bash
     
-      mkdir build
+      mkdir build && cd build
       cmake ..
+      # If you want to specify your compiler
+      cmake .. -DCMAKE_C_COMPILER=/your/compiler/path -DCMAKE_CXX_COMPILER=/your/compiler/path
       make
 
-If the dependencies are not detected, they will be installed in `project root/_deps`. 
+  If the dependencies are not detected, they will be installed in `project root/_deps`. 
 
     
 4. You are able to run the model by running the command under the project folder:
@@ -45,9 +47,3 @@ If the dependencies are not detected, they will be installed in `project root/_d
    or you can use your own command by referencing the command in `run.sh`.
 
 
-Noted that You are able to specify your compiler path through 
-
-   .. code-block:: bash
-
-      mkdir build && cd build
-      cmake .. -DCMAKE_C_COMPILER=/your/compiler/path -DCMAKE_CXX_COMPILER=/your/compiler/path
