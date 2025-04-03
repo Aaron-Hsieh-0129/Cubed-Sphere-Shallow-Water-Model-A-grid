@@ -35,7 +35,7 @@ file(MAKE_DIRECTORY ${DEP_INSTALL_DIR})
 
 # Get number of available cores
 include(ProcessorCount)
-ProcessorCount(N_CORES)
+ProcessorCount(8)
 if(N_CORES GREATER 1)
     set(CMAKE_BUILD_PARALLEL_LEVEL ${N_CORES})
     message(STATUS "Using ${N_CORES} cores for building")
@@ -57,10 +57,16 @@ if(NOT HDF5_LIB)
         hdf5_ext
         URL            https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/hdf5-1.8.14/src/hdf5-1.8.14.tar.gz
         PREFIX         ${CMAKE_SOURCE_DIR}/_deps/hdf5
-        CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=${DEP_INSTALL_DIR}
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env
+            CC=${CMAKE_C_COMPILER}
+            CXX=${CMAKE_CXX_COMPILER}
+            <SOURCE_DIR>/configure
+            --prefix=${DEP_INSTALL_DIR}
+            --enable-cxx
         BUILD_COMMAND  make -j${N_CORES}
         INSTALL_COMMAND make install
         UPDATE_COMMAND ""
+        BUILD_IN_SOURCE 1  # Ensures build happens in source dir, like your manual test
         BUILD_ALWAYS   FALSE
     )
     set(HDF5_DIR ${DEP_INSTALL_DIR})
