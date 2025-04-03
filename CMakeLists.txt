@@ -133,37 +133,6 @@ else()
     message(STATUS "NetCDF-C++4 found in ${DEP_INSTALL_DIR}/lib")
 endif()
 
-# Option for PETSc support
-option(USE_PETSC "Enable PETSc support" OFF)
-
-# PETSc handling
-if(USE_PETSC)
-    message(STATUS "PETSc support enabled")
-    find_library(PETSC_LIB NAMES petsc HINTS ${DEP_INSTALL_DIR}/lib NO_DEFAULT_PATH)
-    if(NOT PETSC_LIB)
-        message(STATUS "PETSc not found in ${DEP_INSTALL_DIR}, installing...")
-        ExternalProject_Add(
-            petsc_ext
-            GIT_REPOSITORY https://gitlab.com/petsc/petsc.git
-            GIT_TAG        v3.20.5
-            GIT_SHALLOW    TRUE
-            PREFIX         ${CMAKE_SOURCE_DIR}/_deps/petsc
-            CONFIGURE_COMMAND <SOURCE_DIR>/configure --prefix=${DEP_INSTALL_DIR}
-            BUILD_COMMAND  make -j${N_CORES}
-            INSTALL_COMMAND make install
-            UPDATE_COMMAND ""
-            BUILD_ALWAYS   FALSE
-        )
-        set(PETSC_NEEDS_INSTALL TRUE)
-        set(PETSC_LIB ${DEP_INSTALL_DIR}/lib/libpetsc.so)
-    else()
-        message(STATUS "PETSc found in ${DEP_INSTALL_DIR}/lib")
-    endif()
-    set(LIBS ${LIBS} ${PETSC_LIB})
-else()
-    message(STATUS "PETSc support disabled")
-endif()
-
 # Source files
 file(GLOB_RECURSE SRC
     "${CMAKE_SOURCE_DIR}/src/*.cpp"
@@ -191,9 +160,6 @@ endif()
 if(NETCDF_CXX4_NEEDS_INSTALL)
     add_dependencies(${PROJECT_NAME} netcdf-cxx4_ext)
 endif()
-if(USE_PETSC AND PETSC_NEEDS_INSTALL)
-    add_dependencies(${PROJECT_NAME} petsc_ext)
-endif()
 
 # Installation rules
 install(TARGETS ${PROJECT_NAME}
@@ -211,4 +177,3 @@ message(STATUS "  Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "  Install prefix: ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "  C Compiler: ${CMAKE_C_COMPILER}")
 message(STATUS "  C++ Compiler: ${CMAKE_CXX_COMPILER}")
-message(STATUS "  PETSc support: ${USE_PETSC}")
