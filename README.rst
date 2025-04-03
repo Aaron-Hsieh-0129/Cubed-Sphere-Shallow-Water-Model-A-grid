@@ -21,7 +21,7 @@ How to Use
 
    .. code-block:: bash
 
-      git clone https://github.com/Aaron-Hsieh-0129/Cubed-Sphere-Shallow-Water-Model-A-grid.git
+      git clone https://github.com/Aaron-Hsieh-0129/Cubed-Sphere-Shallow-Water-Model-A-grid.git CSSWM
 
 2. In `csswm_config.txt`, some common configurations can be set inside. For different test cases, modify the flags inside `src/deine.hpp`. 
 
