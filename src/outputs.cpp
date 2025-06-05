@@ -300,17 +300,19 @@ void CSSWM::Outputs::huv_nc(int n, CSSWM &model) {
         fprintf(stderr, "Error: %s\n", nc_strerror(retval));
         exit(EXIT_FAILURE);
     }
-
+    
     // Define variables
-    int h_varid, u_varid, v_varid, ulonlat_varid, vlonlat_varid;
+    int h_varid, u_varid, v_varid, ulonlat_varid, vlonlat_varid, q_varid, cr_varid;
     int xy_dims[3] = {p_dimid, x_dimid, y_dimid};
     int lonlat_dims[3] = {p_dimid, lon_dimid, lat_dimid};
 
     if ((retval = nc_def_var(ncid, "h", NC_DOUBLE, 3, xy_dims, &h_varid)) ||
         (retval = nc_def_var(ncid, "u", NC_DOUBLE, 3, xy_dims, &u_varid)) ||
         (retval = nc_def_var(ncid, "v", NC_DOUBLE, 3, xy_dims, &v_varid)) ||
-        (retval = nc_def_var(ncid, "u_lonlat", NC_DOUBLE, 3, lonlat_dims, &ulonlat_varid)) ||
-        (retval = nc_def_var(ncid, "v_lonlat", NC_DOUBLE, 3, lonlat_dims, &vlonlat_varid))) {
+        // (retval = nc_def_var(ncid, "u_lonlat", NC_DOUBLE, 3, lonlat_dims, &ulonlat_varid)) ||
+        // (retval = nc_def_var(ncid, "v_lonlat", NC_DOUBLE, 3, lonlat_dims, &vlonlat_varid)) ||
+        (retval = nc_def_var(ncid, "q", NC_DOUBLE, 3, lonlat_dims, &q_varid)) ||
+        (retval = nc_def_var(ncid, "cr", NC_DOUBLE, 3, lonlat_dims, &cr_varid))) {
         fprintf(stderr, "Error: %s\n", nc_strerror(retval));
         exit(EXIT_FAILURE);
     }
@@ -342,8 +344,10 @@ void CSSWM::Outputs::huv_nc(int n, CSSWM &model) {
         if ((retval = nc_put_vara_double(ncid, h_varid, startp, countp, &model.csswm[p].h[0][0])) ||
             (retval = nc_put_vara_double(ncid, u_varid, startp, countp, &model.csswm[p].u[0][0])) ||
             (retval = nc_put_vara_double(ncid, v_varid, startp, countp, &model.csswm[p].v[0][0])) ||
-            (retval = nc_put_vara_double(ncid, ulonlat_varid, startp, countp, &u_lon_lat[p][0][0])) ||
-            (retval = nc_put_vara_double(ncid, vlonlat_varid, startp, countp, &v_lon_lat[p][0][0]))) {
+            // (retval = nc_put_vara_double(ncid, ulonlat_varid, startp, countp, &u_lon_lat[p][0][0])) ||
+            // (retval = nc_put_vara_double(ncid, vlonlat_varid, startp, countp, &v_lon_lat[p][0][0])) ||
+            (retval = nc_put_vara_double(ncid, q_varid, startp, countp, &model.csswm[p].q[0][0])) ||
+            (retval = nc_put_vara_double(ncid, cr_varid, startp, countp, &model.csswm[p].cr[0][0]))) {
             fprintf(stderr, "Error: %s\n", nc_strerror(retval));
             exit(EXIT_FAILURE);
         }
@@ -354,7 +358,7 @@ void CSSWM::Outputs::huv_nc(int n, CSSWM &model) {
         fprintf(stderr, "Error: %s\n", nc_strerror(retval));
         exit(EXIT_FAILURE);
     }
-    
+    return;
 }
 
 

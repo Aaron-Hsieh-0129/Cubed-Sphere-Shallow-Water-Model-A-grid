@@ -8,8 +8,8 @@
 #define OMEGA (7.292E-5)
 #define BETA (2.5E-11)
 
-#define DX (1)
-#define DY (1)
+#define DX (0.5)
+#define DY (0.5)
 #define DT (200.)
 #define TIMEEND (60000.)
 #define OUTPUTPATH "/data/Aaron/TMIF_CSSWM/CSSWM_test_config/csswm/"
@@ -40,7 +40,8 @@
 // #define Mountain
 // #define RossbyHaurwitz
 // #define EquatorialWave  // dt = 50 to be stable with g = 9.80665 
-#define Uniform         // dt = 100 to be stable with g = 9.80665
+// #define Uniform         // dt = 100 to be stable with g = 9.80665
+#define Vortex
 
 // #define TrueSol
 #define DIFFUSION

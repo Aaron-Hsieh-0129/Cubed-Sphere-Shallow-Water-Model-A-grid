@@ -11,6 +11,8 @@ public:
         patch();
 
         double hp[NX][NY], h[NX][NY], hm[NX][NY];
+        double qp[NX][NY], q[NX][NY], qm[NX][NY];
+        double crp[NX][NY], cr[NX][NY], crm[NX][NY];
         double up[NX][NY], u[NX][NY], um[NX][NY];
         double vp[NX][NY], v[NX][NY], vm[NX][NY];
 
@@ -38,6 +40,8 @@ public:
 
         #if defined(AB2Time)
             double dh[NX][NY][2];
+            double dq[NX][NY][2];
+            double dcr[NX][NY][2];
             double du[NX][NY][2];
             double dv[NX][NY][2];
         #endif
@@ -111,6 +115,8 @@ public:
     // ***********************************************************************************
     // In bp_h.cpp
     static void BP_h(CSSWM &);
+    static void BP_q(CSSWM &);
+    static void BP_cr(CSSWM &);
     #if defined(Mountain)
         void BP_hs(CSSWM &);
     #endif
@@ -159,6 +165,9 @@ public:
 
         static double EquatorialWaveH(double, double);
 
+        static double VortexU(int p, int i, int j, CSSWM &model);
+        static double VortexV(int p, int i, int j, CSSWM &model);
+
         static double simpson(double, double);
         static double func(double);
     };
@@ -188,6 +197,8 @@ public:
             static void pv_pt_2(CSSWM &);
         #elif defined(FourthOrderSpace) 
             static void ph_pt_4(CSSWM &);
+            static void pq_pt_4(CSSWM &);
+            static void pcr_pt_4(CSSWM &);
             static void pu_pt_4(CSSWM &);
             static void pv_pt_4(CSSWM &);
         #endif
