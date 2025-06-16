@@ -309,8 +309,8 @@ void CSSWM::Outputs::huv_nc(int n, CSSWM &model) {
     if ((retval = nc_def_var(ncid, "h", NC_DOUBLE, 3, xy_dims, &h_varid)) ||
         (retval = nc_def_var(ncid, "u", NC_DOUBLE, 3, xy_dims, &u_varid)) ||
         (retval = nc_def_var(ncid, "v", NC_DOUBLE, 3, xy_dims, &v_varid)) ||
-        // (retval = nc_def_var(ncid, "u_lonlat", NC_DOUBLE, 3, lonlat_dims, &ulonlat_varid)) ||
-        // (retval = nc_def_var(ncid, "v_lonlat", NC_DOUBLE, 3, lonlat_dims, &vlonlat_varid)) ||
+        (retval = nc_def_var(ncid, "u_lonlat", NC_DOUBLE, 3, lonlat_dims, &ulonlat_varid)) ||
+        (retval = nc_def_var(ncid, "v_lonlat", NC_DOUBLE, 3, lonlat_dims, &vlonlat_varid)) ||
         (retval = nc_def_var(ncid, "q", NC_DOUBLE, 3, lonlat_dims, &q_varid)) ||
         (retval = nc_def_var(ncid, "cr", NC_DOUBLE, 3, lonlat_dims, &cr_varid))) {
         fprintf(stderr, "Error: %s\n", nc_strerror(retval));

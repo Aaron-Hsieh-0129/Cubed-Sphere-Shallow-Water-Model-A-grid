@@ -86,6 +86,8 @@ public:
     double diffusion_ts = TIMETS;
     double addforcingtime = ADDFORCINGTIME;
     double csswm_h_nudge_time = CSSWM_H_NUDGE_TIME;
+    double tau = 86400.;
+    double tauc = 10.*86400.;
     
 
     // ***********************************************************************************

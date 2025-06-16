@@ -2,18 +2,26 @@
 
 void CSSWM::NumericalProcess::DiffusionAll(CSSWM &model) {
     double dx, dy;
+    #pragma omp parallel for
     for (int p = 0; p < 6; p++) {
         for (int i = 2; i < NX-2; i++) {
             for (int j = 2; j < NY-2; j++) {
                 dx = 0.5 * (model.csswm[p].x[i+1][j] - model.csswm[p].x[i-1][j]);
                 dy = 0.5 * (model.csswm[p].y[i][j+1] - model.csswm[p].y[i][j-1]);
 
-                model.csswm[p].hp[i][j] += model.d2t * model.diffusion_kx * (model.csswm[p].hm[i+1][j] - 2. * model.csswm[p].hm[i][j] + model.csswm[p].hm[i-1][j]) / pow(dx, 2) + 
-                                     model.d2t * model.diffusion_ky * (model.csswm[p].hm[i][j+1] - 2. * model.csswm[p].hm[i][j] + model.csswm[p].hm[i][j-1]) / pow(dy, 2);
-                model.csswm[p].up[i][j] += model.d2t * model.diffusion_kx * (model.csswm[p].um[i+1][j] - 2. * model.csswm[p].um[i][j] + model.csswm[p].um[i-1][j]) / pow(dx, 2) + 
-                                     model.d2t * model.diffusion_ky * (model.csswm[p].um[i][j+1] - 2. * model.csswm[p].um[i][j] + model.csswm[p].um[i][j-1]) / pow(dy, 2);
-                model.csswm[p].vp[i][j] += model.d2t * model.diffusion_kx * (model.csswm[p].vm[i+1][j] - 2. * model.csswm[p].vm[i][j] + model.csswm[p].vm[i-1][j]) / pow(dx, 2) + 
-                                     model.d2t * model.diffusion_ky * (model.csswm[p].vm[i][j+1] - 2. * model.csswm[p].vm[i][j] + model.csswm[p].vm[i][j-1]) / pow(dy, 2);
+                // model.csswm[p].hp[i][j] += model.dt * model.diffusion_kx * (model.csswm[p].h[i+1][j] - 2. * model.csswm[p].h[i][j] + model.csswm[p].h[i-1][j]) / pow(dx, 2) + 
+                //                      model.dt * model.diffusion_ky * (model.csswm[p].h[i][j+1] - 2. * model.csswm[p].h[i][j] + model.csswm[p].h[i][j-1]) / pow(dy, 2);
+                // model.csswm[p].up[i][j] += model.dt * model.diffusion_kx * (model.csswm[p].u[i+1][j] - 2. * model.csswm[p].u[i][j] + model.csswm[p].u[i-1][j]) / pow(dx, 2) + 
+                //                      model.dt * model.diffusion_ky * (model.csswm[p].u[i][j+1] - 2. * model.csswm[p].u[i][j] + model.csswm[p].u[i][j-1]) / pow(dy, 2);
+                // model.csswm[p].vp[i][j] += model.dt * model.diffusion_kx * (model.csswm[p].v[i+1][j] - 2. * model.csswm[p].v[i][j] + model.csswm[p].v[i-1][j]) / pow(dx, 2) + 
+                //                      model.dt * model.diffusion_ky * (model.csswm[p].v[i][j+1] - 2. * model.csswm[p].v[i][j] + model.csswm[p].v[i][j-1]) / pow(dy, 2);
+
+                model.csswm[p].hp[i][j] += model.dt * model.diffusion_kx * (-model.csswm[p].h[i+2][j] + 16.*model.csswm[p].h[i+1][j] - 30.*model.csswm[p].h[i][j] + 16.*model.csswm[p].h[i-1][j] - model.csswm[p].h[i-2][j]) / (12.*pow(dx, 2)) + 
+                                           model.dt * model.diffusion_ky * (-model.csswm[p].h[i][j+2] + 16.*model.csswm[p].h[i][j+1] - 30.*model.csswm[p].h[i][j] + 16.*model.csswm[p].h[i][j-1] - model.csswm[p].h[i][j-2]) / (12.*pow(dy, 2));
+                model.csswm[p].up[i][j] += model.dt * model.diffusion_kx * (-model.csswm[p].u[i+2][j] + 16.*model.csswm[p].u[i+1][j] - 30.*model.csswm[p].u[i][j] + 16.*model.csswm[p].u[i-1][j] - model.csswm[p].u[i-2][j]) / (12.*pow(dx, 2)) + 
+                                           model.dt * model.diffusion_ky * (-model.csswm[p].u[i][j+2] + 16.*model.csswm[p].u[i][j+1] - 30.*model.csswm[p].u[i][j] + 16.*model.csswm[p].u[i][j-1] - model.csswm[p].u[i][j-2]) / (12.*pow(dy, 2));
+                model.csswm[p].vp[i][j] += model.dt * model.diffusion_kx * (-model.csswm[p].v[i+2][j] + 16.*model.csswm[p].v[i+1][j] - 30.*model.csswm[p].v[i][j] + 16.*model.csswm[p].v[i-1][j] - model.csswm[p].v[i-2][j]) / (12.*pow(dx, 2)) + 
+                                           model.dt * model.diffusion_ky * (-model.csswm[p].v[i][j+2] + 16.*model.csswm[p].v[i][j+1] - 30.*model.csswm[p].v[i][j] + 16.*model.csswm[p].v[i][j-1] - model.csswm[p].v[i][j-2]) / (12.*pow(dy, 2));
             }
         }
     }

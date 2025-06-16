@@ -122,19 +122,21 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                     double rw = 600000.; // m
 
                     double phid = 10. * M_PI / 180.; // rad
-                    double lambdad = 0.; // rad
+                    double lambdad = 90. * M_PI / 180.; // rad
 
                     double r = RADIUS * std::acos(std::sin(phid)*std::sin(model.csswm[p].lat[i][j]) + std::cos(phid)*std::cos(model.csswm[p].lat[i][j])*std::cos(model.csswm[p].lon_original[i][j]-lambdad));
 
                     
                     model.csswm[p].hp[i][j] = h0 - hf * std::exp(-r*r/(rw*rw));
-                    // model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * VortexU(p, i, j, model) + 
-                    //                           (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * VortexV(p, i, j, model);
-                    // model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * VortexU(p, i, j, model) + 
-                    //                           (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * VortexV(p, i, j, model); 
-                    model.csswm[p].up[i][j] = VortexU(p, i, j, model);
-                    model.csswm[p].vp[i][j] = VortexV(p, i, j, model);
-                    
+                    model.csswm[p].up[i][j] = (model.gLower[i][j][0] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][2]) * VortexU(p, i, j, model) + 
+                                              (model.gLower[i][j][0] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][1] * model.csswm[p].IA[i][j][3]) * VortexV(p, i, j, model);
+                    model.csswm[p].vp[i][j] = (model.gLower[i][j][2] * model.csswm[p].IA[i][j][0] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][2]) * VortexU(p, i, j, model) + 
+                                              (model.gLower[i][j][2] * model.csswm[p].IA[i][j][1] + model.gLower[i][j][3] * model.csswm[p].IA[i][j][3]) * VortexV(p, i, j, model);
+                    model.csswm[p].up[i][j] *= 3./2. * 2.;
+                    model.csswm[p].vp[i][j] *= 2.;
+                    // model.csswm[p].up[i][j] = VortexU(p, i, j, model);
+                    // model.csswm[p].vp[i][j] = VortexV(p, i, j, model);
+
                     double qsat = 0.9;
                     double qoff = 0.01;
                     double qmin = 0.05;
@@ -154,6 +156,24 @@ void CSSWM::Init::Init2d(CSSWM & model) {
         model.BP_hs(model);
     #endif
 
+    #if defined(Vortex)
+        int scale = 1;
+        for (int i = NX/2-50*scale; i < NX/2+50*scale; i++) {
+            int count = 0;
+            for (int j = NY/2; j < NY/2+25*scale; j++) {
+                count++;
+                model.csswm[1].up[i][j] = -model.csswm[1].up[i][NY/2+40*scale-count];
+            }
+        }
+
+        // for (int i = 0; i < NX; i++) {
+        //     int count = 0;
+        //     for (int j = 0; j < NY-20; j++) {
+        //         count++;
+        //         model.csswm[1].up[i][j+20] = -model.csswm[1].vp[j][i];
+        //     }
+        // }
+    #endif
 
     model.BP_h(model);
     model.BP_q(model);
@@ -368,35 +388,46 @@ double CSSWM::Init::VortexU(int p, int i, int j, CSSWM &model) {
     double rw = 600000.; // m
 
     double phid = 10. * M_PI / 180.; // rad
-    double lambdad = 0.; // rad
+    double lambdad = 90. * M_PI / 180.; // rad
+
+    int scale = 1;
+    if (j <= NY/2+1*scale && j >= NY/2-4*scale) return 0.;
 
     double lon = model.csswm[p].lon_original[i][j];
     double lat = model.csswm[p].lat[i][j];
 
+    double f = 2.*OMEGA*std::sin(lat); // Coriolis parameter
+
     double r = RADIUS * std::acos(std::sin(phid)*std::sin(lat) + std::cos(phid)*std::cos(lat)*std::cos(lon-lambdad));
     
-    double pr_plat = (std::sin(phid) * std::cos(lat) - std::cos(phid) * std::sin(lat) * std::cos(lon - lambdad))
+    double pr_plat = RADIUS * (std::sin(phid) * std::cos(lat) - std::cos(phid) * std::sin(lat) * std::cos(lon - lambdad))
                    / (std::sqrt(1.-std::pow(std::sin(phid)*std::sin(lat) + std::cos(phid)*std::cos(lat)*std::cos(lon-lambdad), 2)));
 
-    return 2 * model.gravity * hf / (RADIUS * rw * rw * model.csswm[p].f[i][j]) * r * std::exp(-r*r/(rw*rw)) * pr_plat;
-
-                    
+    double u = 2 * model.gravity * hf / (RADIUS * rw * rw * f) * r * std::exp(-r*r/(rw*rw)) * pr_plat;
+    if (u >= 0) u /= 2;
+    return u;
 }
 
 double CSSWM::Init::VortexV(int p, int i, int j, CSSWM &model) {
     double hf = 10.; // m
     double rw = 600000.; // m
 
+    int scale = 1;
+    if (j <= NY/2+2*scale && j >= NY/2-2*scale) return 0.;
+
+
     double phid = 10. * M_PI / 180.; // rad
-    double lambdad = 0.; // rad
+    double lambdad = 90. * M_PI / 180.; // rad
 
     double lon = model.csswm[p].lon_original[i][j];
     double lat = model.csswm[p].lat[i][j];
 
+    double f = 2.*OMEGA*std::sin(lat); // Coriolis parameter
+
     double r = RADIUS * std::acos(std::sin(phid)*std::sin(lat) + std::cos(phid)*std::cos(lat)*std::cos(lon-lambdad));
     
-    double pr_plon = (std::cos(phid) * std::cos(lat) * std::sin(lambdad-lon))
+    double pr_plon = RADIUS * (std::cos(phid) * std::cos(lat) * std::sin(lambdad-lon))
                    / (std::sqrt(1.-std::pow(std::sin(phid)*std::sin(lat) + std::cos(phid)*std::cos(lat)*std::cos(lon-lambdad), 2)));
 
-    return -2 * model.gravity * hf / (RADIUS * rw * rw * model.csswm[p].f[i][j] * std::cos(lat)) * r * std::exp(-r*r/(rw*rw)) * pr_plon;
+    return -2 * model.gravity * hf / (RADIUS * rw * rw * f * std::cos(lat)) * r * std::exp(-r*r/(rw*rw)) * pr_plon;
 }

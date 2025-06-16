@@ -1,8 +1,14 @@
 #include "construction.hpp"
 #include "readConfig.hpp"
-
+#ifdef _OPENMP
+    #include <omp.h>
+#endif
 CSSWM model;
 int main(void) {
+    #ifdef _OPENMP
+        omp_set_num_threads(6);
+    #endif
+
     clock_t start, stop;
     start = clock();
 

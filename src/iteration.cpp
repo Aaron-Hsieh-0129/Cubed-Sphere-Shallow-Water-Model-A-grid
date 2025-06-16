@@ -159,11 +159,11 @@ void CSSWM::Iteration::pv_pt_2(CSSWM &model) {
 }
 #elif defined(FourthOrderSpace)
 void CSSWM::Iteration::ph_pt_4(CSSWM &model) {
+    double psqrtGHU_px = 0, psqrtGHU_py = 0, dx_for_h = 0, dy_for_h = 0;
+    double beta = 0., beta0 = 0.01, lambdab = 10., h0 = 4000., ht = 0.75 * h0;
+    double P = 0., qs = 0.9;
+    #pragma omp parallel for
     for (int p = 0; p < 6; p++) {
-        double psqrtGHU_px = 0, psqrtGHU_py = 0, dx_for_h = 0, dy_for_h = 0;
-        double beta = 0., beta0 = 0.01, lambdab = 10., h0 = 4000., ht = 0.75 * h0;
-        double P = 0., qs = 0.9, tau = 86400.;
-
         for (int i = 2; i < NX-2; i++) {
             for (int j = 2; j < NY-2; j++) {
                 dx_for_h = 0.5 * (model.csswm[p].x[i+1][j] - model.csswm[p].x[i-1][j]);
@@ -202,10 +202,8 @@ void CSSWM::Iteration::ph_pt_4(CSSWM &model) {
                 // }
 
                 beta = beta0 * std::tanh(std::max(0., lambdab * (model.csswm[p].h[i][j] - ht) / (h0 - ht) ));
-                if (model.csswm[p].q[i][j] > qs) P = (model.csswm[p].q[i][j] - qs) / tau;
+                if (model.csswm[p].q[i][j] > qs) P = (model.csswm[p].q[i][j] - qs) / model.tau;
                 else P = 0.;
-
-                if (p == 0 && i == NX/2 && j == NY/2) std::cout << "beta: " << beta << ", P: " << P << std::endl;
 
                 model.csswm[p].hp[i][j] += model.dt * (-beta * P);
             }
@@ -215,10 +213,11 @@ void CSSWM::Iteration::ph_pt_4(CSSWM &model) {
 }
 
 void CSSWM::Iteration::pq_pt_4(CSSWM &model) {
+    double psqrtGHq_px = 0, psqrtGHq_py = 0, dx_for_h = 0, dy_for_h = 0;
+    double E = 0., Er = 0., Vmax = 30., alpha_e = 0.055, qs = 0.9;
+    double P = 0.;
+    #pragma omp parallel for
     for (int p = 0; p < 6; p++) {
-        double psqrtGHq_px = 0, psqrtGHq_py = 0, dx_for_h = 0, dy_for_h = 0;
-        double E = 0., Er = 0., Vmax = 30., alpha_e = 0.055, qs = 0.9, tau = 86400.;
-        double P = 0.;
         for (int i = 2; i < NX-2; i++) {
             for (int j = 2; j < NY-2; j++) {
                 dx_for_h = 0.5 * (model.csswm[p].x[i+1][j] - model.csswm[p].x[i-1][j]);
@@ -241,13 +240,15 @@ void CSSWM::Iteration::pq_pt_4(CSSWM &model) {
                 model.csswm[p].qp[i][j] = model.csswm[p].q[i][j] + 1.5*model.dt*model.csswm[p].dq[i][j][(model.step+1)%2] - 0.5*model.dt*model.csswm[p].dq[i][j][model.step%2];
 
 
-                double V = std::sqrt(std::pow(model.csswm[p].u[i][j],2) + std::pow(model.csswm[p].v[i][j],2));
+                double V = std::sqrt(std::pow(model.Cube2Sphere_U(model, p, i, j),2) + std::pow(model.Cube2Sphere_V(model, p, i, j),2));
                 if (V < Vmax) Er = alpha_e * V;
                 else Er = alpha_e * Vmax;
                 E = std::min(Er * model.dt, model.csswm[p].cr[i][j]) / model.dt;
 
-                if ((model.csswm[p].q[i][j] - qs) > 0) P = (model.csswm[p].q[i][j] - qs) / tau;
+                if (model.csswm[p].q[i][j] > qs) P = (model.csswm[p].q[i][j] - qs) / model.tau;
                 else P = 0.;
+
+                if (p == 1 && i == NX/2 && j == NY/2) std::cout << "P: " << P << std::endl;
 
                 model.csswm[p].qp[i][j] += model.dt * (E - P);
             }
@@ -257,20 +258,21 @@ void CSSWM::Iteration::pq_pt_4(CSSWM &model) {
 }
 
 void CSSWM::Iteration::pcr_pt_4(CSSWM &model) {
+    double C0 = 0., Cmax = 0.05;
+    double E = 0., Er = 0., Vmax = 30., alpha_e = 0.055;
+    #pragma omp parallel for collapse(3)
     for (int p = 0; p < 6; p++) {
-        double tauc = 10. * 86400.; // 10 days
-        double C0 = 0., Cmax = 0.05;
-        double E = 0., Er = 0., Vmax = 30., alpha_e = 0.055;
         for (int i = 2; i < NX-2; i++) {
             for (int j = 2; j < NY-2; j++) {
-                double V = std::sqrt(std::pow(model.csswm[p].u[i][j],2) + std::pow(model.csswm[p].v[i][j],2));
+                double V = std::sqrt(std::pow(model.Cube2Sphere_U(model, p, i, j),2) + std::pow(model.Cube2Sphere_V(model, p, i, j),2));
                 if (V < Vmax) Er = alpha_e * V;
                 else Er = alpha_e * Vmax;
                 E = std::min(Er * model.dt, model.csswm[p].cr[i][j]) / model.dt;
                 C0 = Cmax * std::pow(std::cos(model.csswm[p].lat[i][j]),4);
                 
-                model.csswm[p].crp[i][j] = model.csswm[p].cr[i][j] + model.dt * (-E + 1. / tauc * (C0 - model.csswm[p].cr[i][j]));
+                model.csswm[p].crp[i][j] = model.csswm[p].cr[i][j] + model.dt * (-E + 1. / model.tauc * (C0 - model.csswm[p].cr[i][j]));
 
+                model.csswm[p].crp[i][j] = C0;
             }
         }
     }
@@ -286,6 +288,7 @@ void CSSWM::Iteration::pu_pt_4(CSSWM &model) {
         double pgHs_px = 0.;
     #endif
 
+    #pragma omp parallel for
     for (int p = 0; p < 6; p++) {
         for (int i = 2; i < NX-2; i++) {
             for (int j = 2; j < NY-2; j++) {
@@ -349,6 +352,7 @@ void CSSWM::Iteration::pv_pt_4(CSSWM &model) {
         double pgHs_py = 0.;
     #endif
 
+    #pragma omp parallel for
     for (int p = 0; p < 6; p++) {
         for (int i = 2; i < NX-2; i++) {
             for (int j = 2; j < NY-2; j++) {
@@ -409,6 +413,7 @@ void CSSWM::Iteration::pv_pt_4(CSSWM &model) {
 #endif
 
 void CSSWM::Iteration::nextTimeStep(CSSWM &model) {
+    #pragma omp parallel for
     for (int p = 0; p < 6; p++) {
         for (int i = 0; i < NX; i++) {
             for (int j = 0; j < NY; j++) {
@@ -445,6 +450,11 @@ void CSSWM::Iteration::TimeMarching(CSSWM &model) {
 
     while (model.step < nmax) {
         std::cout << model.step << std::endl;
+
+        if (std::isnan(model.csswm[1].h[NX/2][NY/2])) {
+            std::cout << "NaN in model" << std::endl;
+            exit(1);
+        }
 
         if (model.step % model.outputstep == 0) {
             #ifdef TXTOUTPUT
