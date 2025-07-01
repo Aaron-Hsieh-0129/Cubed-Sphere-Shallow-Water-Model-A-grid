@@ -202,7 +202,7 @@ void CSSWM::Iteration::ph_pt_4(CSSWM &model) {
                 // }
 
                 beta = beta0 * std::tanh(std::max(0., lambdab * (model.csswm[p].h[i][j] - ht) / (h0 - ht) ));
-                if (model.csswm[p].q[i][j] > qs) P = (model.csswm[p].q[i][j] - qs) / model.tau;
+                if (model.csswm[p].qv[i][j] > qs) P = (model.csswm[p].qv[i][j] - qs) / model.tau;
                 else P = 0.;
 
                 model.csswm[p].hp[i][j] += model.dt * (-beta * P);
@@ -224,20 +224,20 @@ void CSSWM::Iteration::pq_pt_4(CSSWM &model) {
                 dy_for_h = 0.5 * (model.csswm[p].y[i][j+1] - model.csswm[p].y[i][j-1]);
 
                 psqrtGHq_px = (1. / (model.sqrtG[i][j] * 12. * dx_for_h)) * 
-                              (-1.*(model.sqrtG[i+2][j] * model.csswm[p].q[i+2][j] * (model.gUpper[i+2][j][0] * model.csswm[p].u[i+2][j] + model.gUpper[i+2][j][1] * model.csswm[p].v[i+2][j]))
-                               +8.*(model.sqrtG[i+1][j] * model.csswm[p].q[i+1][j] * (model.gUpper[i+1][j][0] * model.csswm[p].u[i+1][j] + model.gUpper[i+1][j][1] * model.csswm[p].v[i+1][j]))
-                               -8.*(model.sqrtG[i-1][j] * model.csswm[p].q[i-1][j] * (model.gUpper[i-1][j][0] * model.csswm[p].u[i-1][j] + model.gUpper[i-1][j][1] * model.csswm[p].v[i-1][j]))
-                               +1.*(model.sqrtG[i-2][j] * model.csswm[p].q[i-2][j] * (model.gUpper[i-2][j][0] * model.csswm[p].u[i-2][j] + model.gUpper[i-2][j][1] * model.csswm[p].v[i-2][j])));
+                              (-1.*(model.sqrtG[i+2][j] * model.csswm[p].qv[i+2][j] * (model.gUpper[i+2][j][0] * model.csswm[p].u[i+2][j] + model.gUpper[i+2][j][1] * model.csswm[p].v[i+2][j]))
+                               +8.*(model.sqrtG[i+1][j] * model.csswm[p].qv[i+1][j] * (model.gUpper[i+1][j][0] * model.csswm[p].u[i+1][j] + model.gUpper[i+1][j][1] * model.csswm[p].v[i+1][j]))
+                               -8.*(model.sqrtG[i-1][j] * model.csswm[p].qv[i-1][j] * (model.gUpper[i-1][j][0] * model.csswm[p].u[i-1][j] + model.gUpper[i-1][j][1] * model.csswm[p].v[i-1][j]))
+                               +1.*(model.sqrtG[i-2][j] * model.csswm[p].qv[i-2][j] * (model.gUpper[i-2][j][0] * model.csswm[p].u[i-2][j] + model.gUpper[i-2][j][1] * model.csswm[p].v[i-2][j])));
 
                 psqrtGHq_py = (1. / (model.sqrtG[i][j] * 12. * dy_for_h)) * 
-                              (-1.*(model.sqrtG[i][j+2] * model.csswm[p].q[i][j+2] * (model.gUpper[i][j+2][2] * model.csswm[p].u[i][j+2] + model.gUpper[i][j+2][3] * model.csswm[p].v[i][j+2])) 
-                               +8.*(model.sqrtG[i][j+1] * model.csswm[p].q[i][j+1] * (model.gUpper[i][j+1][2] * model.csswm[p].u[i][j+1] + model.gUpper[i][j+1][3] * model.csswm[p].v[i][j+1]))
-                               -8.*(model.sqrtG[i][j-1] * model.csswm[p].q[i][j-1] * (model.gUpper[i][j-1][2] * model.csswm[p].u[i][j-1] + model.gUpper[i][j-1][3] * model.csswm[p].v[i][j-1]))
-                               +1.*(model.sqrtG[i][j-2] * model.csswm[p].q[i][j-2] * (model.gUpper[i][j-2][2] * model.csswm[p].u[i][j-2] + model.gUpper[i][j-2][3] * model.csswm[p].v[i][j-2])));
+                              (-1.*(model.sqrtG[i][j+2] * model.csswm[p].qv[i][j+2] * (model.gUpper[i][j+2][2] * model.csswm[p].u[i][j+2] + model.gUpper[i][j+2][3] * model.csswm[p].v[i][j+2])) 
+                               +8.*(model.sqrtG[i][j+1] * model.csswm[p].qv[i][j+1] * (model.gUpper[i][j+1][2] * model.csswm[p].u[i][j+1] + model.gUpper[i][j+1][3] * model.csswm[p].v[i][j+1]))
+                               -8.*(model.sqrtG[i][j-1] * model.csswm[p].qv[i][j-1] * (model.gUpper[i][j-1][2] * model.csswm[p].u[i][j-1] + model.gUpper[i][j-1][3] * model.csswm[p].v[i][j-1]))
+                               +1.*(model.sqrtG[i][j-2] * model.csswm[p].qv[i][j-2] * (model.gUpper[i][j-2][2] * model.csswm[p].u[i][j-2] + model.gUpper[i][j-2][3] * model.csswm[p].v[i][j-2])));
                 
-                model.csswm[p].dq[i][j][(model.step+1)%2] = (-psqrtGHq_px - psqrtGHq_py);
-                if (model.step == 0) model.csswm[p].dq[i][j][0] = model.csswm[p].dq[i][j][1];
-                model.csswm[p].qp[i][j] = model.csswm[p].q[i][j] + 1.5*model.dt*model.csswm[p].dq[i][j][(model.step+1)%2] - 0.5*model.dt*model.csswm[p].dq[i][j][model.step%2];
+                model.csswm[p].dqv[i][j][(model.step+1)%2] = (-psqrtGHq_px - psqrtGHq_py);
+                if (model.step == 0) model.csswm[p].dqv[i][j][0] = model.csswm[p].dqv[i][j][1];
+                model.csswm[p].qvp[i][j] = model.csswm[p].qv[i][j] + 1.5*model.dt*model.csswm[p].dqv[i][j][(model.step+1)%2] - 0.5*model.dt*model.csswm[p].dqv[i][j][model.step%2];
 
 
                 double V = std::sqrt(std::pow(model.Cube2Sphere_U(model, p, i, j),2) + std::pow(model.Cube2Sphere_V(model, p, i, j),2));
@@ -245,12 +245,12 @@ void CSSWM::Iteration::pq_pt_4(CSSWM &model) {
                 else Er = alpha_e * Vmax;
                 E = std::min(Er * model.dt, model.csswm[p].cr[i][j]) / model.dt;
 
-                if (model.csswm[p].q[i][j] > qs) P = (model.csswm[p].q[i][j] - qs) / model.tau;
+                if (model.csswm[p].qv[i][j] > qs) P = (model.csswm[p].qv[i][j] - qs) / model.tau;
                 else P = 0.;
 
                 if (p == 1 && i == NX/2 && j == NY/2) std::cout << "P: " << P << std::endl;
 
-                model.csswm[p].qp[i][j] += model.dt * (E - P);
+                model.csswm[p].qvp[i][j] += model.dt * (E - P);
             }
         }
     }
@@ -420,8 +420,8 @@ void CSSWM::Iteration::nextTimeStep(CSSWM &model) {
                 model.csswm[p].hm[i][j] = model.csswm[p].h[i][j];
                 model.csswm[p].h[i][j] = model.csswm[p].hp[i][j];
 
-                model.csswm[p].qm[i][j] = model.csswm[p].q[i][j];
-                model.csswm[p].q[i][j] = model.csswm[p].qp[i][j];
+                model.csswm[p].qvm[i][j] = model.csswm[p].qv[i][j];
+                model.csswm[p].qv[i][j] = model.csswm[p].qvp[i][j];
 
                 model.csswm[p].cr[i][j] = model.csswm[p].crp[i][j];
 

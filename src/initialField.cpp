@@ -142,7 +142,7 @@ void CSSWM::Init::Init2d(CSSWM & model) {
                     double qmin = 0.05;
                     double qf = 0.0175;
                     double q0 = std::min(qsat - qoff, std::cos(model.csswm[p].lat[i][j]) + qmin);
-                    model.csswm[p].qp[i][j] = q0 + qf * std::exp(-r*r/(rw*rw));
+                    model.csswm[p].qvp[i][j] = q0 + qf * std::exp(-r*r/(rw*rw));
 
                     double cmax = 0.05;
                     model.csswm[p].crp[i][j] = cmax * std::pow(std::cos(model.csswm[p].lat[i][j]),4);
@@ -188,13 +188,13 @@ void CSSWM::Init::Init2d(CSSWM & model) {
         for (int i = 0; i < NX; i++) {
             for (int j = 0; j < NY; j++) {
                 model.csswm[p].hm[i][j] = model.csswm[p].hp[i][j];
-                model.csswm[p].qm[i][j] = model.csswm[p].qp[i][j]; 
+                model.csswm[p].qvm[i][j] = model.csswm[p].qvp[i][j]; 
                 model.csswm[p].crm[i][j] = model.csswm[p].crp[i][j]; 
                 model.csswm[p].um[i][j] = model.csswm[p].up[i][j]; 
                 model.csswm[p].vm[i][j] = model.csswm[p].vp[i][j];   
 
                 model.csswm[p].h[i][j] = model.csswm[p].hp[i][j]; 
-                model.csswm[p].q[i][j] = model.csswm[p].qp[i][j];
+                model.csswm[p].qv[i][j] = model.csswm[p].qvp[i][j];
                 model.csswm[p].cr[i][j] = model.csswm[p].crp[i][j];
                 model.csswm[p].u[i][j] = model.csswm[p].up[i][j]; 
                 model.csswm[p].v[i][j] = model.csswm[p].vp[i][j];  

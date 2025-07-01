@@ -11,7 +11,7 @@ public:
         patch();
 
         double hp[NX][NY], h[NX][NY], hm[NX][NY];
-        double qp[NX][NY], q[NX][NY], qm[NX][NY];
+        double qvp[NX][NY], qv[NX][NY], qvm[NX][NY];
         double crp[NX][NY], cr[NX][NY], crm[NX][NY];
         double up[NX][NY], u[NX][NY], um[NX][NY];
         double vp[NX][NY], v[NX][NY], vm[NX][NY];
@@ -40,7 +40,7 @@ public:
 
         #if defined(AB2Time)
             double dh[NX][NY][2];
-            double dq[NX][NY][2];
+            double dqv[NX][NY][2];
             double dcr[NX][NY][2];
             double du[NX][NY][2];
             double dv[NX][NY][2];
