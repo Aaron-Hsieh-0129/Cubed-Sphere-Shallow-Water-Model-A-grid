@@ -346,7 +346,7 @@ void CSSWM::Outputs::huv_nc(int n, CSSWM &model) {
             (retval = nc_put_vara_double(ncid, v_varid, startp, countp, &model.csswm[p].v[0][0])) ||
             // (retval = nc_put_vara_double(ncid, ulonlat_varid, startp, countp, &u_lon_lat[p][0][0])) ||
             // (retval = nc_put_vara_double(ncid, vlonlat_varid, startp, countp, &v_lon_lat[p][0][0])) ||
-            (retval = nc_put_vara_double(ncid, q_varid, startp, countp, &model.csswm[p].q[0][0])) ||
+            (retval = nc_put_vara_double(ncid, q_varid, startp, countp, &model.csswm[p].qv[0][0])) ||
             (retval = nc_put_vara_double(ncid, cr_varid, startp, countp, &model.csswm[p].cr[0][0]))) {
             fprintf(stderr, "Error: %s\n", nc_strerror(retval));
             exit(EXIT_FAILURE);

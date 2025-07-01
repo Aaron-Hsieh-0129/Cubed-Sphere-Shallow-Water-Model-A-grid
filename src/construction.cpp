@@ -4,7 +4,7 @@ CSSWM::patch::patch() {
     for (int i = 0; i < NX; i++) {
         for (int j = 0; j < NY; j++) {
             hp[i][j] = h[i][j] = hm[i][j] = FILLVALUE;
-            qp[i][j] = q[i][j] = qm[i][j] = FILLVALUE;
+            qvp[i][j] = qv[i][j] = qvm[i][j] = FILLVALUE;
             crp[i][j] = cr[i][j] = crm[i][j] = FILLVALUE;
             up[i][j] = u[i][j] = um[i][j] = FILLVALUE;
             vp[i][j] = v[i][j] = vm[i][j] = FILLVALUE;
